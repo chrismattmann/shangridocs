@@ -1,6 +1,6 @@
 # Shangrila
 
-<img src="" align="right" width="300" />
+<img src="https://github.com/darth-pr/shangrila/blob/master/doc/logo.png" align="right" width="300" />
 
 # Introduction
 Shangrila is a document exploration tool for the biomedical domain which takes inspiration
