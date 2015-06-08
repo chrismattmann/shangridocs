@@ -1,5 +1,7 @@
 # Shangrila
 
+<img src="" align="right" width="300" />
+
 # Introduction
 Shangrila is a document exploration tool for the biomedical domain which takes inspiration
 from [Utopiadocs](http://utopiadocs.com/) but provides the following killer features
