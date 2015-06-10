@@ -1,3 +1,20 @@
+/**
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package gov.nasa.jpl.celgene.shangrila.tika;
 
 import java.io.InputStream;
@@ -27,20 +44,34 @@ public class TikaCtakesResource {
   @Path("/status")
   @Produces("text/html")
   public Response status() {
-    return Response.ok(
-        "<h1>This is Tika cTAKES Resource: running correctly</h1>").build();
+    return Response
+        .ok("<h1>This is Tika cTAKES Resource: running correctly</h1><h2>Tika Proxy: /rmeta</h2><p>"
+            + PROXY_URL_TIKA
+            + "</p><h2>cTAKES Proxy: /ctakes</h2><p>"
+            + PROXY_URL_CTAKES + "</p>").build();
   }
 
   @PUT
   @Path("/rmeta")
   @Produces("application/json")
   public Response forwardTika(InputStream is,
-      @HeaderParam("Content-Dispotion") String contentDispotion) {
-    LOG.info("PUTTING document [" + contentDispotion + "] to Tika at :["
-        + PROXY_URL_TIKA + "]");
-    Response response = WebClient.create(PROXY_URL_TIKA)
-        .accept("application/json")
-        .header("Content-Disposition", contentDispotion).put(is);
+      @HeaderParam("Content-Dispotion") String contentDisposition) {
+    return forwardProxy(is, PROXY_URL_TIKA, contentDisposition);
+  }
+
+  @PUT
+  @Path("/ctakes")
+  public Response forwardCtakes(InputStream is,
+      @HeaderParam("Content-Disposition") String contentDisposition) {
+    return forwardProxy(is, PROXY_URL_CTAKES, contentDisposition);
+  }
+
+  private Response forwardProxy(InputStream is, String url,
+      String contentDisposition) {
+    LOG.info("PUTTING document [" + contentDisposition + "] to Tika at :["
+        + url + "]");
+    Response response = WebClient.create(url).accept("application/json")
+        .header("Content-Disposition", contentDisposition).put(is);
     String json = response.readEntity(String.class);
     LOG.info("Response received: " + json);
     return Response.ok(json, MediaType.APPLICATION_JSON).build();
