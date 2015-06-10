@@ -20,8 +20,10 @@
     -webkit-box-shadow: 0 8px 6px -6px #999;
     -moz-box-shadow: 0 8px 6px -6px #999;
     box-shadow: 0 11px 9px -6px #999;
+}
 
-    /* the rest of your styling */
+.tab-pane{
+    height:100%;
 }
 
 /* btn awesome - taken from codrops.*/
@@ -211,3 +213,22 @@ writing-mode: lr-tb;
     content: "\e004";
 }
 
+/*-- button css over --------------------------*/
+
+.pdf-view{
+    padding:5%;
+    border:2px solid #eee;
+}
+
+.extractedData, .searchResults{
+    float:left;
+    max-height: 300px;
+    overflow-y: scroll;
+    border:1px solid #aaa;
+    margin-top: 20px;
+}
+
+.panel{
+    margin-bottom:0;
+}
+.panel
