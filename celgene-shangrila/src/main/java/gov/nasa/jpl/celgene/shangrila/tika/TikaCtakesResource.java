@@ -44,8 +44,11 @@ public class TikaCtakesResource {
   @Path("/status")
   @Produces("text/html")
   public Response status() {
-    return Response.ok(
-        "<h1>This is Tika cTAKES Resource: running correctly</h1>").build();
+    return Response
+        .ok("<h1>This is Tika cTAKES Resource: running correctly</h1><h2>Tika Proxy: /rmeta</h2><p>"
+            + PROXY_URL_TIKA
+            + "</p><h2>cTAKES Proxy: /ctakes</h2><p>"
+            + PROXY_URL_CTAKES + "</p>").build();
   }
 
   @PUT
