@@ -12,9 +12,9 @@ import org.apache.cxf.jaxrs.client.WebClient;
 @Path("/tika")
 public class TikaCtakesResource {
   
-  public static final String PROXY_URL_TIKA = "http://localhost:9020";
+  public static final String PROXY_URL_TIKA = "http://localhost:9201";
   
-  public static final String PROXY_URL_CTAKES = "http://localhost:9021";
+  public static final String PROXY_URL_CTAKES = "http://localhost:9202";
   
   @PUT
   @Path("/rmeta")
