@@ -33,6 +33,16 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+      <version>3.0.3</version>
+    </dependency>   
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-rs-client</artifactId>
+      <version>3.0.3</version>
+    </dependency>    
   </dependencies>
   <build>
     <finalName>celgene-shangrila</finalName>
