@@ -262,7 +262,7 @@ function showCtakesData( data ) {
 										"<div class='checkbox-inline no_indent'>" +
 									   "<span  style='background-color:" + color + "; height:10px; width:10px; border-radius:10px; float:left; margin-top:1%; margin-right:2%;'></span>" +
 											"<label>" +
-											"<input class='key-highlight' type='checkbox' cbecked='true' value='" + extractedKey + "'>" + 
+											"<input class='key-highlight' type='checkbox' checked='true' value='" + extractedKey + "'>" + 
 									   "<a data-toggle='collapse' data-parent='#accordion' href='#collapse" + extractedKey + "' aria-expanded='true' aria-controls='collapse" + extractedKey + "'>" + 
 									   extractedKey + "</a>" +
 									   "</label>" +
@@ -275,7 +275,7 @@ function showCtakesData( data ) {
 					var changedKey = $(this).val();
 					if( $(this).is(":checked"))
 					{
-						uncheckedKeys.splice( uncheckedKeys.indexOf( key),1 )
+						uncheckedKeys.splice( uncheckedKeys.indexOf( changedKey),1 )
 					}
 					else
 						uncheckedKeys.push( changedKey);
