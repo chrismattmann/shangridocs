@@ -20,8 +20,10 @@ package gov.nasa.jpl.celgene.shangrila.tika;
 import java.io.InputStream;
 import java.util.logging.Logger;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -29,6 +31,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.cxf.jaxrs.client.WebClient;
+import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 
 @Path("/tika")
 public class TikaCtakesResource {
@@ -52,11 +55,31 @@ public class TikaCtakesResource {
   }
 
   @PUT
+  @Consumes("multipart/form-data")
+  @Produces({ "text/csv", "application/json" })
+  @Path("/rmeta/form")
+  public Response forwardTikaMultiPart(Attachment att,
+      @HeaderParam("Content-Disposition") String contentDisposition) {
+    return forwardProxy(att.getObject(InputStream.class), PROXY_URL_TIKA,
+        contentDisposition);
+  }
+
+  @PUT
   @Path("/rmeta")
   @Produces("application/json")
   public Response forwardTika(InputStream is,
-      @HeaderParam("Content-Dispotion") String contentDisposition) {
+      @HeaderParam("Content-Disposition") String contentDisposition) {
     return forwardProxy(is, PROXY_URL_TIKA, contentDisposition);
+  }
+
+  @POST
+  @Consumes("multipart/form-data")
+  @Produces({ "text/csv", "application/json" })
+  @Path("/ctakes/form")
+  public Response forwardCtakesMultiPart(Attachment att,
+      @HeaderParam("Content-Disposition") String contentDisposition) {
+    return forwardProxy(att.getObject(InputStream.class), PROXY_URL_CTAKES,
+        contentDisposition);
   }
 
   @PUT
