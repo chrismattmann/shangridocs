@@ -32,6 +32,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
+import org.apache.cxf.transport.http.HTTPConduit;
 
 @Path("/tika")
 public class TikaCtakesResource {
@@ -42,6 +43,8 @@ public class TikaCtakesResource {
   public static final String PROXY_URL_TIKA = "http://localhost:9201/rmeta";
 
   public static final String PROXY_URL_CTAKES = "http://localhost:9202/rmeta";
+  
+  public static final long DEFAULT_TIMEOUT = 1000000L;
 
   @GET
   @Path("/status")
@@ -86,8 +89,12 @@ public class TikaCtakesResource {
       String contentDisposition) {
     LOG.info("PUTTING document [" + contentDisposition + "] to Tika at :["
         + url + "]");
-    Response response = WebClient.create(url).accept("application/json")
-        .header("Content-Disposition", contentDisposition).put(is);
+    WebClient client = WebClient.create(url).accept("application/json")
+        .header("Content-Disposition", contentDisposition);
+    HTTPConduit conduit = WebClient.getConfig(client).getHttpConduit();
+    conduit.getClient().setConnectionTimeout(DEFAULT_TIMEOUT);
+    conduit.getClient().setReceiveTimeout(DEFAULT_TIMEOUT);
+    Response response = client.put(is);
     String json = response.readEntity(String.class);
     LOG.info("Response received: " + json);
     return Response.ok(json, MediaType.APPLICATION_JSON).build();
