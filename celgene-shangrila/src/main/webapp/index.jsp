@@ -76,7 +76,7 @@
 	       		<div class="col-md-12 extractedData">
        				<h4 class="text-center">Extracted Data</h4>
        				<div class="panel-group extractedDataPanel" id="accordion" role="tablist" aria-multiselectable="true"> 
-       				</div>
+	       			</div>
 	       		</div>
 	       		<div class="col-md-12 searchResults">
        				<h4 class="text-center">Search Results</h4>
@@ -114,6 +114,9 @@
 	<script src="resources/js/bootstrap.min.js"></script>
 	<script src="resources/js/dropzone.js"></script>
 	<script type="text/javascript">
+
+	var colorSwatch = ["F64747", "D2527F", "AEA8D3", "BF55EC", "81CFE0", "4B77BE", "03C9A9", "87D37C", "F4D03F", "F27935", "ABB7B7"];
+	var ignoredKeys = ["schema"];
 	$(document).ready( function(){
 
 		//to make remove uploadable files
@@ -132,7 +135,16 @@
 					$(".extracted-text").addClass("pdf-view");
 					$(".extracted-text").html( fileContent);
 
-					$(".extractedDataPanel").html( "<img class='loading-img' src='resources/img/load.gif'/>");
+					$(".extractedDataPanel").html( "<div class='loading-img'>" +
+														"<div class='loading-gif text-center'>"+
+															"<div class='bubblingG'>"+
+																"<span id='bubblingG_1'></span>"+
+																"<span id='bubblingG_2'></span>"+
+																"<span id='bubblingG_3'></span>"+
+															"</div>"+
+														"</div>"+
+													"</div>"
+												);
 
 					$.ajax({
 						headers: { 
@@ -199,17 +211,15 @@ function colorText( value, color){
 		randomHex = '#'+Math.floor(Math.random()*16777215).toString(16);
 	var textToColor = $(".extracted-text").html();
 	splitText = textToColor.split( value);
-	var coloredText = "";
-	for( var i =0; i< splitText.length-1; i++)
+	if( splitText.length > 0)
 	{
-			
-			coloredText += splitText[i] + "<span style='background-color:" + randomHex + "'>" + value + "</span>" + splitText[i+1];
-	}
-	if( coloredText == "")
-		$(".extracted-text").html( textToColor);
-	else
+		coloredText = splitText[0];
+		for( var i =0; i< splitText.length-1; i++)
+		{
+			coloredText += 	"<span style='background-color:" + randomHex + "'>" + value + "</span>" + splitText[i+1];
+		}
 		$(".extracted-text").html( coloredText);
-
+	}
 	return randomHex;
 
 }
@@ -220,42 +230,45 @@ function showCtakesData( data ) {
 	var value = valueHTML = "";
 	for( var key in studyData){
 		if( key.substring(0,7) == "ctakes:"){
-					var color = "";
-					extractedKey = key.replace("ctakes:","");
+			var color = "";
+			extractedKey = key.replace("ctakes:","");
 
-					 if( studyData[key].constructor === Array){
+			if( ! $.inArray(extractedKey, ignoredKeys))
+			{
+				if( studyData[key].constructor === Array){
 
-					 		valueHTML = "";
-					 		for( var i=0; i< studyData[key].length; i++)
-					 		{
-					 			valueArray = studyData[key][i].split(":");
-					 			value = valueArray[0];
-					 			color = colorText( value, color);
-					 			valueHTML += "<input type='checkbox' checked='true'> " + value + "<br/>"
-					 		}
-						}
-				 	 else
-				 	 {
-		 	 			valueArray = studyData[key].split(":");
-			 			value = valueArray[0];
-					 	color = colorText( value, color);
-			 			valueHTML = "<input type='checkbox' checked='true'> " + value + "<br/>"
-				 	 }
+				 		valueHTML = "";
+				 		for( var i=0; i< studyData[key].length; i++)
+				 		{
+				 			valueArray = studyData[key][i].split(":");
+				 			value = valueArray[0];
+				 			color = colorText( value, color);
+				 			valueHTML += "<input type='checkbox' checked='true'> " + value + "<br/>"
+				 		}
+					}
+			 	else
+			 	{
+	 	 			valueArray = studyData[key].split(":");
+		 			value = valueArray[0];
+				 	color = colorText( value, color);
+		 			valueHTML = "<input type='checkbox' checked='true'> " + value + "<br/>"
+			 	}
 			
-		 var extractedData = "<div class='panel panel-default'>" +
-								"<div class='panel-heading' role='tab' id='heading" + extractedKey + "'>"+
-									"<h4 class='panel-title'>" +
-									"<div class='checkbox-inline no_indent'>" +
-								   "<span  style='background-color:" + color + "; height:10px; width:10px; border-radius:10px; float:left; margin-top:1%; margin-right:2%;'></span>" +
-										"<label>" +
-										"<input class='' type='checkbox' value='" + extractedKey + "'>" + 
-								   "<a data-toggle='collapse' data-parent='#accordion' href='#collapse" + extractedKey + "' aria-expanded='true' aria-controls='collapse" + extractedKey + "'>" + 
-								   extractedKey + "</a>" +
-								   "</label>" +
-									"</div>" +
-									"</h4> </div>  <div id='collapse" + extractedKey + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='headingOne'>"+
-"<div class='panel-body'>" + valueHTML + "</div></div> </div>";
-		 $(".extractedDataPanel").append( extractedData);
+				var extractedData = "<div class='panel panel-default'>" +
+									"<div class='panel-heading' role='tab' id='heading" + extractedKey + "'>"+
+										"<h4 class='panel-title'>" +
+										"<div class='checkbox-inline no_indent'>" +
+									   "<span  style='background-color:" + color + "; height:10px; width:10px; border-radius:10px; float:left; margin-top:1%; margin-right:2%;'></span>" +
+											"<label>" +
+											"<input class='' type='checkbox' value='" + extractedKey + "'>" + 
+									   "<a data-toggle='collapse' data-parent='#accordion' href='#collapse" + extractedKey + "' aria-expanded='true' aria-controls='collapse" + extractedKey + "'>" + 
+									   extractedKey + "</a>" +
+									   "</label>" +
+										"</div>" +
+										"</h4> </div>  <div id='collapse" + extractedKey + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='headingOne'>"+
+				"<div class='panel-body'>" + valueHTML + "</div></div> </div>";
+				$(".extractedDataPanel").append( extractedData);
+			}
 
 		}
 
