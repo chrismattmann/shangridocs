@@ -97,10 +97,7 @@
 				</div>
 				<div class="modal-body">
 					<div class="text-center">
-		        		<form action="http://localhost:9201/meta" class="dropzone file-intake-area col-md-12 well " id="dropFileArea">
-		  					<div class="fallback">
-		    					<input name="file" type="file" multiple />
-		  					</div>
+		        		<form action="http://54.153.2.23/celgene-shangrila/services/tika/rmeta/form" class="dropzone file-intake-area col-md-12 well " id="dropFileArea">
 		        			<img src="resources/img/upload-3.png" class="upload-img" width="128" height="128"/><br/>
 		    				<span>Maximum allowed filesize: 25MB</span><br/>
 		    				<span>Allowed file formats: PDF, Txt, Doc, JPG</span><br/>
@@ -121,85 +118,46 @@
 
 		//to make remove uploadable files
 		Dropzone.options.dropFileArea = {
-			headers:{"Accept": "application/json"},
 			method:"put",
 			init: function() {
 		    	this.on("success", function(file, responseText) {
 			      	// Handle the responseText here. For example, add the text to the preview element:
-					console.log( responseText);
+			      	this.removeAllFiles();
+			      	$("#fileModal").modal("hide");
+					fileContent = responseText[0]["X-TIKA:content"];
+
+					//ui changes
+					$(".introduction").hide();
+					$(".tabs").removeClass("hide");
+					$(".extracted-text").addClass("pdf-view");
+					$(".extracted-text").html( fileContent);
+
+					$(".extractedDataPanel").html( "<img class='loading-img' src='resources/img/load.gif'/>");
+
+					$.ajax({
+						headers: { 
+					        'Content-Type': 'text/plain' 
+					    },
+						url:"http://54.153.2.23/celgene-shangrila/services/tika/ctakes", 
+						method:"put",
+						data: responseText[0]["X-TIKA:content"],
+						success:function( result){
+							ctakesData = result[0];
+							showCtakesData( ctakesData);
+						}
+					})
 			    });
 			    this.on("complete", function(file) {
 			      	// Handle the responseText here. For example, add the text to the preview element:
-					console.log("test");
+			      	$(".loading-img").remove();
 			    });
-	  		}
+	  		},
 		};
 		
 		//to make upload image clickable inside dropzone
 		$(".upload-img").click( function(){
 			$(".dropzone").click();
 		})
-
-		/* extracted json  - right now takes data from static files*/
-		$(".icon-file").click( function(){
-
-			//to get text from uploaded file.
-			$.get("testdata.txt", function( data){
-
-				//ui changes
-				$(".introduction").hide();
-				$(".tabs").removeClass("hide");
-				$(".extracted-text").html( data);
-				$(".extracted-text").addClass("pdf-view");
-			});
-
-			$.getJSON( "static-ctakes.json", function( data ) {
-
-				
-
-				studyData = data;
-				var value = valueHTML = "";
-				for( var key in studyData){
-					if( key.substring(0,7) == "ctakes:"){
-								var color = "";
-								extractedKey = key.replace("ctakes:","");
-
-								 if( studyData[key].constructor === Array){
-
-								 		valueHTML = "";
-								 		for( var i=0; i< studyData[key].length; i++)
-								 		{
-								 			valueArray = studyData[key][i].split(":");
-								 			value = valueArray[0];
-								 			color = colorText( value, color);
-								 			valueHTML += "<input type='checkbox' checked='true'> " + value + "<br/>"
-								 		}
-									}
-							 	 else
-							 	 {
-					 	 			valueArray = studyData[key].split(":");
-						 			value = valueArray[0];
-								 	color = colorText( value, color);
-						 			valueHTML = "<input type='checkbox' checked='true'> " + value + "<br/>"
-							 	 }
-        				
-					 var extractedData = "<div class='panel panel-default'>" +
-    										"<div class='panel-heading' role='tab' id='heading" + extractedKey + "'>"+
-      										"<h4 class='panel-title'>" +
-     									   "<a data-toggle='collapse' data-parent='#accordion' href='#collapse" + extractedKey + "' aria-expanded='true' aria-controls='collapse" + extractedKey + "'>" + 
-     									   "<span  style='background-color:" + color + "; height:10px; width:10px; border-radius:10px; float:left; margin-top:1%; margin-right:2%;'></span>" +
-     									   extractedKey + "</a>" +
-      										"</h4> </div>  <div id='collapse" + extractedKey + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='headingOne'>"+
-      "<div class='panel-body'>" + valueHTML + "</div></div> </div>";
-					 $(".extractedDataPanel").append( extractedData);
-
-					}
-
-				}
-
- 				
- 			 });
-		});
 
 		//setting up the popup for Searchh
 		var options = {
@@ -211,7 +169,7 @@
 		
 		//Showing popover for search when text is selected
 		$(".extracted-text").mouseup( function( e){
-			console.log( e);
+
 			var selectedText = window.getSelection();
 			if( selectedText != "")
 			{
@@ -254,6 +212,54 @@ function colorText( value, color){
 
 	return randomHex;
 
+}
+
+function showCtakesData( data ) {
+
+	studyData = data;
+	var value = valueHTML = "";
+	for( var key in studyData){
+		if( key.substring(0,7) == "ctakes:"){
+					var color = "";
+					extractedKey = key.replace("ctakes:","");
+
+					 if( studyData[key].constructor === Array){
+
+					 		valueHTML = "";
+					 		for( var i=0; i< studyData[key].length; i++)
+					 		{
+					 			valueArray = studyData[key][i].split(":");
+					 			value = valueArray[0];
+					 			color = colorText( value, color);
+					 			valueHTML += "<input type='checkbox' checked='true'> " + value + "<br/>"
+					 		}
+						}
+				 	 else
+				 	 {
+		 	 			valueArray = studyData[key].split(":");
+			 			value = valueArray[0];
+					 	color = colorText( value, color);
+			 			valueHTML = "<input type='checkbox' checked='true'> " + value + "<br/>"
+				 	 }
+			
+		 var extractedData = "<div class='panel panel-default'>" +
+								"<div class='panel-heading' role='tab' id='heading" + extractedKey + "'>"+
+									"<h4 class='panel-title'>" +
+									"<div class='checkbox-inline no_indent'>" +
+								   "<span  style='background-color:" + color + "; height:10px; width:10px; border-radius:10px; float:left; margin-top:1%; margin-right:2%;'></span>" +
+										"<label>" +
+										"<input class='' type='checkbox' value='" + extractedKey + "'>" + 
+								   "<a data-toggle='collapse' data-parent='#accordion' href='#collapse" + extractedKey + "' aria-expanded='true' aria-controls='collapse" + extractedKey + "'>" + 
+								   extractedKey + "</a>" +
+								   "</label>" +
+									"</div>" +
+									"</h4> </div>  <div id='collapse" + extractedKey + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='headingOne'>"+
+"<div class='panel-body'>" + valueHTML + "</div></div> </div>";
+		 $(".extractedDataPanel").append( extractedData);
+
+		}
+
+	}		
 }
 
 	</script>

@@ -222,7 +222,8 @@ writing-mode: lr-tb;
 
 .extractedData, .searchResults{
     float:left;
-    max-height: 300px;
+    height: 300px;
+    resize:vertical;
     overflow-y: scroll;
     border:1px solid #aaa;
     margin-top: 20px;
@@ -231,4 +232,3 @@ writing-mode: lr-tb;
 .panel{
     margin-bottom:0;
 }
-.panel
