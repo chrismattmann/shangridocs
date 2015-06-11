@@ -51,7 +51,10 @@ public class TikaCtakesResource {
         .ok("<h1>This is Tika cTAKES Resource: running correctly</h1><h2>Tika Proxy: /rmeta</h2><p>"
             + PROXY_URL_TIKA
             + "</p><h2>cTAKES Proxy: /ctakes</h2><p>"
-            + PROXY_URL_CTAKES + "</p>").build();
+            + PROXY_URL_CTAKES
+            + "</p> <h2>Tika Form Proxy: /rmeta/form</h3><p>"
+            + PROXY_URL_TIKA
+            + "</p>").build();
   }
 
   @PUT
@@ -70,16 +73,6 @@ public class TikaCtakesResource {
   public Response forwardTika(InputStream is,
       @HeaderParam("Content-Disposition") String contentDisposition) {
     return forwardProxy(is, PROXY_URL_TIKA, contentDisposition);
-  }
-
-  @PUT
-  @Consumes("multipart/form-data")
-  @Produces({ "text/csv", "application/json" })
-  @Path("/ctakes/form")
-  public Response forwardCtakesMultiPart(Attachment att,
-      @HeaderParam("Content-Disposition") String contentDisposition) {
-    return forwardProxy(att.getObject(InputStream.class), PROXY_URL_CTAKES,
-        contentDisposition);
   }
 
   @PUT
