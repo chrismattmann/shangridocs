@@ -70,16 +70,14 @@
 	        	
 
 	        </div>
-	        <div class="col-md-4">
-	        	
-
+	        <div class="col-md-4 right-pane">
+       			<h4 class="text-center">Extracted Data</h4>
 	       		<div class="col-md-12 extractedData">
-       				<h4 class="text-center">Extracted Data</h4>
        				<div class="panel-group extractedDataPanel" id="accordion" role="tablist" aria-multiselectable="true"> 
 	       			</div>
 	       		</div>
+       			<h4 class="text-center">Search Results</h4>
 	       		<div class="col-md-12 searchResults">
-       				<h4 class="text-center">Search Results</h4>
        				<div class="panel-group extractedSearchPanel" id="accordion" role="tablist" aria-multiselectable="true"> 
        					
        				</div>
@@ -116,6 +114,9 @@
 	<script type="text/javascript">
 
 	var colorSwatch = ["F64747", "D2527F", "AEA8D3", "BF55EC", "81CFE0", "4B77BE", "03C9A9", "87D37C", "F4D03F", "F27935", "ABB7B7"];
+	var swatchCounter = 0;
+	var ctakesData = "";
+	var uncheckedKeys = [];
 	var ignoredKeys = ["schema"];
 	$(document).ready( function(){
 
@@ -154,6 +155,7 @@
 						method:"put",
 						data: responseText[0]["X-TIKA:content"],
 						success:function( result){
+							$(".loading-img").remove();
 							ctakesData = result[0];
 							showCtakesData( ctakesData);
 						}
@@ -161,7 +163,6 @@
 			    });
 			    this.on("complete", function(file) {
 			      	// Handle the responseText here. For example, add the text to the preview element:
-			      	$(".loading-img").remove();
 			    });
 	  		},
 		};
@@ -208,18 +209,18 @@ function colorText( value, color){
 	
 	var randomHex = color;
 	if( color == "")
-		randomHex = '#'+Math.floor(Math.random()*16777215).toString(16);
+		randomHex = colorSwatch[swatchCounter];
+		swatchCounter++;
+		//randomHex = '#'+Math.floor(Math.random()*16777215).toString(16);
 	var textToColor = $(".extracted-text").html();
 	splitText = textToColor.split( value);
-	if( splitText.length > 0)
+
+	coloredText = splitText[0];
+	for( var i =0; i< splitText.length-1; i++)
 	{
-		coloredText = splitText[0];
-		for( var i =0; i< splitText.length-1; i++)
-		{
-			coloredText += 	"<span style='background-color:" + randomHex + "'>" + value + "</span>" + splitText[i+1];
-		}
-		$(".extracted-text").html( coloredText);
+		coloredText += 	"<span style='background-color:" + randomHex + ";'>" + value + "</span>" + splitText[i+1];
 	}
+	$(".extracted-text").html( coloredText);
 	return randomHex;
 
 }
@@ -228,12 +229,14 @@ function showCtakesData( data ) {
 
 	studyData = data;
 	var value = valueHTML = "";
+
+	$(".extractedDataPanel").html("");
 	for( var key in studyData){
 		if( key.substring(0,7) == "ctakes:"){
 			var color = "";
 			extractedKey = key.replace("ctakes:","");
 
-			if( ! $.inArray(extractedKey, ignoredKeys))
+			if( $.inArray(extractedKey, ignoredKeys) == -1)
 			{
 				if( studyData[key].constructor === Array){
 
@@ -253,14 +256,13 @@ function showCtakesData( data ) {
 				 	color = colorText( value, color);
 		 			valueHTML = "<input type='checkbox' checked='true'> " + value + "<br/>"
 			 	}
-			
 				var extractedData = "<div class='panel panel-default'>" +
 									"<div class='panel-heading' role='tab' id='heading" + extractedKey + "'>"+
 										"<h4 class='panel-title'>" +
 										"<div class='checkbox-inline no_indent'>" +
 									   "<span  style='background-color:" + color + "; height:10px; width:10px; border-radius:10px; float:left; margin-top:1%; margin-right:2%;'></span>" +
 											"<label>" +
-											"<input class='' type='checkbox' value='" + extractedKey + "'>" + 
+											"<input class='key-highlight' type='checkbox' cbecked='true' value='" + extractedKey + "'>" + 
 									   "<a data-toggle='collapse' data-parent='#accordion' href='#collapse" + extractedKey + "' aria-expanded='true' aria-controls='collapse" + extractedKey + "'>" + 
 									   extractedKey + "</a>" +
 									   "</label>" +
@@ -268,6 +270,23 @@ function showCtakesData( data ) {
 										"</h4> </div>  <div id='collapse" + extractedKey + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='headingOne'>"+
 				"<div class='panel-body'>" + valueHTML + "</div></div> </div>";
 				$(".extractedDataPanel").append( extractedData);
+
+				$(".key-highlight").change( function(){
+					var changedKey = $(this).val();
+					if( $(this).is(":checked"))
+					{
+						uncheckedKeys.splice( uncheckedKeys.indexOf( key),1 )
+					}
+					else
+						uncheckedKeys.push( changedKey);
+
+					var studyData = ctakesData;
+					for( var i = 0; i < uncheckedKeys.length; i++)
+					{
+						studyData.splice( studyData.indexOf( uncheckedKeys[1]), 1);
+					}
+					showCtakesData( studyData);
+				});
 			}
 
 		}
