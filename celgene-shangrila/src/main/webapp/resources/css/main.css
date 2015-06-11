@@ -8,12 +8,12 @@
 }
 
 .navbar-inverse{
-    background-color: #2b5797;
+    background-color: #080808;
     margin-bottom: 2%;
 }
 
 .navbar-inverse .navbar-nav > .active > a{
-    background-color: #2b5797;
+    background-color: #080808;
 }
 
 .navbar-inverse {
@@ -32,8 +32,8 @@
 .btn-5 {
     background: #823aa0;
     color: #fff;
-    height: 70px;
-    min-width: 260px;
+    height: 10px;
+    min-width: 160px;
     line-height: 24px;
     font-size: 16px;
     overflow: hidden;
@@ -50,7 +50,7 @@
 .btn-5 span {
     display: inline-block;
     width: 100%;
-    height: 100%;
+    height: 80%;
     -webkit-transition: all 0.3s;
     -webkit-backface-visibility: hidden;
     -moz-transition: all 0.3s;
@@ -106,7 +106,7 @@
 }
 
 .btn-5b:hover:before {
-    left: 55%;
+    left: 65%;
 }
 
 .btn-5 {
@@ -151,23 +151,23 @@ font-stretch: normal;
 font-style: normal;
 font-variant: normal;
 font-weight: bold;
-height: 70px;
+height: 10px;
 letter-spacing: 1px;
 line-height: 24px;
-margin-bottom: 15px;
+margin-bottom: 4px;
 margin-left: 30px;
 margin-right: 30px;
-margin-top: 15px;
-min-width: 260px;
+margin-top: 4px;
+min-width: 160px;
 outline-color: rgb(255, 255, 255);
 outline-style: none;
 outline-width: 0px;
 overflow-x: hidden;
 overflow-y: hidden;
-padding-bottom: 25px;
+padding-bottom: 45px;
 padding-left: 20px;
 padding-right: 80px;
-padding-top: 18px;
+padding-top: 10px;
 position: relative;
 text-align: center;
 text-indent: 0px;
@@ -181,7 +181,7 @@ transition-property: all;
 transition-timing-function: ease;
 vertical-align: middle;
 white-space: nowrap;
-width: 260px;
+width: 160px;
 word-spacing: 0px;
 writing-mode: lr-tb;
 -webkit-writing-mode: horizontal-tb;

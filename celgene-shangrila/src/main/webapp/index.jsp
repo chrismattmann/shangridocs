@@ -27,11 +27,16 @@
 	        <span class="icon-bar"></span>
 	      </button>
 	      <ul class=" navbar-nav">
-	      <li class="navbar-brand"><a href="#">Celgene</a></li>
+	      <li class="navbar-brand"><a href="http://54.153.2.23/red/" target="_blank">Celgene</a></li>
 	      <li class="navbar-brand">></li>
 	      <li class="active navbar-brand"><a href="#">Shangrila</a></li>
-	    </ul>
+	      </ul>
+	     
+	    
 	    </div>
+	     <ul class="nav navbar-nav navbar-right">
+	        	<li> <button class="btn btn-5 btn-5b icon-file"  data-toggle="modal" data-target="#fileModal"><span>New</span></button></li>
+	       </ul>
 		</div>
 	</nav>
 
@@ -66,9 +71,7 @@
 
 	        </div>
 	        <div class="col-md-4">
-	        	<div class="text-center col-md-12">
-	        		<button class="btn btn-5 btn-5b icon-file"  data-toggle="modal" data-target="#fileModal"><span>New</span></button>
-	       		</div>
+	        	
 
 	       		<div class="col-md-12 extractedData">
        				<h4 class="text-center">Extracted Data</h4>
