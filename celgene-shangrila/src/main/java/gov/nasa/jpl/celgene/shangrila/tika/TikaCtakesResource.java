@@ -72,7 +72,7 @@ public class TikaCtakesResource {
     return forwardProxy(is, PROXY_URL_TIKA, contentDisposition);
   }
 
-  @POST
+  @PUT
   @Consumes("multipart/form-data")
   @Produces({ "text/csv", "application/json" })
   @Path("/ctakes/form")
