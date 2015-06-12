@@ -18,15 +18,18 @@
 package gov.nasa.jpl.celgene.shangrila.tika;
 
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.logging.Logger;
 
+import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
-import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -40,11 +43,21 @@ public class TikaCtakesResource {
   public static final Logger LOG = Logger.getLogger(TikaCtakesResource.class
       .getName());
 
-  public static final String PROXY_URL_TIKA = "http://localhost:9201/rmeta";
-
-  public static final String PROXY_URL_CTAKES = "http://localhost:9202/rmeta";
-  
   public static final long DEFAULT_TIMEOUT = 1000000L;
+
+  private URL tikaCtakesURL;
+
+  private URL tikaURL;
+
+  private static final String TIKA_URL_PROPERTY = "gov.nasa.jpl.celgene.shangrila.tika.url";
+
+  private static final String CTAKES_URL_PROPERTY = "gov.nasa.jpl.celgene.shangrila.tika.ctakes.url";
+
+  public TikaCtakesResource(@Context ServletContext sc)
+      throws MalformedURLException {
+    tikaURL = new URL(sc.getInitParameter(TIKA_URL_PROPERTY));
+    tikaCtakesURL = new URL(sc.getInitParameter(CTAKES_URL_PROPERTY));
+  }
 
   @GET
   @Path("/status")
@@ -52,12 +65,11 @@ public class TikaCtakesResource {
   public Response status() {
     return Response
         .ok("<h1>This is Tika cTAKES Resource: running correctly</h1><h2>Tika Proxy: /rmeta</h2><p>"
-            + PROXY_URL_TIKA
+            + tikaURL.toString()
             + "</p><h2>cTAKES Proxy: /ctakes</h2><p>"
-            + PROXY_URL_CTAKES
+            + tikaCtakesURL.toString()
             + "</p> <h2>Tika Form Proxy: /rmeta/form</h3><p>"
-            + PROXY_URL_TIKA
-            + "</p>").build();
+            + tikaURL.toString() + "</p>").build();
   }
 
   @PUT
@@ -66,7 +78,7 @@ public class TikaCtakesResource {
   @Path("/rmeta/form")
   public Response forwardTikaMultiPart(Attachment att,
       @HeaderParam("Content-Disposition") String contentDisposition) {
-    return forwardProxy(att.getObject(InputStream.class), PROXY_URL_TIKA,
+    return forwardProxy(att.getObject(InputStream.class), tikaURL.toString(),
         contentDisposition);
   }
 
@@ -75,14 +87,14 @@ public class TikaCtakesResource {
   @Produces("application/json")
   public Response forwardTika(InputStream is,
       @HeaderParam("Content-Disposition") String contentDisposition) {
-    return forwardProxy(is, PROXY_URL_TIKA, contentDisposition);
+    return forwardProxy(is, tikaURL.toString(), contentDisposition);
   }
 
   @PUT
   @Path("/ctakes")
   public Response forwardCtakes(InputStream is,
       @HeaderParam("Content-Disposition") String contentDisposition) {
-    return forwardProxy(is, PROXY_URL_CTAKES, contentDisposition);
+    return forwardProxy(is, tikaCtakesURL.toString(), contentDisposition);
   }
 
   private Response forwardProxy(InputStream is, String url,
