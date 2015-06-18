@@ -108,12 +108,12 @@ public class PubmedResource {
     JSONObject resultObj = (JSONObject) jObj.get("result");
     JSONArray idArr = (JSONArray) resultObj.get("uids");
     StringBuilder responseBldr = new StringBuilder();
-    responseBldr.append("{");
+    responseBldr.append("[");
     for (int i = 0; i < idArr.size(); i++) {
       String id = (String) idArr.get(i);
       JSONObject idObj = (JSONObject) resultObj.get(id);
       String title = (String) idObj.get("title");
-      responseBldr.append("\"id\" : \"");
+      responseBldr.append("{\"id\" : \"");
       responseBldr.append(id);
       responseBldr.append("\",");
       responseBldr.append("\"url\" : \"");
@@ -127,6 +127,8 @@ public class PubmedResource {
         responseBldr.append(",");
       }
     }
+    
+    responseBldr.append("]");
 
     return Response.ok(responseBldr.toString(), MediaType.APPLICATION_JSON)
         .build();
