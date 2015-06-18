@@ -17,6 +17,8 @@
 
 package gov.nasa.jpl.celgene.shangrila.pubmed;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Logger;
@@ -127,12 +129,23 @@ public class PubmedResource {
         responseBldr.append(",");
       }
     }
-    
+
     responseBldr.append("]");
 
     return Response.ok(responseBldr.toString(), MediaType.APPLICATION_JSON)
         .build();
 
+  }
+
+  @PUT
+  @Path("/query")
+  @Consumes("text/plain")
+  @Produces("application/json")
+  public Response query(InputStream is) throws IOException {
+    Response r = getPubIds(is);
+    String resp = r.readEntity(String.class);
+    ByteArrayInputStream idStream = new ByteArrayInputStream(resp.getBytes());
+    return getPubMedURLs(idStream);
   }
 
   @GET
