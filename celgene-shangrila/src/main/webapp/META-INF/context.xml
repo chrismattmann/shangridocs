@@ -27,6 +27,6 @@ the License.
         value="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"/>
 
     <Parameter name="gov.nasa.jpl.celgene.shangrila.pubmed.ids.baseUrl"
-        value="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&amp;retmode=json&amp;rettype=abstract&amp;id="/>
+        value="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"/>
        
 </Context>
