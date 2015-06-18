@@ -98,7 +98,7 @@ public class PubmedResource {
     LOG.info("searching " + pubMedSearchUrlStr + " for ids " + ids);
     WebClient client = WebClient.create(pubMedSearchUrlStr)
         .query("db", "pubmed").query("retmode", "json")
-        .query("rettype", "abstract").query("ids", ids)
+        .query("rettype", "abstract").query("id", ids)
         .accept("application/json");
     Response r = client.get();
     String responseJson = r.readEntity(String.class);
