@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -35,8 +36,8 @@ public class PubmedResource {
       .getName());
 
   public PubmedResource(@Context ServletContext sc) {
-    pubMedBaseUrlStr = sc.getInitParameter(PUBMED_BASE_URL);
-    pubMedIdBaseUrlStr = sc.getInitParameter(PUBMED_ID_BASE_URL);
+    pubMedBaseUrlStr = StringEscapeUtils.unescapeXml(sc.getInitParameter(PUBMED_BASE_URL));
+    pubMedIdBaseUrlStr = StringEscapeUtils.unescapeXml(sc.getInitParameter(PUBMED_ID_BASE_URL));
   }
 
   @PUT
