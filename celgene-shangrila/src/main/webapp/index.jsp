@@ -64,7 +64,7 @@
 		        	<h1 class="text-center introduction">
 		        		Shangri-La(Docs)
 		        	</h1>
-		        	<p class="introduction">
+		        	<p class="introduction extracted-text">
 		        		Shangri-docs is a web application developed using AngularJS framework for automatically annotating a document based on medical and clinical domain.
 		        	
 		        		This is an advanced text reader tool that can take in data and extract important information out of it.

@@ -25,6 +25,9 @@ var ctakesData = studyText = coloredText = textToColor = "";
 var uncheckedKeys = [];
 //stores keys that currently need to be ignored while showing annotations.
 var ignoredKeys = ["schema", "RomanNumeralAnnotation"];
+//stores search preferences object from config file
+var searchPreferences = "";
+
 
 $(document).ready( function(){
 
@@ -102,14 +105,54 @@ $(document).ready( function(){
 			$(".popover").offset({ top: e.pageY + 20, left: e.pageX-90});
 			$(".popover-content").html( "<div class='btn-group'>" +
 											"<input type='button' value='Search' class='searchSelected btn btn-primary'>" +
-											"<input type='button' value='Copy' class='btn btn-primary'>" +
 										"</div>"
 									  );
 
 			//sending Selected text to search component on the right.
 			$(".searchSelected").click( function(){
-				$(".extractedSearchPanel").html( "Searching for - " + "<label class='label-warning'>'" + window.getSelection() + "</label>");
-			})
+				$(".extractedSearchPanel").html( "Searching for - " + "<label class='label-warning'>" + selectedText + "</label>");
+			
+				/*$(".extractedSearchPanel").append(
+					"<h4>Pubmed</h4>" +
+					"<ul>" +
+						"<li><a href='http://google.com'>url1.url.com</a></li>" + 
+						"<li><a href='http://google.com'>url2.url.com</a></li>" + 
+						"<li><a href='http://google.com'>url3.url.com</a></li>" + 
+						"<li><a href='http://google.com'>url4.url.com</a></li>" + 
+					"</ul>" +
+					"<h4>Biomed</h4>" +
+					"<ul>" +
+						"<li><a href='http://google.com'>url5.url.com</a></li>" + 
+						"<li><a href='http://google.com'>url6.url.com</a></li>" + 
+					"</ul>" ); 
+
+			
+			})*/
+				if ( searchPreferences != "") {
+					for (var engine in searchPreferences) {
+						if( searchPreferences[engine]["set"]){
+							//$(".extractedSearchPanel").append( $(".loading-animation-code").html() );
+							$.ajax({
+								headers : {
+									"Content-Type" : "text/plain"
+								},
+								url: searchPreferences[engine]["restURL"], 
+								method:"put",
+								data: selectedText.toString(),
+								success:function( responseObjects){
+									//$(".loading-img").remove();
+									$(".extractedSearchPanel").append("<h4>" + engine + " Results</h4><ul>");
+									for (var i=0; i< responseObjects.length; i++) {
+									
+										$(".extractedSearchPanel").append("<li><a href=\"" + responseObjects[i]["url"] + "\" target='_blank'>" + responseObjects[i]["title"] + "</a></li><hr/>");
+									}
+									$(".extractedSearchPanel").append("</ul>");
+								}
+							})
+						}
+					}
+				} 
+			});
 		}
 		else
 			$(".extracted-text").popover("hide");
@@ -148,7 +191,17 @@ $(document).ready( function(){
 
 		showCtakesData( studyData, uncheckedKeys);
 	});
-		
+
+	//Getting search preferences from the config
+	
+	$.ajax({
+		url:"search-config.json", 
+		headers:{"Content-Type":"application/json"},
+		method:"GET",
+		success:function( data){
+			searchPreferences = data.services;
+		}
+	});
 });
 
 //add highlighting color to a value and update text on the left
