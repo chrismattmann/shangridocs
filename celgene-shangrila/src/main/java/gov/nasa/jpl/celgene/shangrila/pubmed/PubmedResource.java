@@ -46,12 +46,15 @@ public class PubmedResource {
   public Response getPubIds(InputStream is) throws IOException {
     String searchText = IOUtils.toString(is, "UTF-8");
     String pubMedSearchUrlStr = pubMedBaseUrlStr + searchText;
+    LOG.info("searching "+pubMedSearchUrlStr);
     WebClient client = WebClient.create(pubMedSearchUrlStr).accept(
         "application/json");
     Response r = client.get();
-    Object jsonObj = JSONValue.parse(r.readEntity(String.class));
+    String responseJson = r.readEntity(String.class);
+    LOG.info("Call to "+pubMedSearchUrlStr+" returned: "+responseJson);
+    Object jsonObj = JSONValue.parse(responseJson);
     JSONObject jObj = (JSONObject) jsonObj;
-    JSONObject eSearchObj = (JSONObject) jObj.get("esearchresult");
+    JSONObject eSearchObj = (JSONObject) jObj.get("esearchresult"); 
     JSONArray idArr = (JSONArray) eSearchObj.get("idlist");
     StringBuilder responseBldr = new StringBuilder();
     for (int i = 0; i < idArr.size(); i++) {
