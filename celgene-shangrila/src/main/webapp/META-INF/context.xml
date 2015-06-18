@@ -24,7 +24,7 @@ the License.
         value="http://localhost:9203/rmeta"/>
         
     <Parameter name="gov.nasa.jpl.celgene.shangrila.pubmed.baseUrl"
-        value="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&amp;retmode=json&amp;term="/>
+        value="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"/>
 
     <Parameter name="gov.nasa.jpl.celgene.shangrila.pubmed.ids.baseUrl"
         value="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&amp;retmode=json&amp;rettype=abstract&amp;id="/>
