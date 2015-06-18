@@ -15,7 +15,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -36,8 +35,8 @@ public class PubmedResource {
       .getName());
 
   public PubmedResource(@Context ServletContext sc) {
-    pubMedBaseUrlStr = StringEscapeUtils.unescapeXml(sc.getInitParameter(PUBMED_BASE_URL));
-    pubMedIdBaseUrlStr = StringEscapeUtils.unescapeXml(sc.getInitParameter(PUBMED_ID_BASE_URL));
+    pubMedBaseUrlStr = sc.getInitParameter(PUBMED_BASE_URL);
+    pubMedIdBaseUrlStr = sc.getInitParameter(PUBMED_ID_BASE_URL);
   }
 
   @PUT
@@ -46,9 +45,13 @@ public class PubmedResource {
   @Produces("text/plain")
   public Response getPubIds(InputStream is) throws IOException {
     String searchText = IOUtils.toString(is, "UTF-8");
-    String pubMedSearchUrlStr = pubMedBaseUrlStr + searchText;
-    LOG.info("searching "+pubMedSearchUrlStr);
-    WebClient client = WebClient.create(pubMedSearchUrlStr).accept(
+    String pubMedSearchUrlStr = pubMedBaseUrlStr;
+    LOG.info("searching "+pubMedSearchUrlStr+" for terms "+searchText);
+    WebClient client = WebClient.create(pubMedSearchUrlStr)
+        .query("db", "pubmed")
+        .query("retmode", "json")
+        .query("term", searchText)
+        .accept(
         "application/json");
     Response r = client.get();
     String responseJson = r.readEntity(String.class);
