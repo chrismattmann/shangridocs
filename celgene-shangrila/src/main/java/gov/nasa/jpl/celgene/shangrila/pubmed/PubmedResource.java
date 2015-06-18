@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -38,6 +39,7 @@ public class PubmedResource {
     pubMedIdBaseUrlStr = sc.getInitParameter(PUBMED_ID_BASE_URL);
   }
 
+  @PUT
   @Path("/text")
   @Consumes("text/plain")
   @Produces("text/plain")
