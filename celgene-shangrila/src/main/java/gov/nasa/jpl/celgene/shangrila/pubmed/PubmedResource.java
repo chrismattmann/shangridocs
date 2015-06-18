@@ -1,3 +1,20 @@
+/**
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package gov.nasa.jpl.celgene.shangrila.pubmed;
 
 import java.io.IOException;
@@ -27,6 +44,8 @@ public class PubmedResource {
 
   private static final String PUBMED_ID_BASE_URL = "gov.nasa.jpl.celgene.shangrila.pubmed.ids.baseUrl";
 
+  private static final String PUBMED_BASE = "http://www.ncbi.nlm.nih.gov/pubmed/";
+
   private String pubMedBaseUrlStr;
 
   private String pubMedIdBaseUrlStr;
@@ -46,19 +65,16 @@ public class PubmedResource {
   public Response getPubIds(InputStream is) throws IOException {
     String searchText = IOUtils.toString(is, "UTF-8");
     String pubMedSearchUrlStr = pubMedBaseUrlStr;
-    LOG.info("searching "+pubMedSearchUrlStr+" for terms "+searchText);
+    LOG.info("searching " + pubMedSearchUrlStr + " for terms " + searchText);
     WebClient client = WebClient.create(pubMedSearchUrlStr)
-        .query("db", "pubmed")
-        .query("retmode", "json")
-        .query("term", searchText)
-        .accept(
-        "application/json");
+        .query("db", "pubmed").query("retmode", "json")
+        .query("term", searchText).accept("application/json");
     Response r = client.get();
     String responseJson = r.readEntity(String.class);
-    LOG.info("Call to "+pubMedSearchUrlStr+" returned: "+responseJson);
+    LOG.info("Call to " + pubMedSearchUrlStr + " returned: " + responseJson);
     Object jsonObj = JSONValue.parse(responseJson);
     JSONObject jObj = (JSONObject) jsonObj;
-    JSONObject eSearchObj = (JSONObject) jObj.get("esearchresult"); 
+    JSONObject eSearchObj = (JSONObject) jObj.get("esearchresult");
     JSONArray idArr = (JSONArray) eSearchObj.get("idlist");
     StringBuilder responseBldr = new StringBuilder();
     for (int i = 0; i < idArr.size(); i++) {
@@ -69,6 +85,51 @@ public class PubmedResource {
     }
 
     return Response.ok(responseBldr.toString(), MediaType.TEXT_PLAIN).build();
+
+  }
+
+  @PUT
+  @Path("/ids")
+  @Consumes("text/plain")
+  @Produces("application/json")
+  public Response getPubMedURLs(InputStream is) throws IOException {
+    String ids = IOUtils.toString(is, "UTF-8");
+    String pubMedSearchUrlStr = pubMedIdBaseUrlStr;
+    LOG.info("searching " + pubMedSearchUrlStr + " for ids " + ids);
+    WebClient client = WebClient.create(pubMedSearchUrlStr)
+        .query("db", "pubmed").query("retmode", "json")
+        .query("rettype", "abstract").query("ids", ids)
+        .accept("application/json");
+    Response r = client.get();
+    String responseJson = r.readEntity(String.class);
+    LOG.info("Call to " + pubMedSearchUrlStr + " returned: " + responseJson);
+    Object jsonObj = JSONValue.parse(responseJson);
+    JSONObject jObj = (JSONObject) jsonObj;
+    JSONObject resultObj = (JSONObject) jObj.get("result");
+    JSONArray idArr = (JSONArray) resultObj.get("uids");
+    StringBuilder responseBldr = new StringBuilder();
+    responseBldr.append("{");
+    for (int i = 0; i < idArr.size(); i++) {
+      String id = (String) idArr.get(i);
+      JSONObject idObj = (JSONObject) resultObj.get(id);
+      String title = (String) idObj.get("title");
+      responseBldr.append("\"id\" : \"");
+      responseBldr.append(id);
+      responseBldr.append("\",");
+      responseBldr.append("\"url\" : \"");
+      responseBldr.append(PUBMED_BASE);
+      responseBldr.append(idArr.get(i));
+      responseBldr.append("\", \"title\" : \"");
+      responseBldr.append(title);
+      responseBldr.append("\"");
+      responseBldr.append("}");
+      if (i + 1 < idArr.size()) {
+        responseBldr.append(",");
+      }
+    }
+
+    return Response.ok(responseBldr.toString(), MediaType.APPLICATION_JSON)
+        .build();
 
   }
 
