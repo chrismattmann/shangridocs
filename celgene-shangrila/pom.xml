@@ -42,7 +42,17 @@
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-rs-client</artifactId>
       <version>3.0.3</version>
-    </dependency>    
+    </dependency>  
+	<dependency>
+	    <groupId>commons-io</groupId>
+	    <artifactId>commons-io</artifactId>
+	    <version>2.4</version>
+	</dependency>
+	<dependency>
+	    <groupId>com.googlecode.json-simple</groupId>
+	    <artifactId>json-simple</artifactId>
+	    <version>1.1.1</version>
+	</dependency>	      
 	<dependency>
 	    <groupId>javax.servlet</groupId>
 	    <artifactId>javax.servlet-api</artifactId>
