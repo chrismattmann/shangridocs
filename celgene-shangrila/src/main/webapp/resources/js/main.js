@@ -248,6 +248,7 @@ function showCtakesData( data, uncheckedKeys ) {
 		if( key.substring(0,7) == "ctakes:"){
 			var color = "";
 			extractedKey = key.replace("ctakes:","");
+			var allChildren = [];
 
 			if( $.inArray(extractedKey, ignoredKeys) == -1)
 			{
@@ -268,10 +269,19 @@ function showCtakesData( data, uncheckedKeys ) {
 				 		{
 				 			valueArray = studyData[key][i].split(":");
 				 			value = valueArray[0];
+						    allChildren.push(value);
+						}
+						
+						allChildren = $.unique(allChildren);
+						for( var i=0; i< allChildren.length; i++)
+				 		{
 				 			if( checked)
-				 				color = colorText( value, color);
-				 			valueHTML += "<input type='checkbox' " + checkedAttribute + "> " + value + "<br/>"
-				 		}
+				 				color = colorText( allChildren[i], color);
+				 			valueHTML += "<input type='checkbox' " + checkedAttribute + "> " + allChildren[i] + "<br/>"
+						}
+
+				 			
+				 		
 				}
 			 	else
 			 	{
