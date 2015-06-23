@@ -297,10 +297,10 @@ function showCtakesData( data, uncheckedKeys ) {
 									"<div class='panel-heading' role='tab' id='heading" + extractedKey + "'>"+
 										"<h4 class='panel-title'>" +
 										"<div class='checkbox-inline no_indent'>" +
-									   "<span  style='background-color:" + color + "; height:10px; width:10px; border-radius:10px; float:left; margin-top:1%; margin-right:2%;'></span>" +
+									   "<span  style='background-color:" + color + "; height:10px; width:10px; border-radius:10px; float:left; position: absolute; margin-top:3%;'></span>" +
 											"<label>" +
 											"<input class='key-highlight' type='checkbox'  " + checkedAttribute + " value='" + extractedKey + "'>" + 
-									   "<a data-toggle='collapse' data-parent='#accordion' href='#collapse" + extractedKey + "' aria-expanded='true' aria-controls='collapse" + extractedKey + "'>" + 
+									   "<a data-toggle='collapse' data-parent='#accordion' style='margin-left:20px;' href='#collapse" + extractedKey + "' aria-expanded='true' aria-controls='collapse" + extractedKey + "'>" + 
 									   extractedKey + "</a>" +
 									   "</label>" +
 										"</div>" +
