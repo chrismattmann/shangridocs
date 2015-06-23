@@ -268,8 +268,9 @@ function showCtakesData( data, uncheckedKeys ) {
 				 		for( var i=0; i< studyData[key].length; i++)
 				 		{
 				 			valueArray = studyData[key][i].split(":");
-				 			value = valueArray[0];
+				 			value = valueArray[0].toLowerCase();
 						    allChildren.push(value);
+						    console.log(allChildren);
 						}
 						
 						allChildren = $.unique(allChildren);
