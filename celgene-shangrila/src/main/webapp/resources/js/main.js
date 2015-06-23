@@ -268,16 +268,20 @@ function showCtakesData( data, uncheckedKeys ) {
 				 		for( var i=0; i< studyData[key].length; i++)
 				 		{
 				 			valueArray = studyData[key][i].split(":");
-				 			value = valueArray[0].toLowerCase();
-						    allChildren.push(value);
-						    console.log(allChildren);
+				 			value = valueArray[0];
+
+				 			// color the text on the left
+				 			if( checked)
+				 				color = colorText( value, color);
+
+				 			// for extracted data on the right
+						    allChildren.push(value.toLowerCase() );
 						}
 						
+						//remove duplicate data in extracted data
 						allChildren = $.unique(allChildren);
 						for( var i=0; i< allChildren.length; i++)
 				 		{
-				 			if( checked)
-				 				color = colorText( allChildren[i], color);
 				 			valueHTML += "<input type='checkbox' " + checkedAttribute + "> " + allChildren[i] + "<br/>"
 						}
 
