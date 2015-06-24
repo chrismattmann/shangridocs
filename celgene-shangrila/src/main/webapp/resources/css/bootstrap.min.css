@@ -7,3 +7,10 @@
  .navbar-brand{
 	padding:20px 15px;
  }
+
+ @media (min-width: 768px)
+ {
+	.navbar-nav>li>a {
+		padding:0;
+	}
+}

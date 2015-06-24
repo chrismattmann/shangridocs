@@ -1,8 +1,12 @@
 {
   "services": {
 		"PubMed" : {
-		    "restURL" : "http://54.153.2.23/celgene-shangrila/services/pubmed/query",
+		    "restURL" : "services/pubmed/query",
 		    "set":true
+		},
+		"StudySearch" : {
+			"restURL" : "../../solr/studies/select?&wt=json&q=",
+			"set":true
 		}
 	}
 }

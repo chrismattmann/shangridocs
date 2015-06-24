@@ -31,6 +31,21 @@ var searchPreferences = "";
 
 $(document).ready( function(){
 
+	var $w = $(window).scroll(function(){
+			    if ( $w.scrollTop() > 100)
+				{
+					$(".right-pane").animate({
+						top:10
+					});
+				}
+				else
+				{
+					$(".right-pane").animate({
+						top:70
+					});
+				}
+			});
+
 	//instantiating Dropzone plugin to upload files
 	Dropzone.options.dropFileArea = {
 		method:"put",
@@ -66,7 +81,7 @@ $(document).ready( function(){
 					headers: { 
 				        'Content-Type': 'text/plain' 
 				    },
-					url:"http://54.153.2.23/celgene-shangrila/services/tika/ctakes", 
+					url:"services/tika/ctakes", 
 					method:"put",
 					data: responseText[0]["X-TIKA:content"],
 					success:function( result){
@@ -132,23 +147,51 @@ $(document).ready( function(){
 					for (var engine in searchPreferences) {
 						if( searchPreferences[engine]["set"]){
 							//$(".extractedSearchPanel").append( $(".loading-animation-code").html() );
-							$.ajax({
-								headers : {
-									"Content-Type" : "text/plain"
-								},
-								url: searchPreferences[engine]["restURL"], 
-								method:"put",
-								data: selectedText.toString(),
-								success:function( responseObjects){
-									//$(".loading-img").remove();
-									$(".extractedSearchPanel").append("<h4>" + engine + " Results</h4><ul>");
-									for (var i=0; i< responseObjects.length; i++) {
-									
-										$(".extractedSearchPanel").append("<li><a href=\"" + responseObjects[i]["url"] + "\" target='_blank'>" + responseObjects[i]["title"] + "</a></li><hr/>");
+
+							if( engine == "PubMed")
+							{
+								var currentEngine1 = engine;
+								$.ajax({
+									headers : {
+										"Content-Type" : "text/plain"
+									},
+									url: searchPreferences[engine]["restURL"], 
+									method:"put",
+									data: selectedText.toString(),
+									success:function( responseObjects){
+										//$(".loading-img").remove();
+										$(".extractedSearchPanel").append("<h4>" + currentEngine1 + " Results</h4><ul>");
+										for (var i=0; i< responseObjects.length; i++) {
+										
+											$(".extractedSearchPanel").append("<li><a href=\"" + responseObjects[i]["url"] + "\" target='_blank'>" + responseObjects[i]["title"] + "</a></li><hr/>");
+										}
+										$(".extractedSearchPanel").append("</ul>");
 									}
-									$(".extractedSearchPanel").append("</ul>");
-								}
-							})
+								})
+							}
+							else if( engine == "StudySearch")
+							{
+								var currentEngine2 = engine;
+								$.ajax({
+									url: searchPreferences[engine]["restURL"] + selectedText.toString(), 
+									method:"get",
+									data: {},
+									success:function( responseObjects){
+										//$(".loading-img").remove();
+										responseObjects = $.parseJSON( responseObjects);
+										responseObjects = responseObjects["response"]["docs"];
+										$(".extractedSearchPanel").append("<h4>" + currentEngine2 + " Results</h4><ul>");
+										for (var i=0; i< responseObjects.length; i++) {
+										
+											$(".extractedSearchPanel").append("<li><a href=\"" + "../facetview/studyview/index.html?id=" + responseObjects[i]["id"] + "\" target='_blank'>" + responseObjects[i]["Combined_Study_Title"] + "</a></li><hr/>");
+										}
+										if( responseObjects.length == 0)
+											$(".extractedSearchPanel").append("No results");
+
+										$(".extractedSearchPanel").append("</ul>");
+									}
+								})
+							}
 						}
 					}
 				} 

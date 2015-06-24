@@ -113,7 +113,7 @@
 					</div>
 					<div class="modal-body">
 						<div class="text-center">
-			        		<form action="http://54.153.2.23/celgene-shangrila/services/tika/rmeta/form" class="dropzone file-intake-area col-md-12 well " id="dropFileArea">
+			        		<form action="services/tika/rmeta/form" class="dropzone file-intake-area col-md-12 well " id="dropFileArea">
 			        			<img src="resources/img/upload-3.png" class="upload-img" width="128" height="128"/><br/>
 			    				<span>Maximum allowed filesize: 25MB</span><br/>
 			    				<span>Allowed file formats: PDF, Txt, Doc, JPG</span><br/>
