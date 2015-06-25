@@ -31,21 +31,6 @@ var searchPreferences = "";
 
 $(document).ready( function(){
 
-	var $w = $(window).scroll(function(){
-			    if ( $w.scrollTop() > 100)
-				{
-					$(".right-pane").animate({
-						top:10
-					});
-				}
-				else
-				{
-					$(".right-pane").animate({
-						top:70
-					});
-				}
-			});
-
 	//instantiating Dropzone plugin to upload files
 	Dropzone.options.dropFileArea = {
 		method:"put",
@@ -86,9 +71,11 @@ $(document).ready( function(){
 					data: responseText[0]["X-TIKA:content"],
 					success:function( result){
 						$(".all-selection-option").removeClass("hide");
-						$(".loading-img").remove();
+						//$(".loading-img").remove();
 						ctakesData = result[0];
 						showCtakesData( ctakesData, []);
+						//all should be unselected for the first time.
+						$(".deselect-all-ctakes").click();
 					}
 				})
 		    });
@@ -127,22 +114,6 @@ $(document).ready( function(){
 			$(".searchSelected").click( function(){
 				$(".extractedSearchPanel").html( "Searching for - " + "<label class='label-warning'>" + selectedText + "</label>");
 			
-				/*$(".extractedSearchPanel").append(
-					"<h4>Pubmed</h4>" +
-					"<ul>" +
-						"<li><a href='http://google.com'>url1.url.com</a></li>" + 
-						"<li><a href='http://google.com'>url2.url.com</a></li>" + 
-						"<li><a href='http://google.com'>url3.url.com</a></li>" + 
-						"<li><a href='http://google.com'>url4.url.com</a></li>" + 
-					"</ul>" +
-					"<h4>Biomed</h4>" +
-					"<ul>" +
-						"<li><a href='http://google.com'>url5.url.com</a></li>" + 
-						"<li><a href='http://google.com'>url6.url.com</a></li>" + 
-					"</ul>" ); 
-
-			
-			})*/
 				if ( searchPreferences != "") {
 					for (var engine in searchPreferences) {
 						if( searchPreferences[engine]["set"]){
@@ -213,7 +184,11 @@ $(document).ready( function(){
 		else
 			uncheckedKeys.push( changedKey);
 
-		showCtakesData( ctakesData, uncheckedKeys);
+		//after remaking if this panel should stay open if it was currently open
+		if( $("#collapse" + changedKey).hasClass("in"))
+			showCtakesData( ctakesData, uncheckedKeys, changedKey);
+		else
+			showCtakesData( ctakesData, uncheckedKeys);
 	});
 
 	//Handling event when user wants to select/deselect all annotations
@@ -278,14 +253,14 @@ function colorText( value, color){
 }
 
 //create the annotation list from ctakes json.
-function showCtakesData( data, uncheckedKeys ) {
+function showCtakesData( data, uncheckedKeys, changedKey ) {
 
 	studyData = data;
-	var value = valueHTML = "";
+	var value = valueHTML = ctakesHTML = "";
 	//Every time function is called, swatch colors get reinstantiated.
 	swatchCounter = 0; textToColor = "";
-	//empty the ctakes list on the right to refill it again.
-	$(".extractedDataPanel").html("");
+	//to remain in context to which key has been checked/unchecked
+	changedKey = changedKey || null;
 
 	for( var key in studyData){
 		if( key.substring(0,7) == "ctakes:"){
@@ -341,6 +316,10 @@ function showCtakesData( data, uncheckedKeys ) {
 		 			valueHTML = "<input type='checkbox' " + checkedAttribute + "> " + value + "<br/>"
 			 	}
 
+				var openPanel = "";
+				if( changedKey == extractedKey)
+					openPanel = " in "
+
 				var extractedData = "<div class='panel panel-default'>" +
 									"<div class='panel-heading' role='tab' id='heading" + extractedKey + "'>"+
 										"<h4 class='panel-title'>" +
@@ -352,15 +331,16 @@ function showCtakesData( data, uncheckedKeys ) {
 									   extractedKey + "</a>" +
 									   "</label>" +
 										"</div>" +
-										"</h4> </div>  <div id='collapse" + extractedKey + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='headingOne'>"+
+										"</h4> </div>  <div id='collapse" + extractedKey + "' class='panel-collapse collapse" + openPanel + "' role='tabpanel' aria-labelledby='headingOne'>"+
 				"<div class='panel-body'>" + valueHTML + "</div></div> </div>";
-				$(".extractedDataPanel").append( extractedData);
+				ctakesHTML += extractedData;
 
 			}
 
 		}
 
 	}		
+	$(".extractedDataPanel").html( ctakesHTML);
 	//if at the end, textToColor doesnt get filled up, we fill it with the initial text.
 	if( textToColor == "")
 	{
