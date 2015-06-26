@@ -28,5 +28,8 @@ the License.
 
     <Parameter name="gov.nasa.jpl.celgene.shangrila.pubmed.ids.baseUrl"
         value="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"/>
-       
+
+    <Parameter name="gov.nasa.jpl.celgene.shangrila.wikipedia.baseUrl"
+        value="https://en.wikipedia.org/w/api.php"/>   
+            
 </Context>
