@@ -91,7 +91,7 @@ public class WikipediaResource {
 
     }
     jsonStrBuf.append("}");
-    return Response.ok(jsonStrBuf, MediaType.APPLICATION_JSON).build();
+    return Response.ok(jsonStrBuf.toString(), MediaType.APPLICATION_JSON).build();
 
   }
 
