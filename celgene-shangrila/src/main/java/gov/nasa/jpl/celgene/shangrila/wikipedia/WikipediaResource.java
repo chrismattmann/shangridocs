@@ -81,7 +81,7 @@ public class WikipediaResource {
       jsonStrBuf.append(title);
       jsonStrBuf.append("\" : { \"link\" : \"");
       jsonStrBuf.append(link);
-      jsonStrBuf.append("\", desc: \"");
+      jsonStrBuf.append("\", \"desc\" : \"");
       jsonStrBuf.append(desc);
       if (i < wikiTitles.size() - 1) {
         jsonStrBuf.append("\"},");
