@@ -45,7 +45,7 @@
 						<span class="icon-bar"></span>
 			     	</button>
 					<ul class=" navbar-nav">
-					<li class="navbar-brand"><a href="http://54.153.2.23/red/" target="_blank">Celgene</a></li>
+					<li class="navbar-brand"><a href="/red/" target="_blank">Celgene</a></li>
 					<li class="navbar-brand">></li>
 					<li class="active navbar-brand"><a href="#">Shangrila</a></li>
 					</ul>
