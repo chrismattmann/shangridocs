@@ -80,15 +80,12 @@
 			        	<div role="tabpanel" class="tabs hide">
 
 		  					<!-- Nav tabs -->
-							<ul class="nav nav-tabs" role="tablist">
-								<li role="presentation" class="active"><a href="#file1" aria-controls="home" role="tab" data-toggle="tab">File 1</a></li>
+							<ul class="nav nav-tabs fileList" role="tablist">
 							</ul>
 
 							<!-- Tab panes -->
-							<div class="tab-content">
-								<div role="tabpanel" class="tab-pane active extracted-text" id="file1"  data-container="body" data-toggle="popover" data-placement="bottom" data-content="test">
-									
-								</div>
+							<div class="tab-content filesContent">
+								
 							</div>
 						</div>
 			        </div>
@@ -158,7 +155,7 @@
 		    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 			<script src="resources/js/bootstrap.min.js"></script>
 			<script src="resources/js/dropzone.js"></script>
-			<script src="resources/js/main.js"></script>
+			<script src="resources/js/nipurn.js"></script>
 
 		</body>
 

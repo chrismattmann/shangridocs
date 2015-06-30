@@ -27,6 +27,10 @@ var uncheckedKeys = [];
 var ignoredKeys = ["schema", "RomanNumeralAnnotation"];
 //stores search preferences object from config file
 var searchPreferences = "";
+//filesArray that would store data for all uploaded files
+var filesArray = [];
+//variable that contains index of open file
+var openFileIndex = 0;
 
 
 $(document).ready( function(){
@@ -39,6 +43,17 @@ $(document).ready( function(){
 		init: function() {
 			//handling success of file upload
 	    	this.on("success", function(file, responseText) {
+	    		//get current files counter
+	    		openFileIndex = filesArray.length ? filesArray.length : 0;
+	    		//add a new object to existing array of files.
+	    		filesArray.push( {});
+	    		$(".fileList").append( getFileTabHeaderHTML() );
+	    		$(".filesContent").append( getFileTabContentHTML() );
+	    		var fileName = "File " + openFileIndex;
+	    		if( responseText[0]["title"] != undefined)
+	    			fileName = responseText[0]["title"];
+	    			
+	    		$(".fileTitle" + openFileIndex).html( fileName);
 	    		//remove the file from the dropped zone before showing the received content
 		      	this.removeAllFiles();
 		      	//hide the upload modal
@@ -56,11 +71,12 @@ $(document).ready( function(){
 				fileContent = fileContent.slice( init);
 				//saving it globally for future use.
 				studyText = fileContent;
+				filesArray[ openFileIndex]["studyText"] = studyText;
 				//ui changes
 				$(".introduction").hide();
 				$(".tabs").removeClass("hide");
-				$(".extracted-text").addClass("pdf-view");
-				$(".extracted-text").html( "<pre>" + fileContent + "</pre>");
+				$("#file" + openFileIndex + ".extracted-text").addClass("pdf-view");
+				$("#file" + openFileIndex + ".extracted-text").html( "<pre>" + fileContent + "</pre>");
 
 				$(".extractedDataPanel").html( $(".loading-animation-code").html() );
 
@@ -75,6 +91,7 @@ $(document).ready( function(){
 						$(".all-selection-option").removeClass("hide");
 						//$(".loading-img").remove();
 						ctakesData = result[0];
+						filesArray[ openFileIndex]["ctakesData"] = ctakesData;
 						showCtakesData( ctakesData, []);
 						//all should be unselected for the first time.
 						$(".deselect-all-ctakes").click();
@@ -365,9 +382,26 @@ function showCtakesData( data, uncheckedKeys, changedKey ) {
 
 	}		
 	$(".extractedDataPanel").html( ctakesHTML);
+	filesArray[ openFileIndex]["ctakesHTML"] = ctakesHTML;
 	//if at the end, textToColor doesnt get filled up, we fill it with the initial text.
 	if( textToColor == "")
 	{
 		$(".extracted-text").html( "<pre>" + studyText + "</pre>");
 	}
+}
+
+function getFileTabHeaderHTML(){
+	var activeClass = "";
+	if( openFileIndex == 0)
+		activeClass = " active ";
+
+	return "<li role='presentation' ><a href='#file" + openFileIndex + "' class='fileTitle" + openFileIndex + activeClass + "' role='tab' data-toggle='tab'></a></li>";
+}
+
+function getFileTabContentHTML(){
+	var activeClass = "";
+	if( openFileIndex == 0)
+		activeClass = " active ";
+
+	return "<div role='tabpanel' class='tab-pane " + activeClass + " extracted-text' id='file" + openFileIndex + "'></div>";
 }
