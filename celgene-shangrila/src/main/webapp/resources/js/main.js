@@ -115,7 +115,10 @@ $(document).ready( function(){
 			//sending Selected text to search component on the right.
 			$(".searchSelected").click( function(){
 				$(".extractedSearchPanel").html( "Searching for - " + "<label class='label-warning'>" + selectedText + "</label>");
-			
+				if ($(".searchTab").length == 0){
+					$(".extractedSearchPanel").append( "<ul class='nav nav-tabs nav-justified searchTab'></ul>");
+					$(".extractedSearchPanel").append( "<div class='tab-content searchContent'></div>");
+				}
 				if ( searchPreferences != "") {
 					for (var engine in searchPreferences) {
 						if( searchPreferences[engine]["set"]){
@@ -133,12 +136,16 @@ $(document).ready( function(){
 									data: selectedText.toString(),
 									success:function( responseObjects){
 										//$(".loading-img").remove();
-										$(".extractedSearchPanel").append("<h4>" + currentEngine1 + " Results</h4><ul>");
-										for (var i=0; i< responseObjects.length; i++) {
+										$(".searchTab").append("<li role='presentation' class='active'><a href='#" + currentEngine1 + "' data-toggle='tab'>" + currentEngine1 + "</a></li>");
 										
-											$(".extractedSearchPanel").append("<li><a href=\"" + responseObjects[i]["url"] + "\" target='_blank'>" + responseObjects[i]["title"] + "</a></li><hr/>");
+										var searchResultPub = "<div role='tabpanel' class='tab-pane active' id='" + currentEngine1 + "'><ul>";
+										for (var i=0; i< responseObjects.length; i++) 
+										{
+										
+											searchResultPub += "<li><a href=\"" + responseObjects[i]["url"] + "\" target='_blank'>" + responseObjects[i]["title"] + "</a></li><hr/>";
 										}
-										$(".extractedSearchPanel").append("</ul>");
+										searchResultPub += "</ul></div>";
+										$(".searchContent").append( searchResultPub);
 									}
 								})
 							}
@@ -153,15 +160,18 @@ $(document).ready( function(){
 										//$(".loading-img").remove();
 										responseObjects = $.parseJSON( responseObjects);
 										responseObjects = responseObjects["response"]["docs"];
-										$(".extractedSearchPanel").append("<h4>" + currentEngine2 + " Results</h4><ul>");
+										$(".searchTab").append("<li role='presentation'><a href='#" + currentEngine2 + "' data-toggle='tab'>" + currentEngine2 + "</a></li>");
+										var searchResultStudy = "<div role='tabpanel' class='tab-pane' id='" + currentEngine2 + "'><ul>";
 										for (var i=0; i< responseObjects.length; i++) {
 										
-											$(".extractedSearchPanel").append("<li><a href=\"" + "../facetview/studyview/index.html?id=" + responseObjects[i]["id"] + "\" target='_blank'>" + responseObjects[i]["Combined_Study_Title"] + "</a></li><hr/>");
+											searchResultStudy +="<li><a href=\"" + "../facetview/studyview/index.html?id=" + responseObjects[i]["id"] + "\" target='_blank'>" + responseObjects[i]["Combined_Study_Title"] + "</a></li><hr/>";
 										}
 										if( responseObjects.length == 0)
-											$(".extractedSearchPanel").append("No results");
+											searchResultStudy += "No results";
+										searchResultStudy += "</ul></div>";
+										
 
-										$(".extractedSearchPanel").append("</ul>");
+										$(".searchContent").append( searchResultStudy);
 									}
 								})
 							}
@@ -177,13 +187,15 @@ $(document).ready( function(){
 									data: selectedText.toString(),
 									success:function( responseObjects){
 										//$(".loading-img").remove();
-										console.log(responseObjects);
-										$(".extractedSearchPanel").append("<h4>" + currentEngine3 + " Results</h4><ul>");
+									
+										$(".searchTab").append("<li role='presentation'><a href='#" + currentEngine3 + "' data-toggle='tab'>" + currentEngine3 + "</a></li>");
+										var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3 + "'><ul>";
 										for (var key in responseObjects) {
 										
-											$(".extractedSearchPanel").append("<li><a href=\"" + responseObjects[key]["link"] + "\" target='_blank'>" + key + "</a></li><hr/>");
+											searchResultWiki += "<li><a href=\"" + responseObjects[key]["link"] + "\" target='_blank'>" + key + "</a></li><hr/>";
 										}
-										$(".extractedSearchPanel").append("</ul>");
+										searchResultWiki += "</ul></div>";
+										$(".searchContent").append( searchResultWiki);
 									}
 								})
 							}
