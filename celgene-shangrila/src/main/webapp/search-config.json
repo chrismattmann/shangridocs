@@ -7,6 +7,10 @@
 		"StudySearch" : {
 			"restURL" : "../../solr/studies/select?&wt=json&q=",
 			"set":true
+		},
+		"Wikipedia" : {
+			"restURL" : "services/wikipedia/search",
+			"set":true
 		}
 	}
 }

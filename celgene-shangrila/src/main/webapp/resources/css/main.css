@@ -1,3 +1,9 @@
+.shangrila-logo{
+    position: inherit !important;
+    width:auto !important;
+    padding-top: 53% !important;
+}
+
 .border-right{
     padding-right:20px; 
     border-right: 1px solid #ccc;
@@ -375,4 +381,9 @@ background-color:#FFFFFF;
 transform: translateY(-21px);
 }
 
+}
+
+.bottom {
+    background-color: #080808;
+    color: white;
 }

@@ -31,6 +31,8 @@ var searchPreferences = "";
 
 $(document).ready( function(){
 
+	$(".content").css("min-height",$(".right-pane").height());
+
 	//instantiating Dropzone plugin to upload files
 	Dropzone.options.dropFileArea = {
 		method:"put",
@@ -159,6 +161,28 @@ $(document).ready( function(){
 										if( responseObjects.length == 0)
 											$(".extractedSearchPanel").append("No results");
 
+										$(".extractedSearchPanel").append("</ul>");
+									}
+								})
+							}
+							else if( engine =="Wikipedia")
+							{
+								var currentEngine3 = engine;
+								$.ajax({
+									headers : {
+										"Content-Type" : "text/plain"
+									},
+									url: searchPreferences[engine]["restURL"], 
+									method:"put",
+									data: selectedText.toString(),
+									success:function( responseObjects){
+										//$(".loading-img").remove();
+										console.log(responseObjects);
+										$(".extractedSearchPanel").append("<h4>" + currentEngine3 + " Results</h4><ul>");
+										for (var key in responseObjects) {
+										
+											$(".extractedSearchPanel").append("<li><a href=\"" + responseObjects[key]["link"] + "\" target='_blank'>" + key + "</a></li><hr/>");
+										}
 										$(".extractedSearchPanel").append("</ul>");
 									}
 								})
