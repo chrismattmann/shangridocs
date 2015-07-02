@@ -28,7 +28,7 @@
 			<!-- INCLUDE APPLICATION SPECIFIC CSS AND JAVASCRIPT -->
 			<script type="text/javascript" src="resources/js/app.js"></script>
 			<script type="text/javascript" src="resources/js/controllers/mainController.js"></script>
-			<link rel="stylesheet" href="resources/css/shivika.css">
+			<link rel="stylesheet" href="resources/css/main.css">
 			<link rel="stylesheet" href="resources/css/dropzone.css">
 			<link rel="stylesheet" href="resources/fonts/font-awesome/css/font-awesome.css">
 		</head>
@@ -160,7 +160,7 @@
 		    <script src="resources/js/jquery.min.js"></script>
 			<script src="resources/js/bootstrap.min.js"></script>
 			<script src="resources/js/dropzone.js"></script>
-			<script src="resources/js/main.js"></script>
+			<script src="resources/js/shivika.js"></script>
 
 		</body>
 
