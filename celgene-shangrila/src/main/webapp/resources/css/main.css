@@ -9,16 +9,14 @@
     border-right: 1px solid #ccc;
 }
 
-.right-pane{
-    background: #fff;
-}
-
 @media (min-width:768px){
 .right-pane{
         position:fixed;
         left:66.66%;
-        height:90%;
         overflow-y: auto;
+        border-left: 1px solid #eee;
+        background: #fff;
+
     }
 }
 
@@ -41,8 +39,10 @@
     box-shadow: 0 11px 9px -6px #999;
 }
 
-.tab-pane{
-     min-height:100%;
+.searchResults .tab-pane{
+     width:100%;
+     overflow-y: auto;
+     height:300px;
 }
 
 /* btn awesome - taken from codrops.*/
@@ -242,10 +242,16 @@
 .extractedData, .searchResults{
     float:left;
     height: 300px;
-    resize:vertical;
-    overflow-y: scroll;
-    border:1px solid #aaa;
+    /*resize:vertical; */
+    overflow-y: auto;
+    border:1px solid #aaa; 
     margin-bottom: 20px;
+    width:100%;
+}
+
+.searchResults {
+    padding:0;
+    overflow: hidden;
 }
 
 .panel{
@@ -392,4 +398,8 @@
 .bottom {
     background-color: #080808;
     color: white;
+}
+
+.search-bar .input-group {
+    margin-bottom: 2%;
 }

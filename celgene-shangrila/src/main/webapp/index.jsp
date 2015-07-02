@@ -47,14 +47,13 @@
 				     	</button>
 						<ul class=" navbar-nav">
 						<li>
-							<a href="#">
+							 <!--<a href="#">
 		                        <i class="fa fa-magnet fa-stack-2x text-primary shangrila-logo"></i>
-		     				 </a>
+		     				 </a> -->
 						</li>
-						<li class="active navbar-brand"><a href="#">Shangrila</a></li>
+						<li class="active navbar-brand"><a href="/celgene-shangrila/index.jsp">Shangrila</a></li>
 						<li class="navbar-brand"></li>
 						<li class="navbar-brand"><a href="/red/" target="_blank">Home</a></li>
-						
 						</ul>
 					</div>
 
@@ -66,9 +65,9 @@
 
 			<div class="row content">
 				<div class='container-fluid'>
-			        <div class="col-md-8 border-right">
+			        <div class="col-md-8">
 			        	<h1 class="text-center introduction">
-			        		Shangri-La(Docs)
+			        		Shangri Docs
 			        	</h1>
 			        	<p class="introduction extracted-text">
 			        		Shangri-docs is a web application developed using AngularJS framework for automatically annotating a document based on medical and clinical domain.
@@ -97,7 +96,13 @@
 			       			<div class="panel-group extractedDataPanel" id="accordion" role="tablist" aria-multiselectable="true"> 
 			       			</div>
 			       		</div>
-		       			<h4 class="text-center">Search Results</h4>
+		       			<h4 class="text-center">Search</h4>
+		       			<div class ="search-bar">
+		       				<div class="input-group">
+							  <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
+							  <input type ="text" class="form-control search" placeholder="Search from PubMed, Wikipedia and StudySearch" />
+							</div>
+		       			</div>
 			       		<div class="col-md-12 searchResults">
 		       				<div class="panel-group extractedSearchPanel" id="accordion" role="tablist" aria-multiselectable="true"> 
 		       				</div>
@@ -111,7 +116,7 @@
 			    <div class="bottom container-fluid">
 			        
 			            <div class="col-md-4">
-			                <ul> <h5>Contact Us : <a href="mailto:chris.a.mattmann@nasa.gov" > Chris A Mattmann </a> or <a href="mailto:lintagliata@celgene.com" > Lauren Intagliata </a> </h5>
+			                <ul> <h5>Contact Us : <a href="mailto:lintagliata@celgene.com" > Lauren Intagliata </a> or <a href="mailto:chris.a.mattmann@nasa.gov" > Chris A Mattmann </a> </h5>
 			                
 			    			</ul>
 			            </div>    
@@ -155,7 +160,7 @@
 		    <script src="resources/js/jquery.min.js"></script>
 			<script src="resources/js/bootstrap.min.js"></script>
 			<script src="resources/js/dropzone.js"></script>
-			<script src="resources/js/main.js"></script>
+			<script src="resources/js/shivika.js"></script>
 
 		</body>
 

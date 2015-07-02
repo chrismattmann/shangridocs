@@ -86,6 +86,7 @@ $(document).ready( function(){
 				$("#file" + openFileIndex + ".extracted-text").addClass("pdf-view");
 				$("#file" + openFileIndex + ".extracted-text").html( "<pre>" + fileContent + "</pre>");
 
+
 				var rightPane = $(".right-pane-default");
 				rightPane.addClass("hide");
 				var extractedDataPanel = rightPane.find(".extractedDataPanel");
@@ -155,7 +156,7 @@ $(document).ready( function(){
 	$(".filesContent").on( "mouseup", ".extracted-text", function( e){
 
 		var selectedText = window.getSelection();
-		if( selectedText != "")
+		if( selectedText.toString() != "")
 		{
 			var elem = $(this);
 			elem.popover("show");
@@ -168,136 +169,25 @@ $(document).ready( function(){
 			//sending Selected text to search component on the right.
 			$(".searchSelected").click( function()
 			{
-				elem.popover("show");
-				$(".extractedPane" + openFileIndex + " .extractedSearchPanel").html( "Searching for - " + "<label class='label-warning'> " + selectedText + " </label>");
-				if ($(".searchTab" + openFileIndex).length == 0){
-					$(".extractedPane" + openFileIndex + " .extractedSearchPanel").append( "<ul class='nav nav-tabs nav-justified searchTab" + openFileIndex + "'></ul>");
-					$(".extractedPane" + openFileIndex + " .extractedSearchPanel").append( "<div class='tab-content searchContent" + openFileIndex + "'></div>");
-				}
-				if ( searchPreferences != "") {
-					for (var engine in searchPreferences) {
-						if( searchPreferences[engine]["set"] )
-						{
-							if( engine == "PubMed")
-							{
-								var currentEngine1 = engine;
-								$.ajax({
-									headers : {
-										"Content-Type" : "text/plain"
-									},
-									url: searchPreferences[engine]["restURL"], 
-									method:"put",
-									data: selectedText.toString(),
-									success:function( responseObjects){
-										//$(".loading-img").remove();
-										$(".searchTab" + openFileIndex).append("<li role='presentation' class='active'><a href='#" + currentEngine1 + "' data-toggle='tab'>" + currentEngine1 + "</a></li>");
-										
-										var searchResultPub = "<div role='tabpanel' class='tab-pane active' id='" + currentEngine1 + "'><ul>";
-										for (var i=0; i< responseObjects.length; i++) 
-										{
-										
-											searchResultPub += "<li><a href=\"" + responseObjects[i]["url"] + "\" target='_blank'>" + responseObjects[i]["title"] + "</a></li><hr/>";
-										}
-										searchResultPub += "</ul></div>";
-										$(".searchContent"+ openFileIndex).append( searchResultPub);
-									},
-									error: function( e){
-										$(".searchTab" + openFileIndex).append("<li role='presentation' class='active'><a href='#" + currentEngine1 + "' data-toggle='tab'>" + currentEngine1 + "</a></li>");
-										var searchResultPub = "<div role='tabpanel' class='tab-pane active' id='" + currentEngine1 + "'><ul>";
-										
-										//sometimes even correct results error out because response is a string instead of an object.
-										/*
-										responseObjects = $.parseJSON( e.responseText );
-										for (var i=0; i< responseObjects.length; i++) 
-										{
-										
-											searchResultPub += "<li><a href=\"" + responseObjects[i]["url"] + "\" target='_blank'>" + responseObjects[i]["title"] + "</a></li><hr/>";
-										}
-										*/
-										searchResultPub += "<label> An error has occurred. Please refresh the page and try again.</label>";
-										searchResultPub += "</ul></div>";
-										$(".searchContent"+ openFileIndex).append( searchResultPub);
-									}
-								}).fail( function(){
-									//$(".searchContent"+ openFileIndex).html( "<label class='alert alert-danger'> An error has occurred. Please refresh the page and try again.</label>");
-								});
-							}
-							else if( engine == "StudySearch")
-							{
-								var currentEngine2 = engine;
-								$.ajax({
-									url: searchPreferences[engine]["restURL"] + selectedText.toString(), 
-									method:"get",
-									data: {},
-									success:function( responseObjects){
-										//$(".loading-img").remove();
-										responseObjects = $.parseJSON( responseObjects);
-										responseObjects = responseObjects["response"]["docs"];
-										$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine2 + "' data-toggle='tab'>" + currentEngine2 + "</a></li>");
-										var searchResultStudy = "<div role='tabpanel' class='tab-pane' id='" + currentEngine2 + "'><ul>";
-										for (var i=0; i< responseObjects.length; i++) {
-										
-											searchResultStudy +="<li><a href=\"" + "../facetview/studyview/index.html?id=" + responseObjects[i]["id"] + "\" target='_blank'>" + responseObjects[i]["Combined_Study_Title"] + "</a></li><hr/>";
-										}
-										if( responseObjects.length == 0)
-											searchResultStudy += "No results";
-										searchResultStudy += "</ul></div>";
-										
-
-										$(".searchContent" + openFileIndex).append( searchResultStudy);
-									}
-								}).fail( function(){
-									//$(".searchContent"+ openFileIndex).html( "<label class='alert alert-danger'> An error has occurred. Please refresh the page and try again.</label>");
-								});
-							}
-							else if( engine == "Wikipedia")
-							{
-								var currentEngine3 = engine;
-								$.ajax({
-									headers : {
-										"Content-Type" : "text/plain"
-									},
-									url: searchPreferences[engine]["restURL"], 
-									method:"put",
-									data: selectedText.toString(),
-									success:function( responseObjects){
-										//$(".loading-img").remove();
-										$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3 + "' data-toggle='tab'>" + currentEngine3 + "</a></li>");
-										var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3 + "'><ul>";
-										for (var key in responseObjects) {
-										
-											searchResultWiki += "<li><a href=\"" + responseObjects[key]["link"] + "\" target='_blank'>" + key + "</a></li><hr/>";
-										}
-										searchResultWiki += "</ul></div>";
-										$(".searchContent" + openFileIndex).append( searchResultWiki);
-									},
-									error: function( e){
-										//sometimes even correct results error out because response is a string instead of an object.
-										$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3 + "' data-toggle='tab'>" + currentEngine3 + "</a></li>");
-										var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3 + "'><ul>";
-										
-										/*
-										responseObjects = $.parseJSON( e.responseText );
-										for (var key in responseObjects) {
-										
-											searchResultWiki += "<li><a href=\"" + responseObjects[key]["link"] + "\" target='_blank'>" + key + "</a></li><hr/>";
-										}
-										*/
-										searchResultWiki += "<label> Wikipedia results couldn't be fetched correctly. We are working on this issue.</label>";
-										$(".searchContent" + openFileIndex).append( searchResultWiki);
-
-									}
-								}).fail( function(){
-									//$(".searchContent"+ openFileIndex).html( "<label class='alert alert-danger'> An error has occurred. Please refresh the page and try again.</label>");
-								});
-							}
-						}
-					}
-				} 
+				elem.popover("hide");
+				$(".extractedPane" + openFileIndex + " .search").val(selectedText);
+				
+				searchSelectedText(selectedText.toString() ); 
 			});
 		}
-		else
+		else{
 			$(".extracted-text").popover("hide");
+			$(".popover").hide();
+			$(".filesContent").click();
+		}
+
+	});
+
+	$(".content").on("keyup", ".search", function(e){
+	    if(e.keyCode == 13)
+	    {
+	        searchSelectedText($(this).val() );
+	    }
 	});
 
 	//Handling event when checkbox is changed on an annotation
@@ -508,7 +398,7 @@ function getFileTabContentHTML(){
 	$(".extracted-text").removeClass("active");
 
 	activeClass = " active ";
-	return "<div role='tabpanel' class='tab-pane " + activeClass + " extracted-text' id='file" + openFileIndex + "' data-container='body' data-toggle='popover' data-placement='bottom' data-content='test'></div>";
+	return "<div role='tabpanel' class='tab-pane " + activeClass + " extracted-text' id='file" + openFileIndex + "' data-container='body' data-toggle='popover' data-placement='bottom' data-content='Select text to search'></div>";
 
 	//setting up the popup for Searchh
 	$("#file" + openFileIndex).popover({
@@ -516,4 +406,142 @@ function getFileTabContentHTML(){
 	    trigger: "manual",
 	    html: "true"
 	});
+}
+
+function searchSelectedText( selectedText)
+{
+	var rightPaneClass = ".extractedPane" + openFileIndex;
+	if( $(rightPaneClass).length == 0 )
+		rightPaneClass = ".right-pane";
+
+	if ($(".searchTab" + openFileIndex).length == 0){
+		$( rightPaneClass + " .extractedSearchPanel").append( "<ul class='nav nav-tabs nav-justified searchTab" + openFileIndex + "'></ul>");
+		$( rightPaneClass + " .extractedSearchPanel").append( "<div class='tab-content searchContent" + openFileIndex + "'></div>");
+	}
+
+	$(".searchTab" + openFileIndex).html("");
+    $(".searchContent" + openFileIndex).html("");
+	if ( searchPreferences != "") 
+	{
+		for (var engine in searchPreferences) 
+		{
+			if(searchPreferences[engine]["set"])
+			{
+				if( engine == "PubMed")
+				{
+					var currentEngine1 = engine;
+					$.ajax({
+						headers : {
+							"Content-Type" : "text/plain"
+						},
+						url: searchPreferences[engine]["restURL"], 
+						method:"put",
+						data: selectedText,
+						success:function( responseObjects){
+							//$(".loading-img").remove();
+							$(".searchTab" + openFileIndex).append("<li role='presentation' class='active'><a href='#" + currentEngine1 + "' data-toggle='tab'>" + currentEngine1 + "</a></li>");
+							
+							var searchResultPub = "<div role='tabpanel' class='tab-pane active' id='" + currentEngine1 + "'><ul>";
+							for (var i=0; i< responseObjects.length; i++) 
+							{
+							
+								searchResultPub += "<li><a href=\"" + responseObjects[i]["url"] + "\" target='_blank'>" + responseObjects[i]["title"] + "</a></li><hr/>";
+							}
+							searchResultPub += "</ul></div>";
+							$(".searchContent"+ openFileIndex).append( searchResultPub);
+						},
+						error: function( e){
+							$(".searchTab" + openFileIndex).append("<li role='presentation' class='active'><a href='#" + currentEngine1 + "' data-toggle='tab'>" + currentEngine1 + "</a></li>");
+							var searchResultPub = "<div role='tabpanel' class='tab-pane active' id='" + currentEngine1 + "'><ul>";
+							
+							//sometimes even correct results error out because response is a string instead of an object.
+							/*
+							responseObjects = $.parseJSON( e.responseText );
+							for (var i=0; i< responseObjects.length; i++) 
+							{
+							
+								searchResultPub += "<li><a href=\"" + responseObjects[i]["url"] + "\" target='_blank'>" + responseObjects[i]["title"] + "</a></li><hr/>";
+							}
+							*/
+							searchResultPub += "<label> An error has occurred. Please refresh the page and try again.</label>";
+							searchResultPub += "</ul></div>";
+							$(".searchContent"+ openFileIndex).append( searchResultPub);
+						}
+					}).fail( function(){
+						//$(".searchContent"+ openFileIndex).html( "<label class='alert alert-danger'> An error has occurred. Please refresh the page and try again.</label>");
+					});
+				}
+				else if( engine == "StudySearch")
+				{
+					var currentEngine2 = engine;
+					$.ajax({
+						url: searchPreferences[engine]["restURL"] + selectedText, 
+						method:"get",
+						data: {},
+						success:function( responseObjects){
+							//$(".loading-img").remove();
+							responseObjects = $.parseJSON( responseObjects);
+							responseObjects = responseObjects["response"]["docs"];
+							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine2 + "' data-toggle='tab'>" + currentEngine2 + "</a></li>");
+							var searchResultStudy = "<div role='tabpanel' class='tab-pane' id='" + currentEngine2 + "'><ul>";
+							for (var i=0; i< responseObjects.length; i++) {
+							
+								searchResultStudy +="<li><a href=\"" + "../facetview/studyview/index.html?id=" + responseObjects[i]["id"] + "\" target='_blank'>" + responseObjects[i]["Combined_Study_Title"] + "</a></li><hr/>";
+							}
+							if( responseObjects.length == 0)
+								searchResultStudy += "No results";
+							searchResultStudy += "</ul></div>";
+
+							$(".searchContent" + openFileIndex).append( searchResultStudy);
+						}
+					}).fail( function(){
+						//$(".searchContent"+ openFileIndex).html( "<label class='alert alert-danger'> An error has occurred. Please refresh the page and try again.</label>");
+					});
+				}
+				else if( engine == "Wikipedia")
+				{
+					var currentEngine3 = engine;
+					$.ajax({
+						headers : {
+							"Content-Type" : "text/plain"
+						},
+						url: searchPreferences[engine]["restURL"], 
+						method:"put",
+						data: selectedText,
+						success:function( responseObjects){
+							//$(".loading-img").remove();
+							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3 + "' data-toggle='tab'>" + currentEngine3 + "</a></li>");
+							var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3 + "'><ul>";
+							for (var key in responseObjects) {
+							
+								searchResultWiki += "<li><a href=\"" + responseObjects[key]["link"] + "\" target='_blank'>" + key + "</a></li><hr/>";
+							}
+							if($.isEmptyObject(responseObjects))
+								searchResultWiki+= "No results";
+							searchResultWiki += "</ul></div>";
+							$(".searchContent" + openFileIndex).append( searchResultWiki);
+						},
+						error: function( e){
+							//sometimes even correct results error out because response is a string instead of an object.
+							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3 + "' data-toggle='tab'>" + currentEngine3 + "</a></li>");
+							var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3 + "'><ul>";
+							
+							/*
+							responseObjects = $.parseJSON( e.responseText );
+							for (var key in responseObjects) {
+							
+								searchResultWiki += "<li><a href=\"" + responseObjects[key]["link"] + "\" target='_blank'>" + key + "</a></li><hr/>";
+							}
+							*/
+							searchResultWiki += "<label> Wikipedia results couldn't be fetched correctly. We are working on this issue.</label>";
+							$(".searchContent" + openFileIndex).append( searchResultWiki);
+
+						}
+					}).fail( function(){
+						//$(".searchContent"+ openFileIndex).html( "<label class='alert alert-danger'> An error has occurred. Please refresh the page and try again.</label>");
+					});
+				}
+			}
+		}
+	}
 }
