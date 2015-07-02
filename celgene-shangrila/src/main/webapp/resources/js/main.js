@@ -31,11 +31,12 @@ var searchPreferences = "";
 var filesArray = [];
 //variable that contains index of open file
 var openFileIndex = 0;
-
+//global variable to let one ctakes ajax call to finish before the next
+var ajaxRunning = false;
 
 $(document).ready( function(){
 
-	$(".content").css("min-height",$(".right-pane").height());
+	$(".content").css("min-height",$(".right-pane").height() + 150);
 
 	//instantiating Dropzone plugin to upload files
 	Dropzone.options.dropFileArea = {
@@ -48,12 +49,19 @@ $(document).ready( function(){
 	    		//add a new object to existing array of files.
 	    		filesArray.push( {});
 	    		$(".fileList").append( getFileTabHeaderHTML() );
+	    		$(".fileTitle" + openFileIndex).click( function(){
+	    			openFileIndex = $(this).data("fileindex");
+	    			$(".right-pane").addClass("hide");
+	    			$(".extractedPane" + openFileIndex).removeClass("hide");
+	    		});
+
 	    		$(".filesContent").append( getFileTabContentHTML() );
+
 	    		var fileName = "File " + openFileIndex;
 	    		if( responseText[0]["title"] != undefined)
 	    			fileName = responseText[0]["title"];
 	    			
-	    		$(".fileTitle" + openFileIndex).html( fileName);
+	    		$(".fileTitle" + openFileIndex).append( fileName);
 	    		//remove the file from the dropped zone before showing the received content
 		      	this.removeAllFiles();
 		      	//hide the upload modal
@@ -78,25 +86,59 @@ $(document).ready( function(){
 				$("#file" + openFileIndex + ".extracted-text").addClass("pdf-view");
 				$("#file" + openFileIndex + ".extracted-text").html( "<pre>" + fileContent + "</pre>");
 
-				$(".extractedDataPanel").html( $(".loading-animation-code").html() );
+				var rightPane = $(".right-pane-default");
+				rightPane.addClass("hide");
+				var extractedDataPanel = rightPane.find(".extractedDataPanel");
+				var tempFileIndex = openFileIndex;
+				extractedDataPanel.html( $(".loading-animation-code").html() );
+				$(".content > .container-fluid").append("<div class='col-md-4 right-pane extractedPane" + openFileIndex + "' data-fileindex='" + openFileIndex +"'>" + rightPane.html() + "</div>");
+				
 
-				$.ajax({
-					headers: { 
-				        'Content-Type': 'text/plain' 
-				    },
-					url:"services/tika/ctakes", 
-					method:"put",
-					data: responseText[0]["X-TIKA:content"],
-					success:function( result){
-						$(".all-selection-option").removeClass("hide");
-						//$(".loading-img").remove();
-						ctakesData = result[0];
-						filesArray[ openFileIndex]["ctakesData"] = ctakesData;
-						showCtakesData( ctakesData, []);
-						//all should be unselected for the first time.
-						$(".deselect-all-ctakes").click();
+				var checkAjax = setInterval( function(){
+					
+					if( ! ajaxRunning){
+
+						ajaxRunning = true;
+						$.ajax({
+							headers: { 
+						        'Content-Type': 'text/plain' 
+						    },
+							url:"services/tika/ctakes", 
+							method:"put",
+							data: responseText[0]["X-TIKA:content"],
+							success:function( result){
+								ctakesData = result[0];
+								fileContent = ctakesData["X-TIKA:content"];
+								for(  init=0; init<fileContent.length; init++)
+								{
+									if( fileContent[init].match( regex))
+										break;
+								}
+								fileContent = fileContent.slice( init);
+
+								for(var tempFileIndex=0; tempFileIndex<filesArray.length; tempFileIndex++)
+								{
+									if( $.trim( filesArray[tempFileIndex]["studyText"]) == $.trim( fileContent) )
+										break;
+								}
+								$(".extractedPane" + tempFileIndex + " .all-selection-option").removeClass("hide");
+
+								filesArray[ tempFileIndex]["ctakesData"] = ctakesData;
+								showCtakesData( ctakesData, tempFileIndex, []);
+								//all should be unselected for the first time.
+								$(".extractedPane" + tempFileIndex + " .deselect-all-ctakes").click();
+								ajaxRunning = false;
+								clearInterval( checkAjax);
+							}
+						}).fail( function(){
+							$(".extractedPane" + tempFileIndex + " .extractedDataPanel").html( "<label class='alert alert-danger'> An error has occurred. Please refresh the page and try again.</label>");
+							ajaxRunning = false;	
+							clearInterval( checkAjax);
+						})
 					}
-				})
+
+				}, 1000);
+
 		    });
 		    this.on("complete", function(file) {
 		      	// Handle the responseText here. For example, add the text to the preview element:
@@ -108,21 +150,15 @@ $(document).ready( function(){
 	$(".upload-img").click( function(){
 		$(".dropzone").click();
 	})
-
-	//setting up the popup for Searchh
-	$(".extracted-text").popover({
-	    placement: 'bottom',
-	    trigger: "manual",
-	    html: "true"
-	});
 	
 	//Showing popover for search when text is selected
-	$(".extracted-text").mouseup( function( e){
+	$(".filesContent").on( "mouseup", ".extracted-text", function( e){
 
 		var selectedText = window.getSelection();
 		if( selectedText != "")
 		{
-			$(".extracted-text").popover("show");
+			var elem = $(this);
+			elem.popover("show");
 			$(".popover").offset({ top: e.pageY + 20, left: e.pageX-90});
 			$(".popover-content").html( "<div class='btn-group'>" +
 											"<input type='button' value='Search' class='searchSelected btn btn-primary'>" +
@@ -130,17 +166,18 @@ $(document).ready( function(){
 									  );
 
 			//sending Selected text to search component on the right.
-			$(".searchSelected").click( function(){
-				$(".extractedSearchPanel").html( "Searching for - " + "<label class='label-warning'>" + selectedText + "</label>");
-				if ($(".searchTab").length == 0){
-					$(".extractedSearchPanel").append( "<ul class='nav nav-tabs nav-justified searchTab'></ul>");
-					$(".extractedSearchPanel").append( "<div class='tab-content searchContent'></div>");
+			$(".searchSelected").click( function()
+			{
+				elem.popover("show");
+				$(".extractedPane" + openFileIndex + " .extractedSearchPanel").html( "Searching for - " + "<label class='label-warning'> " + selectedText + " </label>");
+				if ($(".searchTab" + openFileIndex).length == 0){
+					$(".extractedPane" + openFileIndex + " .extractedSearchPanel").append( "<ul class='nav nav-tabs nav-justified searchTab" + openFileIndex + "'></ul>");
+					$(".extractedPane" + openFileIndex + " .extractedSearchPanel").append( "<div class='tab-content searchContent" + openFileIndex + "'></div>");
 				}
 				if ( searchPreferences != "") {
 					for (var engine in searchPreferences) {
-						if( searchPreferences[engine]["set"]){
-							//$(".extractedSearchPanel").append( $(".loading-animation-code").html() );
-
+						if( searchPreferences[engine]["set"] )
+						{
 							if( engine == "PubMed")
 							{
 								var currentEngine1 = engine;
@@ -153,7 +190,7 @@ $(document).ready( function(){
 									data: selectedText.toString(),
 									success:function( responseObjects){
 										//$(".loading-img").remove();
-										$(".searchTab").append("<li role='presentation' class='active'><a href='#" + currentEngine1 + "' data-toggle='tab'>" + currentEngine1 + "</a></li>");
+										$(".searchTab" + openFileIndex).append("<li role='presentation' class='active'><a href='#" + currentEngine1 + "' data-toggle='tab'>" + currentEngine1 + "</a></li>");
 										
 										var searchResultPub = "<div role='tabpanel' class='tab-pane active' id='" + currentEngine1 + "'><ul>";
 										for (var i=0; i< responseObjects.length; i++) 
@@ -162,9 +199,28 @@ $(document).ready( function(){
 											searchResultPub += "<li><a href=\"" + responseObjects[i]["url"] + "\" target='_blank'>" + responseObjects[i]["title"] + "</a></li><hr/>";
 										}
 										searchResultPub += "</ul></div>";
-										$(".searchContent").append( searchResultPub);
+										$(".searchContent"+ openFileIndex).append( searchResultPub);
+									},
+									error: function( e){
+										$(".searchTab" + openFileIndex).append("<li role='presentation' class='active'><a href='#" + currentEngine1 + "' data-toggle='tab'>" + currentEngine1 + "</a></li>");
+										var searchResultPub = "<div role='tabpanel' class='tab-pane active' id='" + currentEngine1 + "'><ul>";
+										
+										//sometimes even correct results error out because response is a string instead of an object.
+										/*
+										responseObjects = $.parseJSON( e.responseText );
+										for (var i=0; i< responseObjects.length; i++) 
+										{
+										
+											searchResultPub += "<li><a href=\"" + responseObjects[i]["url"] + "\" target='_blank'>" + responseObjects[i]["title"] + "</a></li><hr/>";
+										}
+										*/
+										searchResultPub += "<label> An error has occurred. Please refresh the page and try again.</label>";
+										searchResultPub += "</ul></div>";
+										$(".searchContent"+ openFileIndex).append( searchResultPub);
 									}
-								})
+								}).fail( function(){
+									//$(".searchContent"+ openFileIndex).html( "<label class='alert alert-danger'> An error has occurred. Please refresh the page and try again.</label>");
+								});
 							}
 							else if( engine == "StudySearch")
 							{
@@ -177,7 +233,7 @@ $(document).ready( function(){
 										//$(".loading-img").remove();
 										responseObjects = $.parseJSON( responseObjects);
 										responseObjects = responseObjects["response"]["docs"];
-										$(".searchTab").append("<li role='presentation'><a href='#" + currentEngine2 + "' data-toggle='tab'>" + currentEngine2 + "</a></li>");
+										$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine2 + "' data-toggle='tab'>" + currentEngine2 + "</a></li>");
 										var searchResultStudy = "<div role='tabpanel' class='tab-pane' id='" + currentEngine2 + "'><ul>";
 										for (var i=0; i< responseObjects.length; i++) {
 										
@@ -188,11 +244,13 @@ $(document).ready( function(){
 										searchResultStudy += "</ul></div>";
 										
 
-										$(".searchContent").append( searchResultStudy);
+										$(".searchContent" + openFileIndex).append( searchResultStudy);
 									}
-								})
+								}).fail( function(){
+									//$(".searchContent"+ openFileIndex).html( "<label class='alert alert-danger'> An error has occurred. Please refresh the page and try again.</label>");
+								});
 							}
-							else if( engine =="Wikipedia")
+							else if( engine == "Wikipedia")
 							{
 								var currentEngine3 = engine;
 								$.ajax({
@@ -204,17 +262,34 @@ $(document).ready( function(){
 									data: selectedText.toString(),
 									success:function( responseObjects){
 										//$(".loading-img").remove();
-									
-										$(".searchTab").append("<li role='presentation'><a href='#" + currentEngine3 + "' data-toggle='tab'>" + currentEngine3 + "</a></li>");
+										$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3 + "' data-toggle='tab'>" + currentEngine3 + "</a></li>");
 										var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3 + "'><ul>";
 										for (var key in responseObjects) {
 										
 											searchResultWiki += "<li><a href=\"" + responseObjects[key]["link"] + "\" target='_blank'>" + key + "</a></li><hr/>";
 										}
 										searchResultWiki += "</ul></div>";
-										$(".searchContent").append( searchResultWiki);
+										$(".searchContent" + openFileIndex).append( searchResultWiki);
+									},
+									error: function( e){
+										//sometimes even correct results error out because response is a string instead of an object.
+										$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3 + "' data-toggle='tab'>" + currentEngine3 + "</a></li>");
+										var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3 + "'><ul>";
+										
+										/*
+										responseObjects = $.parseJSON( e.responseText );
+										for (var key in responseObjects) {
+										
+											searchResultWiki += "<li><a href=\"" + responseObjects[key]["link"] + "\" target='_blank'>" + key + "</a></li><hr/>";
+										}
+										*/
+										searchResultWiki += "<label> Wikipedia results couldn't be fetched correctly. We are working on this issue.</label>";
+										$(".searchContent" + openFileIndex).append( searchResultWiki);
+
 									}
-								})
+								}).fail( function(){
+									//$(".searchContent"+ openFileIndex).html( "<label class='alert alert-danger'> An error has occurred. Please refresh the page and try again.</label>");
+								});
 							}
 						}
 					}
@@ -226,33 +301,36 @@ $(document).ready( function(){
 	});
 
 	//Handling event when checkbox is changed on an annotation
-	$(".extractedDataPanel").on("change", ".key-highlight", function(){
+	$(".content").on("change", ".key-highlight", function(){
 		var changedKey = $(this).val();
 		if( $(this).is(":checked"))
 		{
-			uncheckedKeys = $.grep( uncheckedKeys, function( value){
+			filesArray[ openFileIndex]["uncheckedKeys"] = $.grep( filesArray[ openFileIndex]["uncheckedKeys"], function( value){
 				return value != changedKey;
 			})
 		}
 		else
-			uncheckedKeys.push( changedKey);
+			filesArray[ openFileIndex]["uncheckedKeys"].push( changedKey);
 
 		//after remaking if this panel should stay open if it was currently open
 		if( $("#collapse" + changedKey).hasClass("in"))
-			showCtakesData( ctakesData, uncheckedKeys, changedKey);
+			showCtakesData( filesArray[ openFileIndex]["ctakesData"], openFileIndex, filesArray[ openFileIndex]["uncheckedKeys"], changedKey);
 		else
-			showCtakesData( ctakesData, uncheckedKeys);
+			showCtakesData( filesArray[ openFileIndex]["ctakesData"], openFileIndex, filesArray[ openFileIndex]["uncheckedKeys"]);
 	});
 
 	//Handling event when user wants to select/deselect all annotations
-	$(".deselect-all-ctakes").click( function(){
+	$(".content").on("click", ".deselect-all-ctakes", function(){
+		fileIndex = $(this).parent().parent().data("fileindex");
 		uncheckedKeys = [];
+		filesArray[ fileIndex]["uncheckedKeys"] = [];
+
 		if( ! $(this).hasClass(".select-all-ctakes"))
 		{
-			for( var key in studyData)
+			for( var key in filesArray[ fileIndex]["ctakesData"])
 			{
 				if( key.substring(0,7) == "ctakes:"){
-					uncheckedKeys.push( key.replace("ctakes:",""));
+					filesArray[ fileIndex]["uncheckedKeys"].push( key.replace("ctakes:",""));
 				}
 			}
 			$(this).addClass(".select-all-ctakes");
@@ -260,7 +338,16 @@ $(document).ready( function(){
 		else
 			$(this).removeClass(".select-all-ctakes");
 
-		showCtakesData( studyData, uncheckedKeys);
+		showCtakesData( filesArray[ fileIndex]["ctakesData"], fileIndex, uncheckedKeys);
+	});
+
+
+	$(".content").on( "click", ".closeTab", function(){
+		var tabContentId = $(this).parent().attr("href");
+        $(this).parent().parent().remove(); //remove li of tab
+        $(tabContentId).remove(); //remove respective tab content
+       	fileIndex = $(this).data("fileindex");
+       	$(".extractedPane" + fileIndex).remove();
 	});
 
 	//Getting search preferences from the config
@@ -276,74 +363,80 @@ $(document).ready( function(){
 });
 
 //add highlighting color to a value and update text on the left
-function colorText( value, color){
+function colorText( value, color, fileIndex){
 	
 	var selectedColor = color;
 	if( color == "")
 	{
-		selectedColor = colorSwatch[swatchCounter];
-		swatchCounter++;
+		selectedColor = colorSwatch[ filesArray[ fileIndex]["swatchCounter"] ];
+		filesArray[ fileIndex]["swatchCounter"]++;
 	}
 	//Our swatch color list of selected colors is limited. if ctakes list exceeds the limit, get a random color.
 	if( selectedColor == undefined)
 		selectedColor = '#'+Math.floor(Math.random()*16777215).toString(16);
 
-	if( textToColor == "")
-		textToColor = studyText;
+	if( filesArray[ fileIndex]["textToColor"] == "")
+		filesArray[ fileIndex]["textToColor"] = filesArray[ openFileIndex]["studyText"];
 	else
-		textToColor = coloredText;
+		filesArray[ fileIndex]["textToColor"] = filesArray[ fileIndex]["coloredText"];
 
-	splitText = textToColor.split( value);
+	splitText = filesArray[ fileIndex]["textToColor"].split( value);
 
-	coloredText = splitText[0];
+	var coloredText = splitText[0];
 	for( var i =0; i< splitText.length-1; i++)
 	{
 		coloredText += 	"<span style='background-color:" + selectedColor + ";'>" + value + "</span>" + splitText[i+1];
 	}
-	$(".extracted-text").html( "<pre>" + coloredText + "</pre>");
+	$("#file" + fileIndex + ".extracted-text").html( "<pre>" + coloredText + "</pre>");
+	filesArray[ fileIndex]["coloredText"] = coloredText;
+
 	return selectedColor;
 
 }
 
 //create the annotation list from ctakes json.
-function showCtakesData( data, uncheckedKeys, changedKey ) {
+function showCtakesData( data, fileIndex, uncheckedKeys, changedKey ) {
 
-	studyData = data;
+	var studyData = data;
 	var value = valueHTML = ctakesHTML = "";
 	//Every time function is called, swatch colors get reinstantiated.
-	swatchCounter = 0; textToColor = "";
+	filesArray[ fileIndex]["swatchCounter"] = 0; filesArray[ fileIndex]["textToColor"] = "";
 	//to remain in context to which key has been checked/unchecked
 	changedKey = changedKey || null;
 
 	for( var key in studyData){
 		if( key.substring(0,7) == "ctakes:"){
 			var color = "";
+
 			extractedKey = key.replace("ctakes:","");
+
 			var allChildren = [];
 
 			if( $.inArray(extractedKey, ignoredKeys) == -1)
 			{
 				var checked = false; checkedAttribute = "";
 
-			 	if( $.inArray( extractedKey, uncheckedKeys) == -1)
+			 	if( $.inArray( extractedKey, filesArray[ fileIndex]["uncheckedKeys"]) == -1)
 			 	{
 			 		checked = true;
 			 		checkedAttribute = "checked = 'checked'";
 			 	}
 			 	else
-			 		swatchCounter++;
+			 		filesArray[ fileIndex]["swatchCounter"]++;
 
+			 	var metaValueCount = 1;
 				if( studyData[key].constructor === Array){
 
 				 		valueHTML = "";
-				 		for( var i=0; i< studyData[key].length; i++)
+				 		metaValueCount = studyData[key].length;
+				 		for( var i=0; i< metaValueCount; i++)
 				 		{
 				 			valueArray = studyData[key][i].split(":");
 				 			value = valueArray[0];
 
 				 			// color the text on the left
 				 			if( checked)
-				 				color = colorText( value, color);
+				 				color = colorText( value, color, fileIndex);
 
 				 			// for extracted data on the right
 						    allChildren.push(value.toLowerCase() );
@@ -355,16 +448,14 @@ function showCtakesData( data, uncheckedKeys, changedKey ) {
 				 		{
 				 			valueHTML += "<input type='checkbox' " + checkedAttribute + "> " + allChildren[i] + "<br/>"
 						}
-
-				 			
-				 		
+						metaValueCount = allChildren.length;
 				}
 			 	else
 			 	{
 	 	 			valueArray = studyData[key].split(":");
 		 			value = valueArray[0];
 		 			if( checked)
-				 		color = colorText( value, color);
+				 		color = colorText( value, color, fileIndex);
 
 		 			valueHTML = "<input type='checkbox' " + checkedAttribute + "> " + value + "<br/>"
 			 	}
@@ -380,11 +471,11 @@ function showCtakesData( data, uncheckedKeys, changedKey ) {
 									   "<span  style='background-color:" + color + "; height:10px; width:10px; border-radius:10px; float:left; position: absolute; margin-top:3%;'></span>" +
 											"<label>" +
 											"<input class='key-highlight' type='checkbox'  " + checkedAttribute + " value='" + extractedKey + "'>" + 
-									   "<a data-toggle='collapse' data-parent='#accordion' style='margin-left:20px;' href='#collapse" + extractedKey + "' aria-expanded='true' aria-controls='collapse" + extractedKey + "'>" + 
-									   extractedKey + "</a>" +
+									   "<a data-toggle='collapse' data-parent='#accordion' style='margin-left:20px;' href='#collapse" + extractedKey + "-" + fileIndex + "' aria-expanded='true' aria-controls='collapse" + extractedKey + "'>" + 
+									   extractedKey + " (" + metaValueCount + ")</a>" +
 									   "</label>" +
 										"</div>" +
-										"</h4> </div>  <div id='collapse" + extractedKey + "' class='panel-collapse collapse" + openPanel + "' role='tabpanel' aria-labelledby='headingOne'>"+
+										"</h4> </div>  <div id='collapse" + extractedKey + "-" + fileIndex + "' class='panel-collapse collapse" + openPanel + "' role='tabpanel' aria-labelledby='headingOne'>"+
 				"<div class='panel-body'>" + valueHTML + "</div></div> </div>";
 				ctakesHTML += extractedData;
 
@@ -393,27 +484,36 @@ function showCtakesData( data, uncheckedKeys, changedKey ) {
 		}
 
 	}		
-	$(".extractedDataPanel").html( ctakesHTML);
-	filesArray[ openFileIndex]["ctakesHTML"] = ctakesHTML;
+	$(".extractedPane" + fileIndex + " .extractedDataPanel").html( ctakesHTML);
+	filesArray[ fileIndex]["ctakesHTML"] = ctakesHTML;
 	//if at the end, textToColor doesnt get filled up, we fill it with the initial text.
-	if( textToColor == "")
+	if( filesArray[ fileIndex]["textToColor"] == "")
 	{
-		$(".extracted-text").html( "<pre>" + studyText + "</pre>");
+		$("#file" + fileIndex + ".extracted-text").html( "<pre>" + filesArray[ fileIndex]["studyText"] + "</pre>");
 	}
 }
 
 function getFileTabHeaderHTML(){
-	var activeClass = "";
-	if( openFileIndex == 0)
-		activeClass = " active ";
+	$( ".fileList li" ).each( function( index, element ){
+	    $(element).removeClass("active");
+	    $(element).children(".active").removeClass("active");
+	});
+	
+	activeClass = " active ";
 
-	return "<li role='presentation' ><a href='#file" + openFileIndex + "' class='fileTitle" + openFileIndex + activeClass + "' role='tab' data-toggle='tab'></a></li>";
+	return "<li role='presentation' class='" + activeClass + "'><a href='#file" + openFileIndex + "' class='fileTitle" + openFileIndex + activeClass + "' data-fileindex='" + openFileIndex + "' role='tab' data-toggle='tab'><button class='close closeTab' data-fileindex='" + openFileIndex + "' type='button'>x</button></a></li>";
 }
 
 function getFileTabContentHTML(){
-	var activeClass = "";
-	if( openFileIndex == 0)
-		activeClass = " active ";
+	$(".extracted-text").removeClass("active");
 
-	return "<div role='tabpanel' class='tab-pane " + activeClass + " extracted-text' id='file" + openFileIndex + "'></div>";
+	activeClass = " active ";
+	return "<div role='tabpanel' class='tab-pane " + activeClass + " extracted-text' id='file" + openFileIndex + "' data-container='body' data-toggle='popover' data-placement='bottom' data-content='test'></div>";
+
+	//setting up the popup for Searchh
+	$("#file" + openFileIndex).popover({
+	    placement: 'bottom',
+	    trigger: "manual",
+	    html: "true"
+	});
 }

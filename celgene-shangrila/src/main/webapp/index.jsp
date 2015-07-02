@@ -90,7 +90,7 @@
 						</div>
 			        </div>
 
-			        <div class="col-md-4 right-pane">
+			        <div class="col-md-4 right-pane right-pane-default">
 		       			<h4 class="text-center">Extracted Data</h4>
 		       			<h6 class="all-selection-option hide"><input type="checkbox" checked class="deselect-all-ctakes"> Select/Deselect All </h6>
 			       		<div class="col-md-12 extractedData">
@@ -152,10 +152,10 @@
 				</div>
 			</div>
 
-		    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		    <script src="resources/js/jquery.min.js"></script>
 			<script src="resources/js/bootstrap.min.js"></script>
 			<script src="resources/js/dropzone.js"></script>
-			<script src="resources/js/nipurn.js"></script>
+			<script src="resources/js/main.js"></script>
 
 		</body>
 
