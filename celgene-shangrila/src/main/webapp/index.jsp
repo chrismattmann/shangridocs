@@ -1,7 +1,7 @@
 	<html  ng-app="shangrila" ng-controller="mainController" ng-init="init()">
 
 		<head>
-			<title>Shangrila</title>
+			<title>Shangri Docs</title>
 
 			<meta charset="utf-8">
 			<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -30,6 +30,7 @@
 			<script type="text/javascript" src="resources/js/controllers/mainController.js"></script>
 			<link rel="stylesheet" href="resources/css/main.css">
 			<link rel="stylesheet" href="resources/css/dropzone.css">
+			<link href="resources/css/bootstrap-tour.min.css" rel="stylesheet">
 			<link rel="stylesheet" href="resources/fonts/font-awesome/css/font-awesome.css">
 		</head>
 
@@ -51,59 +52,89 @@
 		                        <i class="fa fa-magnet fa-stack-2x text-primary shangrila-logo"></i>
 		     				 </a> -->
 						</li>
-						<li class="active navbar-brand"><a href="/celgene-shangrila/index.jsp">Shangrila</a></li>
+						<li class="active navbar-brand"><a href="/celgene-shangrila/index.jsp">Shangri Docs</a></li>
 						<li class="navbar-brand"></li>
 						<li class="navbar-brand"><a href="/red/" target="_blank">Home</a></li>
+						<li class="navbar-brand start-tour">Tour</li>
 						</ul>
 					</div>
 
-			     	<ul class="nav navbar-nav navbar-right">
-			        	<li> <button class="btn btn-5 btn-5b icon-file"  data-toggle="modal" data-target="#fileModal"><span>New</span></button></li>
-			        </ul>
 				</div>
 			</nav>
 
 			<div class="row content">
 				<div class='container-fluid'>
-			        <div class="col-md-8">
-			        	<h1 class="text-center introduction">
-			        		Shangri Docs
-			        	</h1>
-			        	<p class="introduction extracted-text">
-			        		Shangri-docs is a web application developed using AngularJS framework for automatically annotating a document based on medical and clinical domain.
-			        	
-			        		This is an advanced text reader tool that can take in data and extract important information out of it.
-			        		It can take in PDFs, text files at the moment.
-			        	</p>
-
-			        	<div role="tabpanel" class="tabs hide">
+			    	<div class="allFiles col-md-8">
+			     		<div role="tabpanel" class="tabs">
 
 		  					<!-- Nav tabs -->
-							<ul class="nav nav-tabs fileList" role="tablist">
+							<ul class="nav nav-tabs fileList hide" role="tablist">
+								<li role='presentation' class="permTab">
+									<a href='#introText' class='active' role='tab' data-toggle='tab'><i class="fa fa-2x fa-plus"></i></a>
+								</li>
 							</ul>
 
 							<!-- Tab panes -->
 							<div class="tab-content filesContent">
-								
+								<div role='tabpanel' class='tab-pane active' id='introText'>
+									
+									<div class="introduction">
+							        	<div class="row">
+								        	<div class="col-md-2">
+								        	
+								        		<img src ="resources/img/shangrila_logo.gif" value="Shangri Docs Logo" style="width: 80%; margin-left:32%">
+								        	</div>
+								        	
+								        	<div class="col-md-9" style="text-align:justify; margin-left:5%;">
+								        		<span class="lead"> Shangri Docs </span>is a document exploration tool for the biomedical domain which takes inspiration from <a href="http://utopiadocs.com/" target="_blank">Utopiadocs </a> but provides the following features:
+								        	<p>  </p>
+
+												<ul>
+													<li>
+													A fully functional Java EE Web Application (.war) for deployment in application servers such as Apache Tomcat
+													</li>
+													<li>
+													Shangri Docs many more biomedical data sources from which knowledge augmentation occurs and users can benefit
+													</li>
+												</ul>	
+												
+
+								        	</div>
+								        </div>
+								        <hr />
+								        <div class="row">
+								        <h4 class="col-md-offset-1 col-md-10">Upload a file to extract data</h4>
+												<div class="text-center">
+
+									        		<form action="services/tika/rmeta/form" class="dropzone col-md-offset-1 col-md-10 well " id="dropFileArea">
+									        		
+									        			<img src="resources/img/upload-3.png" class="upload-img" width="128" height="128"/><br/>
+									    				<span>Maximum allowed filesize: 25MB</span><br/>
+									    				<span>Allowed file formats: PDF, Txt, Doc, JPG</span><br/>
+													</form>
+									        	</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 			        </div>
 
 			        <div class="col-md-4 right-pane right-pane-default">
-		       			<h4 class="text-center">Extracted Data</h4>
+		       			<h4 class="text-center" id="extractedDataTour">Extracted Data</h4>
 		       			<h6 class="all-selection-option hide"><input type="checkbox" checked class="deselect-all-ctakes"> Select/Deselect All </h6>
 			       		<div class="col-md-12 extractedData">
 			       			<div class="panel-group extractedDataPanel" id="accordion" role="tablist" aria-multiselectable="true"> 
 			       			</div>
 			       		</div>
-		       			<h4 class="text-center">Search</h4>
+		       			<h4 class="text-center" id="searchResultsTour">Search</h4>
 		       			<div class ="search-bar">
 		       				<div class="input-group">
 							  <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
 							  <input type ="text" class="form-control search" placeholder="Search from PubMed, Wikipedia and StudySearch" />
 							</div>
 		       			</div>
-			       		<div class="col-md-12 searchResults">
+			       		<div class="col-md-12 searchResults" >
 		       				<div class="panel-group extractedSearchPanel" id="accordion" role="tablist" aria-multiselectable="true"> 
 		       				</div>
 			       		</div>
@@ -116,34 +147,14 @@
 			    <div class="bottom container-fluid">
 			        
 			            <div class="col-md-4">
-			                <ul> <h5>Contact Us : <a href="mailto:lintagliata@celgene.com" > Lauren Intagliata </a> or <a href="mailto:chris.a.mattmann@nasa.gov" > Chris A Mattmann </a> </h5>
+			                <ul> <h5>Contact Us : <a href="mailto:lintagliata@celgene.com" > Lauren Intagliata </a> or <a href="mailto:chris.a.mattmann@nasa.gov" > Chris A Mattmann </a></h5>
 			                
 			    			</ul>
 			            </div>    
 			        
 			    </div>
 			</div>
-			<div class="modal fade"  id="fileModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-							<h4 class="modal-title">Upload a file to extract data</h4>
-						</div>
-						<div class="modal-body">
-							<div class="text-center">
-				        		<form action="services/tika/rmeta/form" class="dropzone file-intake-area col-md-12 well " id="dropFileArea">
-				        			<img src="resources/img/upload-3.png" class="upload-img" width="128" height="128"/><br/>
-				    				<span>Maximum allowed filesize: 25MB</span><br/>
-				    				<span>Allowed file formats: PDF, Txt, Doc, JPG</span><br/>
-								</form>
-				        	</div>
-						</div>
-						<div class="modal-footer">
-						</div>
-					</div><!-- /.modal-content -->
-				</div><!-- /.modal-dialog -->
-			</div><!-- /.modal -->
+			
 
 			<div class="hide loading-animation-code">
 				<div class='loading-img'>
@@ -156,11 +167,16 @@
 					</div>
 				</div>
 			</div>
-
 		    <script src="resources/js/jquery.min.js"></script>
 			<script src="resources/js/bootstrap.min.js"></script>
 			<script src="resources/js/dropzone.js"></script>
-			<script src="resources/js/main.js"></script>
+			<script src="resources/js/bootstrap-tour.min.js"></script>
+		
+  			<script src="resources/js/main.js"></script>
+
+			<script>
+    			
+ 			</script>
 
 		</body>
 

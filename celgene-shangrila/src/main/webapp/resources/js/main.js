@@ -34,7 +34,29 @@ var openFileIndex = 0;
 //global variable to let one ctakes ajax call to finish before the next
 var ajaxRunning = false;
 
+
+		var tour = new Tour({
+		  steps: [
+		  {
+		    element: "#extractedDataTour",
+		    title: "Annotations",
+		    content: "Find annotated data from the uploaded file here.",
+		    placement: "left"
+		  },
+		  {
+		    element: "#searchResultsTour",
+		    title: "Search",
+		    content: "Search content from Wikipedia, PubMed and StudySearch by entering your search words or select words from uploaded file to search.",
+		    placement: "left"
+		  }
+		]});
+
+		
+
 $(document).ready( function(){
+	// Initialize the tour
+
+		tour.init();
 
 	$(".content").css("min-height",$(".right-pane").height() + 150);
 
@@ -44,11 +66,19 @@ $(document).ready( function(){
 		init: function() {
 			//handling success of file upload
 	    	this.on("success", function(file, responseText) {
+	    		//remove the file from the dropped zone before showing the received content
+		      	this.removeAllFiles();
 	    		//get current files counter
 	    		openFileIndex = filesArray.length ? filesArray.length : 0;
 	    		//add a new object to existing array of files.
+	    		if( filesArray.length == 0)
+				{
+					$(".fileList").removeClass("hide");
+					$(".permTab").children(".active").removeClass("active");
+				}
+				$("#introText").removeClass("active");
 	    		filesArray.push( {});
-	    		$(".fileList").append( getFileTabHeaderHTML() );
+	    		$(".permTab").before( getFileTabHeaderHTML() );
 	    		$(".fileTitle" + openFileIndex).click( function(){
 	    			openFileIndex = $(this).data("fileindex");
 	    			$(".right-pane").addClass("hide");
@@ -62,8 +92,7 @@ $(document).ready( function(){
 	    			fileName = responseText[0]["title"];
 	    			
 	    		$(".fileTitle" + openFileIndex).append( fileName);
-	    		//remove the file from the dropped zone before showing the received content
-		      	this.removeAllFiles();
+
 		      	//hide the upload modal
 		      	$("#fileModal").modal("hide");
 				fileContent = responseText[0]["X-TIKA:content"];
@@ -79,10 +108,11 @@ $(document).ready( function(){
 				fileContent = fileContent.slice( init);
 				//saving it globally for future use.
 				studyText = fileContent;
+				//if this is the first file upload
+
 				filesArray[ openFileIndex]["studyText"] = studyText;
-				//ui changes
-				$(".introduction").hide();
-				$(".tabs").removeClass("hide");
+
+				
 				$("#file" + openFileIndex + ".extracted-text").addClass("pdf-view");
 				$("#file" + openFileIndex + ".extracted-text").html( "<pre>" + fileContent + "</pre>");
 
@@ -93,7 +123,7 @@ $(document).ready( function(){
 				var tempFileIndex = openFileIndex;
 				extractedDataPanel.html( $(".loading-animation-code").html() );
 				$(".content > .container-fluid").append("<div class='col-md-4 right-pane extractedPane" + openFileIndex + "' data-fileindex='" + openFileIndex +"'>" + rightPane.html() + "</div>");
-				
+				extractedDataPanel.html( "");
 
 				var checkAjax = setInterval( function(){
 					
@@ -119,7 +149,7 @@ $(document).ready( function(){
 
 								for(var tempFileIndex=0; tempFileIndex<filesArray.length; tempFileIndex++)
 								{
-									if( $.trim( filesArray[tempFileIndex]["studyText"]) == $.trim( fileContent) )
+									if( $.trim( filesArray[tempFileIndex]["studyText"]) == $.trim( fileContent) && typeof filesArray[tempFileIndex]["removed"] == "undefined")
 										break;
 								}
 								$(".extractedPane" + tempFileIndex + " .all-selection-option").removeClass("hide");
@@ -183,6 +213,12 @@ $(document).ready( function(){
 
 	});
 
+	$(".permTab").click( function(){
+		$("#introText").addClass("active");
+		$(".right-pane").addClass("hide");
+		$(".right-pane-default").removeClass("hide");
+	})
+
 	$(".content").on("keyup", ".search", function(e){
 	    if(e.keyCode == 13)
 	    {
@@ -233,11 +269,19 @@ $(document).ready( function(){
 
 
 	$(".content").on( "click", ".closeTab", function(){
+
 		var tabContentId = $(this).parent().attr("href");
         $(this).parent().parent().remove(); //remove li of tab
         $(tabContentId).remove(); //remove respective tab content
        	fileIndex = $(this).data("fileindex");
        	$(".extractedPane" + fileIndex).remove();
+
+       	//removing content from filesArray will confuse class and id names so filesArray is kept as it is
+       	//assuming not many files will be loaded at the same time.
+       	//Better solution required in the future.
+       	filesArray[ fileIndex]["removed"] = true;
+       	//open tab for uploading a new file by default.
+       	$(".permTab").click();
 	});
 
 	//Getting search preferences from the config
@@ -250,8 +294,15 @@ $(document).ready( function(){
 			searchPreferences = data.services;
 		}
 	});
+
 });
 
+$(".start-tour").click( function(){
+
+		// Start the tour
+		tour.restart();
+		tour.start();
+})
 //add highlighting color to a value and update text on the left
 function colorText( value, color, fileIndex){
 	
@@ -439,9 +490,9 @@ function searchSelectedText( selectedText)
 						data: selectedText,
 						success:function( responseObjects){
 							//$(".loading-img").remove();
-							$(".searchTab" + openFileIndex).append("<li role='presentation' class='active'><a href='#" + currentEngine1 + "' data-toggle='tab'>" + currentEngine1 + "</a></li>");
+							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine1 + "' data-toggle='tab'>" + currentEngine1 + "</a></li>");
 							
-							var searchResultPub = "<div role='tabpanel' class='tab-pane active' id='" + currentEngine1 + "'><ul>";
+							var searchResultPub = "<div role='tabpanel' class='tab-pane' id='" + currentEngine1 + "'><ul>";
 							for (var i=0; i< responseObjects.length; i++) 
 							{
 							
@@ -451,8 +502,8 @@ function searchSelectedText( selectedText)
 							$(".searchContent"+ openFileIndex).append( searchResultPub);
 						},
 						error: function( e){
-							$(".searchTab" + openFileIndex).append("<li role='presentation' class='active'><a href='#" + currentEngine1 + "' data-toggle='tab'>" + currentEngine1 + "</a></li>");
-							var searchResultPub = "<div role='tabpanel' class='tab-pane active' id='" + currentEngine1 + "'><ul>";
+							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine1 + "' data-toggle='tab'>" + currentEngine1 + " (" + responseObjects.length + ")</a></li>");
+							var searchResultPub = "<div role='tabpanel' class='tab-pane' id='" + currentEngine1 + "'><ul>";
 							
 							//sometimes even correct results error out because response is a string instead of an object.
 							/*
@@ -482,8 +533,8 @@ function searchSelectedText( selectedText)
 							//$(".loading-img").remove();
 							responseObjects = $.parseJSON( responseObjects);
 							responseObjects = responseObjects["response"]["docs"];
-							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine2 + "' data-toggle='tab'>" + currentEngine2 + "</a></li>");
-							var searchResultStudy = "<div role='tabpanel' class='tab-pane' id='" + currentEngine2 + "'><ul>";
+							$(".searchTab" + openFileIndex).append("<li role='presentation' class='active'><a href='#" + currentEngine2 + "' data-toggle='tab'>" + currentEngine2 + " (" + responseObjects.length + ")</a></li>");
+							var searchResultStudy = "<div role='tabpanel' class='tab-pane active' id='" + currentEngine2 + "'><ul>";
 							for (var i=0; i< responseObjects.length; i++) {
 							
 								searchResultStudy +="<li><a href=\"" + "../facetview/studyview/index.html?id=" + responseObjects[i]["id"] + "\" target='_blank'>" + responseObjects[i]["Combined_Study_Title"] + "</a></li><hr/>";
@@ -510,7 +561,7 @@ function searchSelectedText( selectedText)
 						data: selectedText,
 						success:function( responseObjects){
 							//$(".loading-img").remove();
-							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3 + "' data-toggle='tab'>" + currentEngine3 + "</a></li>");
+							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3 + "' data-toggle='tab'>" + currentEngine3 + " (" + responseObjects.length + ")</a></li>");
 							var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3 + "'><ul>";
 							for (var key in responseObjects) {
 							
