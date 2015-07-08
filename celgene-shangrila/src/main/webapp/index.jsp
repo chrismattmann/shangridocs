@@ -107,7 +107,7 @@
 								        <h4 class="col-md-offset-1 col-md-10">Upload a file to extract data</h4>
 												<div class="text-center">
 
-									        		<form action="services/tika/rmeta/form" class="dropzone col-md-offset-1 col-md-10 well " id="dropFileArea">
+									        		<form action="services/tika/rmeta/form" class="dropzone col-md-offset-1 col-md-10 well dropFileArea" id="dropFileArea">
 									        		
 									        			<img src="resources/img/upload-3.png" class="upload-img" width="128" height="128"/><br/>
 									    				<span>Maximum allowed filesize: 25MB</span><br/>
@@ -128,7 +128,9 @@
 			       			<div class="panel-group extractedDataPanel" id="accordion" role="tablist" aria-multiselectable="true"> 
 			       			</div>
 			       		</div>
-		       			<h4 class="text-center" id="searchResultsTour">Search</h4>
+			       		<div class="col-md-12">
+		       				<h4 class="text-center" id="searchResultsTour">Search</h4>
+		       			</div>
 		       			<div class ="search-bar">
 		       				<div class="input-group">
 							  <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>

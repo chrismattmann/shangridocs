@@ -38,6 +38,12 @@ var ajaxRunning = false;
 		var tour = new Tour({
 		  steps: [
 		  {
+		    element: "#dropFileArea",
+		    title: "Upload a file",
+		    content: "You can drop a file in this space or browse from your computer to extract data.",
+		    placement: "top"
+		  },
+		  {
 		    element: "#extractedDataTour",
 		    title: "Annotations",
 		    content: "Find annotated data from the uploaded file here.",
@@ -216,6 +222,9 @@ $(document).ready( function(){
 	});
 
 	$(".permTab").click( function(){
+		$(".fileList li").removeClass("active");
+		$(this).addClass("active");
+		$(".filesContent .tab-pane").removeClass("active");
 		$("#introText").addClass("active");
 		$(".right-pane").addClass("hide");
 		$(".right-pane-default").removeClass("hide");
@@ -302,8 +311,10 @@ $(document).ready( function(){
 $(".start-tour").click( function(){
 
 		// Start the tour
+		tour.end();
+		if( filesArray.length > 0)
+			$(".permTab").click();
 		tour.restart();
-		tour.start();
 })
 //add highlighting color to a value and update text on the left
 function colorText( value, color, fileIndex){
