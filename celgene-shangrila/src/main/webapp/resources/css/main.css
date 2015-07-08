@@ -41,6 +41,10 @@
      height:300px;
 }
 
+.searchList{
+    margin-top: 2%;
+}
+
 /* btn awesome - taken from codrops.*/
 
 /* Button 5 */
@@ -391,9 +395,11 @@
     }
 
 }
-.bottom {
+.page-bottom{
     background-color: #080808;
     color: white;
+    position: relative;
+    z-index:100;
 }
 
 .search-bar .input-group {

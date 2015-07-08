@@ -171,7 +171,9 @@
     -o-transform: scale(1);
     transform: scale(1); } }
 .dropzone, .dropzone * {
-  box-sizing: border-box; }
+  box-sizing: border-box; 
+  padding: 150px 0;
+}
 
 .dropzone {}
   .dropzone.dz-clickable {

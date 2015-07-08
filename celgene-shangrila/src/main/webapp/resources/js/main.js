@@ -73,6 +73,7 @@ $(document).ready( function(){
 	    		//add a new object to existing array of files.
 	    		if( filesArray.length == 0)
 				{
+					$(".intro-text").addClass("hide");
 					$(".fileList").removeClass("hide");
 					$(".permTab").children(".active").removeClass("active");
 				}
@@ -87,7 +88,7 @@ $(document).ready( function(){
 
 	    		$(".filesContent").append( getFileTabContentHTML() );
 
-	    		var fileName = "File " + openFileIndex;
+	    		var fileName = "Untitled " + openFileIndex;
 	    		if( responseText[0]["title"] != undefined)
 	    			fileName = responseText[0]["title"];
 	    			
@@ -149,9 +150,10 @@ $(document).ready( function(){
 
 								for(var tempFileIndex=0; tempFileIndex<filesArray.length; tempFileIndex++)
 								{
-									if( $.trim( filesArray[tempFileIndex]["studyText"]) == $.trim( fileContent) && typeof filesArray[tempFileIndex]["removed"] == "undefined")
+									if( $.trim( filesArray[tempFileIndex]["studyText"]) == $.trim( fileContent) && typeof filesArray[tempFileIndex]["removed"] == "undefined" && typeof filesArray[tempFileIndex]["ctakesReturned"] == "undefined")
 										break;
 								}
+								filesArray[tempFileIndex]["ctakesReturned"] = true;
 								$(".extractedPane" + tempFileIndex + " .all-selection-option").removeClass("hide");
 
 								filesArray[ tempFileIndex]["ctakesData"] = ctakesData;
@@ -490,9 +492,9 @@ function searchSelectedText( selectedText)
 						data: selectedText,
 						success:function( responseObjects){
 							//$(".loading-img").remove();
-							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine1 + "' data-toggle='tab'>" + currentEngine1 + "</a></li>");
+							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine1 + "' data-toggle='tab'>" + currentEngine1 + " (" + responseObjects.length + ")</a></li>");
 							
-							var searchResultPub = "<div role='tabpanel' class='tab-pane' id='" + currentEngine1 + "'><ul>";
+							var searchResultPub = "<div role='tabpanel' class='tab-pane' id='" + currentEngine1 + "'><ul class='searchList'>";
 							for (var i=0; i< responseObjects.length; i++) 
 							{
 							
@@ -502,8 +504,8 @@ function searchSelectedText( selectedText)
 							$(".searchContent"+ openFileIndex).append( searchResultPub);
 						},
 						error: function( e){
-							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine1 + "' data-toggle='tab'>" + currentEngine1 + " (" + responseObjects.length + ")</a></li>");
-							var searchResultPub = "<div role='tabpanel' class='tab-pane' id='" + currentEngine1 + "'><ul>";
+							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine1 + "' data-toggle='tab'>" + currentEngine1 + " (Error)</a></li>");
+							var searchResultPub = "<div role='tabpanel' class='tab-pane' id='" + currentEngine1 + "'><ul class='searchList'>";
 							
 							//sometimes even correct results error out because response is a string instead of an object.
 							/*
@@ -534,7 +536,7 @@ function searchSelectedText( selectedText)
 							responseObjects = $.parseJSON( responseObjects);
 							responseObjects = responseObjects["response"]["docs"];
 							$(".searchTab" + openFileIndex).append("<li role='presentation' class='active'><a href='#" + currentEngine2 + "' data-toggle='tab'>" + currentEngine2 + " (" + responseObjects.length + ")</a></li>");
-							var searchResultStudy = "<div role='tabpanel' class='tab-pane active' id='" + currentEngine2 + "'><ul>";
+							var searchResultStudy = "<div role='tabpanel' class='tab-pane active' id='" + currentEngine2 + "'><ul class='searchList'>";
 							for (var i=0; i< responseObjects.length; i++) {
 							
 								searchResultStudy +="<li><a href=\"" + "../facetview/studyview/index.html?id=" + responseObjects[i]["id"] + "\" target='_blank'>" + responseObjects[i]["Combined_Study_Title"] + "</a></li><hr/>";
@@ -561,12 +563,15 @@ function searchSelectedText( selectedText)
 						data: selectedText,
 						success:function( responseObjects){
 							//$(".loading-img").remove();
-							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3 + "' data-toggle='tab'>" + currentEngine3 + " (" + responseObjects.length + ")</a></li>");
-							var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3 + "'><ul>";
-							for (var key in responseObjects) {
 							
-								searchResultWiki += "<li><a href=\"" + responseObjects[key]["link"] + "\" target='_blank'>" + key + "</a></li><hr/>";
+							var wikiSearchLength = 0; searchResultWiki = "";
+							for (var key in responseObjects) {
+								wikiSearchLength++;
+								searchResultWiki += "<li><a href=\"" + responseObjects[key]["link"] + "\" target='_blank'>" + key  + " - " + responseObjects[key]["desc"] + "</a></li><hr/>";
 							}
+							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3 + "' data-toggle='tab'>" + currentEngine3 + " (" + wikiSearchLength + ")</a></li>");
+							var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3 + "'><ul class='searchList'>" + searchResultWiki;
+							
 							if($.isEmptyObject(responseObjects))
 								searchResultWiki+= "No results";
 							searchResultWiki += "</ul></div>";
@@ -574,8 +579,8 @@ function searchSelectedText( selectedText)
 						},
 						error: function( e){
 							//sometimes even correct results error out because response is a string instead of an object.
-							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3 + "' data-toggle='tab'>" + currentEngine3 + "</a></li>");
-							var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3 + "'><ul>";
+							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3 + "' data-toggle='tab'>" + currentEngine3 + "(Error)</a></li>");
+							var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3 + "'><ul class='searchList'>";
 							
 							/*
 							responseObjects = $.parseJSON( e.responseText );

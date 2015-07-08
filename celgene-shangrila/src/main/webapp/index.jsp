@@ -32,6 +32,7 @@
 			<link rel="stylesheet" href="resources/css/dropzone.css">
 			<link href="resources/css/bootstrap-tour.min.css" rel="stylesheet">
 			<link rel="stylesheet" href="resources/fonts/font-awesome/css/font-awesome.css">
+
 		</head>
 
 		<body>
@@ -79,7 +80,7 @@
 								<div role='tabpanel' class='tab-pane active' id='introText'>
 									
 									<div class="introduction">
-							        	<div class="row">
+							        	<div class="row intro-text">
 								        	<div class="col-md-2">
 								        	
 								        		<img src ="resources/img/shangrila_logo.gif" value="Shangri Docs Logo" style="width: 80%; margin-left:32%">
@@ -98,10 +99,10 @@
 													</li>
 												</ul>	
 												
+								        		<hr />
 
 								        	</div>
 								        </div>
-								        <hr />
 								        <div class="row">
 								        <h4 class="col-md-offset-1 col-md-10">Upload a file to extract data</h4>
 												<div class="text-center">
@@ -144,7 +145,7 @@
 			<div class="row">
 				<!-- Site footer -->
 			    
-			    <div class="bottom container-fluid">
+			    <div class="page-bottom container-fluid">
 			        
 			            <div class="col-md-4">
 			                <ul> <h5>Contact Us : <a href="mailto:lintagliata@celgene.com" > Lauren Intagliata </a> or <a href="mailto:chris.a.mattmann@nasa.gov" > Chris A Mattmann </a></h5>
