@@ -405,3 +405,7 @@
 .search-bar .input-group {
     margin-bottom: 2%;
 }
+
+.start-tour {
+    cursor:pointer;
+}
