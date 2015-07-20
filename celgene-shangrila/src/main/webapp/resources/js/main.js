@@ -33,37 +33,36 @@ var filesArray = [];
 var openFileIndex = 0;
 //global variable to let one ctakes ajax call to finish before the next
 var ajaxRunning = false;
-
-
-		var tour = new Tour({
-		  steps: [
-		  {
-		    element: "#dropFileArea",
-		    title: "Upload a file",
-		    content: "You can drop a file in this space or browse from your computer to extract data.",
-		    placement: "top"
-		  },
-		  {
-		    element: "#extractedDataTour",
-		    title: "Annotations",
-		    content: "Find annotated data from the uploaded file here.",
-		    placement: "left"
-		  },
-		  {
-		    element: "#searchResultsTour",
-		    title: "Search",
-		    content: "Search content from Wikipedia, PubMed and StudySearch by entering your search words or select words from uploaded file to search.",
-		    placement: "left"
-		  }
-		]});
+//defining the tour object
+var tour = new Tour({
+  steps: [
+  {
+    element: "#dropFileArea",
+    title: "Upload a file",
+    content: "You can drop a file in this space or browse from your computer to extract data.",
+    placement: "top"
+  },
+  {
+    element: "#extractedDataTour",
+    title: "Annotations",
+    content: "Find annotated data from the uploaded file here.",
+    placement: "left"
+  },
+  {
+    element: "#searchResultsTour",
+    title: "Search",
+    content: "Search content from Wikipedia, PubMed and StudySearch by entering your search words or select words from uploaded file to search.",
+    placement: "left"
+  }
+]});
 
 		
 
 $(document).ready( function(){
 	// Initialize the tour
+	tour.init();
 
-		tour.init();
-
+	//Let the height of of content div be minimum the height of the right pane so the footer does not come up.
 	$(".content").css("min-height",$(".right-pane").height() + 150);
 
 	//instantiating Dropzone plugin to upload files
@@ -79,25 +78,32 @@ $(document).ready( function(){
 	    		//add a new object to existing array of files.
 	    		if( filesArray.length == 0)
 				{
+					//Remove introduction text.
 					$(".intro-text").addClass("hide");
+					//show header tabs for file names
 					$(".fileList").removeClass("hide");
+					//.permTab belongs to the div containing tab to add a file.
 					$(".permTab").children(".active").removeClass("active");
 				}
 				$("#introText").removeClass("active");
+				//create a new object for the newly uploaded file inside filesArray
 	    		filesArray.push( {});
+	    		//add a new header tab
 	    		$(".permTab").before( getFileTabHeaderHTML() );
+	    		//define what should happen on clicking this tab.
 	    		$(".fileTitle" + openFileIndex).click( function(){
 	    			openFileIndex = $(this).data("fileindex");
+	    			//hide all other right pages and just open right pane for this file.
 	    			$(".right-pane").addClass("hide");
 	    			$(".extractedPane" + openFileIndex).removeClass("hide");
 	    		});
-
+	    		// add extracted file text on left.
 	    		$(".filesContent").append( getFileTabContentHTML() );
 
+	    		// add file name
 	    		var fileName = "Untitled " + openFileIndex;
 	    		if( responseText[0]["title"] != undefined)
 	    			fileName = responseText[0]["title"];
-	    			
 	    		$(".fileTitle" + openFileIndex).append( fileName);
 
 		      	//hide the upload modal
@@ -118,7 +124,6 @@ $(document).ready( function(){
 				//if this is the first file upload
 
 				filesArray[ openFileIndex]["studyText"] = studyText;
-
 				
 				$("#file" + openFileIndex + ".extracted-text").addClass("pdf-view");
 				$("#file" + openFileIndex + ".extracted-text").html( "<pre>" + fileContent + "</pre>");
@@ -132,6 +137,7 @@ $(document).ready( function(){
 				$(".content > .container-fluid").append("<div class='col-md-4 right-pane extractedPane" + openFileIndex + "' data-fileindex='" + openFileIndex +"'>" + rightPane.html() + "</div>");
 				extractedDataPanel.html( "");
 
+				//wait for 1 second before checking if extracted data for previously uplodaded file has come or not.
 				var checkAjax = setInterval( function(){
 					
 					if( ! ajaxRunning){
@@ -147,6 +153,8 @@ $(document).ready( function(){
 							success:function( result){
 								ctakesData = result[0];
 								fileContent = ctakesData["X-TIKA:content"];
+								
+								//remove initial new line characters from returned XTIKA content.
 								for(  init=0; init<fileContent.length; init++)
 								{
 									if( fileContent[init].match( regex))
@@ -154,12 +162,16 @@ $(document).ready( function(){
 								}
 								fileContent = fileContent.slice( init);
 
+								// check to find out extracted data belongs to which extracted text.
+								// Currently, object for removed file is not removed. So, it is important to check if file object was removed.
 								for(var tempFileIndex=0; tempFileIndex<filesArray.length; tempFileIndex++)
 								{
 									if( $.trim( filesArray[tempFileIndex]["studyText"]) == $.trim( fileContent) && typeof filesArray[tempFileIndex]["removed"] == "undefined" && typeof filesArray[tempFileIndex]["ctakesReturned"] == "undefined")
 										break;
 								}
+								//set this for this file future use of above ^
 								filesArray[tempFileIndex]["ctakesReturned"] = true;
+								// make Select/Deselect option for extracted data options available.
 								$(".extractedPane" + tempFileIndex + " .all-selection-option").removeClass("hide");
 
 								filesArray[ tempFileIndex]["ctakesData"] = ctakesData;
@@ -222,6 +234,7 @@ $(document).ready( function(){
 	});
 
 	$(".permTab").click( function(){
+		//if permanent tab that allows uploading a new file is clicked.
 		$(".fileList li").removeClass("active");
 		$(this).addClass("active");
 		$(".filesContent .tab-pane").removeClass("active");
@@ -364,12 +377,15 @@ function showCtakesData( data, fileIndex, uncheckedKeys, changedKey ) {
 
 			extractedKey = key.replace("ctakes:","");
 
+			//this array should contain all children inside this key.
 			var allChildren = [];
 
+			//checked if key has to be ignored.
 			if( $.inArray(extractedKey, ignoredKeys) == -1)
 			{
 				var checked = false; checkedAttribute = "";
 
+				//check for this key is currently checked.
 			 	if( $.inArray( extractedKey, filesArray[ fileIndex]["uncheckedKeys"]) == -1)
 			 	{
 			 		checked = true;
@@ -474,10 +490,12 @@ function getFileTabContentHTML(){
 
 function searchSelectedText( selectedText)
 {
+	//if no file has been uploaded or all files have been removed take the default right pane.
 	var rightPaneClass = ".extractedPane" + openFileIndex;
 	if( $(rightPaneClass).length == 0 )
 		rightPaneClass = ".right-pane";
 
+	//add tabs header for searches in different search engines.
 	if ($(".searchTab" + openFileIndex).length == 0){
 		$( rightPaneClass + " .extractedSearchPanel").append( "<ul class='nav nav-tabs nav-justified searchTab" + openFileIndex + "'></ul>");
 		$( rightPaneClass + " .extractedSearchPanel").append( "<div class='tab-content searchContent" + openFileIndex + "'></div>");
@@ -503,9 +521,9 @@ function searchSelectedText( selectedText)
 						data: selectedText,
 						success:function( responseObjects){
 							//$(".loading-img").remove();
-							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine1 + "' data-toggle='tab'>" + currentEngine1 + " (" + responseObjects.length + ")</a></li>");
+							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine1 + openFileIndex + "' data-toggle='tab'>" + currentEngine1 + " (" + responseObjects.length + ")</a></li>");
 							
-							var searchResultPub = "<div role='tabpanel' class='tab-pane' id='" + currentEngine1 + "'><ul class='searchList'>";
+							var searchResultPub = "<div role='tabpanel' class='tab-pane' id='" + currentEngine1 + openFileIndex + "'><ul class='searchList'>";
 							for (var i=0; i< responseObjects.length; i++) 
 							{
 							
@@ -515,8 +533,8 @@ function searchSelectedText( selectedText)
 							$(".searchContent"+ openFileIndex).append( searchResultPub);
 						},
 						error: function( e){
-							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine1 + "' data-toggle='tab'>" + currentEngine1 + " (Error)</a></li>");
-							var searchResultPub = "<div role='tabpanel' class='tab-pane' id='" + currentEngine1 + "'><ul class='searchList'>";
+							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine1  + openFileIndex + "' data-toggle='tab'>" + currentEngine1 + " (Error)</a></li>");
+							var searchResultPub = "<div role='tabpanel' class='tab-pane' id='" + currentEngine1  + openFileIndex + "'><ul class='searchList'>";
 							
 							//sometimes even correct results error out because response is a string instead of an object.
 							/*
@@ -546,8 +564,8 @@ function searchSelectedText( selectedText)
 							//$(".loading-img").remove();
 							responseObjects = $.parseJSON( responseObjects);
 							responseObjects = responseObjects["response"]["docs"];
-							$(".searchTab" + openFileIndex).append("<li role='presentation' class='active'><a href='#" + currentEngine2 + "' data-toggle='tab'>" + currentEngine2 + " (" + responseObjects.length + ")</a></li>");
-							var searchResultStudy = "<div role='tabpanel' class='tab-pane active' id='" + currentEngine2 + "'><ul class='searchList'>";
+							$(".searchTab" + openFileIndex).append("<li role='presentation' class='active'><a href='#" + currentEngine2  + openFileIndex + "' data-toggle='tab'>" + currentEngine2 + " (" + responseObjects.length + ")</a></li>");
+							var searchResultStudy = "<div role='tabpanel' class='tab-pane active' id='" + currentEngine2  + openFileIndex + "'><ul class='searchList'>";
 							for (var i=0; i< responseObjects.length; i++) {
 							
 								searchResultStudy +="<li><a href=\"" + "../facetview/studyview/index.html?id=" + responseObjects[i]["id"] + "\" target='_blank'>" + responseObjects[i]["Combined_Study_Title"] + "</a></li><hr/>";
@@ -580,8 +598,8 @@ function searchSelectedText( selectedText)
 								wikiSearchLength++;
 								searchResultWiki += "<li><a href=\"" + responseObjects[key]["link"] + "\" target='_blank'>" + key  + " - " + responseObjects[key]["desc"] + "</a></li><hr/>";
 							}
-							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3 + "' data-toggle='tab'>" + currentEngine3 + " (" + wikiSearchLength + ")</a></li>");
-							var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3 + "'><ul class='searchList'>" + searchResultWiki;
+							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3  + openFileIndex + "' data-toggle='tab'>" + currentEngine3 + " (" + wikiSearchLength + ")</a></li>");
+							var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3  + openFileIndex + "'><ul class='searchList'>" + searchResultWiki;
 							
 							if($.isEmptyObject(responseObjects))
 								searchResultWiki+= "No results";
@@ -590,8 +608,8 @@ function searchSelectedText( selectedText)
 						},
 						error: function( e){
 							//sometimes even correct results error out because response is a string instead of an object.
-							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3 + "' data-toggle='tab'>" + currentEngine3 + "(Error)</a></li>");
-							var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3 + "'><ul class='searchList'>";
+							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3  + openFileIndex + "' data-toggle='tab'>" + currentEngine3 + "(Error)</a></li>");
+							var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3  + openFileIndex + "'><ul class='searchList'>";
 							
 							/*
 							responseObjects = $.parseJSON( e.responseText );
