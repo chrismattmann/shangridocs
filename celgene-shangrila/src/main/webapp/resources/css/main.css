@@ -409,3 +409,11 @@
 .start-tour {
     cursor:pointer;
 }
+
+.details{    
+    cursor:pointer;
+}
+
+.popover {
+    max-width: 100%;
+}

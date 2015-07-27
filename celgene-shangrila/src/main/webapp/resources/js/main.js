@@ -34,6 +34,7 @@ var openFileIndex = 0;
 //global variable to let one ctakes ajax call to finish before the next
 var ajaxRunning = false;
 //defining the tour object
+var metaDataIgnoredKeys = ["X-TIKA:content"];
 var tour = new Tour({
   steps: [
   {
@@ -89,7 +90,13 @@ $(document).ready( function(){
 				//create a new object for the newly uploaded file inside filesArray
 	    		filesArray.push( {});
 	    		//add a new header tab
+				filesArray[openFileIndex]["metaData"] = responseText[0];
 	    		$(".permTab").before( getFileTabHeaderHTML() );
+	    		$(".details-" + openFileIndex).popover({
+				    placement: 'bottom',
+				    trigger: 'click',
+				    html: "true"
+				});
 	    		//define what should happen on clicking this tab.
 	    		$(".fileTitle" + openFileIndex).click( function(){
 	    			openFileIndex = $(this).data("fileindex");
@@ -124,7 +131,6 @@ $(document).ready( function(){
 				//if this is the first file upload
 
 				filesArray[ openFileIndex]["studyText"] = studyText;
-				
 				$("#file" + openFileIndex + ".extracted-text").addClass("pdf-view");
 				$("#file" + openFileIndex + ".extracted-text").html( "<pre>" + fileContent + "</pre>");
 
@@ -471,14 +477,22 @@ function getFileTabHeaderHTML(){
 	
 	activeClass = " active ";
 
-	return "<li role='presentation' class='" + activeClass + "'><a href='#file" + openFileIndex + "' class='fileTitle" + openFileIndex + activeClass + "' data-fileindex='" + openFileIndex + "' role='tab' data-toggle='tab'><button class='close closeTab' data-fileindex='" + openFileIndex + "' type='button'>x</button></a></li>";
+	metaDataHTML = "<table class='table table-striped table-bordered table-condensed'>";
+	for( var key in filesArray[openFileIndex]["metaData"]){
+		if( $.inArray(key, metaDataIgnoredKeys) == -1 )
+		{
+			metaDataHTML += "<tr><td>" + key + "</td><td>" + filesArray[openFileIndex]["metaData"][ key] + "</td></tr>";
+		}
+	}
+	metaDataHTML += "</table>";
+	return "<li role='presentation' class='" + activeClass + "'><a href='#file" + openFileIndex + "' class='fileTitle" + openFileIndex + activeClass + "' data-fileindex='" + openFileIndex + "' role='tab' data-toggle='tab'><i class='fa fa-file-o details-" + openFileIndex + "' data-toggle='popover' data-trigger='focus' title='MetaData'  data-container='body' data-placement='bottom' data-content=\"" + metaDataHTML + "\"></i>&nbsp;&nbsp;<button class='close closeTab' data-fileindex='" + openFileIndex + "' type='button'>x</button></a></li>";
 }
 
 function getFileTabContentHTML(){
 	$(".extracted-text").removeClass("active");
 
 	activeClass = " active ";
-	return "<div role='tabpanel' class='tab-pane " + activeClass + " extracted-text' id='file" + openFileIndex + "' data-container='body' data-toggle='popover' data-placement='bottom' data-content='Select text to search'></div>";
+	return "<div role='tabpanel' class='tab-pane " + activeClass + " extracted-text' id='file" + openFileIndex + "' data-container='body' data-toggle='popover' data-trigger='focus' data-placement='bottom' data-content='Select text to search'></div>";
 
 	//setting up the popup for Searchh
 	$("#file" + openFileIndex).popover({
