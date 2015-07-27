@@ -485,7 +485,7 @@ function getFileTabHeaderHTML(){
 		}
 	}
 	metaDataHTML += "</table>";
-	return "<li role='presentation' class='" + activeClass + "'><a href='#file" + openFileIndex + "' class='fileTitle" + openFileIndex + activeClass + "' data-fileindex='" + openFileIndex + "' role='tab' data-toggle='tab'><i class='fa fa-file-o details-" + openFileIndex + "' data-toggle='popover' data-trigger='focus' title='MetaData'  data-container='body' data-placement='bottom' data-content=\"" + metaDataHTML + "\"></i>&nbsp;&nbsp;<button class='close closeTab' data-fileindex='" + openFileIndex + "' type='button'>x</button></a></li>";
+	return "<li role='presentation' class='" + activeClass + "'><a href='#file" + openFileIndex + "' class='fileTitle" + openFileIndex + activeClass + "' data-fileindex='" + openFileIndex + "' role='tab' data-toggle='tab'><i class='fa fa-info-circle details-" + openFileIndex + "' data-toggle='popover' data-trigger='focus' title='MetaData'  data-container='body' data-placement='bottom' data-content=\"" + metaDataHTML + "\"></i>&nbsp;&nbsp;<button class='close closeTab' data-fileindex='" + openFileIndex + "' type='button'>x</button></a></li>";
 }
 
 function getFileTabContentHTML(){
