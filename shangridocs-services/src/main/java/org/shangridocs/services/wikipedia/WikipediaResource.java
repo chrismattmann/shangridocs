@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package gov.nasa.jpl.celgene.shangrila.services.wikipedia;
+package org.shangridocs.services.wikipedia;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,7 +39,7 @@ import org.json.simple.JSONValue;
 @Path("/wikipedia")
 public class WikipediaResource {
 
-  private static final String WIKIPEDIA_BASE_URL = "gov.nasa.jpl.celgene.shangrila.wikipedia.baseUrl";
+  private static final String WIKIPEDIA_BASE_URL = "org.shangridocs.wikipedia.baseUrl";
 
   private String wikipediaBaseUrlStr;
 

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package gov.nasa.jpl.celgene.shangrila.services.pubmed;
+package org.shangridocs.services.pubmed;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -42,9 +42,9 @@ import org.json.simple.JSONValue;
 @Path("/pubmed")
 public class PubmedResource {
 
-  private static final String PUBMED_BASE_URL = "gov.nasa.jpl.celgene.shangrila.pubmed.baseUrl";
+  private static final String PUBMED_BASE_URL = "org.shangridocs.pubmed.baseUrl";
 
-  private static final String PUBMED_ID_BASE_URL = "gov.nasa.jpl.celgene.shangrila.pubmed.ids.baseUrl";
+  private static final String PUBMED_ID_BASE_URL = "org.shangridocs.pubmed.ids.baseUrl";
 
   private static final String PUBMED_BASE = "http://www.ncbi.nlm.nih.gov/pubmed/";
 

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package gov.nasa.jpl.celgene.shangrila.services.tika;
+package org.shangridocs.services.tika;
 
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -49,9 +49,9 @@ public class TikaCtakesResource {
 
   private URL tikaURL;
 
-  private static final String TIKA_URL_PROPERTY = "gov.nasa.jpl.celgene.shangrila.tika.url";
+  private static final String TIKA_URL_PROPERTY = "org.shangridocs.tika.url";
 
-  private static final String CTAKES_URL_PROPERTY = "gov.nasa.jpl.celgene.shangrila.tika.ctakes.url";
+  private static final String CTAKES_URL_PROPERTY = "org.shangridocs.tika.ctakes.url";
 
   public TikaCtakesResource(@Context ServletContext sc)
       throws MalformedURLException {
