@@ -22,6 +22,10 @@ $ cd target
 $ ls 
 celgene-shangrila	celgene-shangrila.war	classes			m2e-wtp			maven-archiver		test-classes
 ```
+
+# Deploying and Installing the Web Application
+
+
 # License
 Shangrila source code and project is licensed and released under the [Apache License v2.0]() 
 

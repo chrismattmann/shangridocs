@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package gov.nasa.jpl.celgene.shangrila.wikipedia;
+package gov.nasa.jpl.celgene.shangrila.services.wikipedia;
 
 import java.io.IOException;
 import java.io.InputStream;

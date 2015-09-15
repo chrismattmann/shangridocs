@@ -25,9 +25,9 @@ the License.
      <init-param>
       <param-name>jaxrs.serviceClasses</param-name>
       <param-value>
-        gov.nasa.jpl.celgene.shangrila.tika.TikaCtakesResource,
-        gov.nasa.jpl.celgene.shangrila.pubmed.PubmedResource,
-        gov.nasa.jpl.celgene.shangrila.wikipedia.WikipediaResource
+        gov.nasa.jpl.celgene.shangrila.services.tika.TikaCtakesResource,
+        gov.nasa.jpl.celgene.shangrila.services.pubmed.PubmedResource,
+        gov.nasa.jpl.celgene.shangrila.services.wikipedia.WikipediaResource
       </param-value>
      </init-param>
     <load-on-startup>1</load-on-startup>

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package gov.nasa.jpl.celgene.shangrila.tika;
+package gov.nasa.jpl.celgene.shangrila.services.tika;
 
 import java.io.InputStream;
 import java.net.MalformedURLException;

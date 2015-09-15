@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package gov.nasa.jpl.celgene.shangrila.pubmed;
+package gov.nasa.jpl.celgene.shangrila.services.pubmed;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
