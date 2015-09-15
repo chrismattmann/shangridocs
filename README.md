@@ -1,12 +1,12 @@
-# Shangrila
+# Shangridocs
 
 <img src="https://github.com/darth-pr/shangrila/blob/master/doc/logo.png" align="right" width="300" />
 
 # Introduction
-Shangrila is a document exploration tool for the biomedical domain which takes inspiration
+Shangridocs is a document exploration tool for the biomedical domain which takes inspiration
 from [Utopiadocs](http://utopiadocs.com/) but provides the following killer features
  * A fully functional Java EE Web Application (.war) for deployment in application servers such as Apache Tomcat
- * Shangrila consults many more biomedical data sources from which knowledge augmentation occurs and users can benefit
+ * Shangridocs consults many more biomedical data sources from which knowledge augmentation occurs and users can benefit
  
 # Build and Install
 To build you require [Apache Maven](https://maven.apache.org/), the Maven package will most likely 
@@ -27,5 +27,5 @@ celgene-shangrila	celgene-shangrila.war	classes			m2e-wtp			maven-archiver		test
 
 
 # License
-Shangrila source code and project is licensed and released under the [Apache License v2.0]() 
+Shangridocs source code and project is licensed and released under the [Apache License v2.0]() 
 
