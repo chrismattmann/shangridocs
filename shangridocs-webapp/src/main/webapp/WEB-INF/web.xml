@@ -17,6 +17,25 @@ the License.
 -->
 <web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     <display-name>shangrila</display-name>
+    <filter>
+        <filter-name>wicket.browser</filter-name>
+        <filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
+        <init-param>
+            <param-name>applicationClassName</param-name>
+            <param-value>org.shangridocs.ShangridocsApp</param-value>
+        </init-param>
+        <init-param>
+            <param-name>shangridocs.homepage</param-name>
+            <param-value>org.shangridocs.HomePage</param-value>
+        </init-param>
+    </filter>
+
+   <filter-mapping>
+    <filter-name>wicket.browser</filter-name>
+    <url-pattern>/*</url-pattern>
+   </filter-mapping>
+
+    
     <servlet>
      <servlet-name>CXFServlet</servlet-name>
      <servlet-class>
@@ -25,9 +44,9 @@ the License.
      <init-param>
       <param-name>jaxrs.serviceClasses</param-name>
       <param-value>
-        gov.nasa.jpl.celgene.shangrila.services.tika.TikaCtakesResource,
-        gov.nasa.jpl.celgene.shangrila.services.pubmed.PubmedResource,
-        gov.nasa.jpl.celgene.shangrila.services.wikipedia.WikipediaResource
+        org.shangridocs.services.tika.TikaCtakesResource,
+        org.shangridocs.services.pubmed.PubmedResource,
+        org.shangridocs.services.wikipedia.WikipediaResource
       </param-value>
      </init-param>
     <load-on-startup>1</load-on-startup>
