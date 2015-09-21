@@ -23,8 +23,8 @@
   <groupId>org.shangridocs</groupId>
   <artifactId>shangridocs-webcomponents</artifactId>
   <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
-  <name>ShangriLa (Docs) Wicket Web Components</name>
+  <version>0.1-SNAPSHOT</version>
+  <name>Shangridocs Wicket Web Components</name>
   <properties>
    <wicket.version>1.4.17</wicket.version>
   </properties>    
