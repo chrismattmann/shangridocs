@@ -65,6 +65,13 @@ Dropzone.options.dropFileArea = {
 			filesArray[ openFileIndex]["studyText"] = studyText;
 			$("#file" + openFileIndex + ".extracted-text").addClass("pdf-view");
 			$("#file" + openFileIndex + ".extracted-text").html( "<pre>" + fileContent + "</pre>");
+			
+
+			//to make upload image clickable inside dropzone
+			$(".upload-img").click( function(){
+				$(".dropzone").click();
+			})
+
     	});
 	}
 
