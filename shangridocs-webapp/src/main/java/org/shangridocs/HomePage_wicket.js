@@ -66,148 +66,8 @@ $(document).ready( function(){
 	//Let the height of of content div be minimum the height of the right pane so the footer does not come up.
 	$(".content").css("min-height",$(".right-pane").height() + 150);
 
-	//instantiating Dropzone plugin to upload files
-	Dropzone.options.dropFileArea = {
-		method:"put",
-		init: function() {
-			//handling success of file upload
-	    	this.on("success", function(file, responseText) {
-	    		//remove the file from the dropped zone before showing the received content
-		      	this.removeAllFiles();
-	    		//get current files counter
-	    		openFileIndex = filesArray.length ? filesArray.length : 0;
-	    		//add a new object to existing array of files.
-	    		if( filesArray.length == 0)
-				{
-					//Remove introduction text.
-					$(".intro-text").addClass("hide");
-					//show header tabs for file names
-					$(".fileList").removeClass("hide");
-					//.permTab belongs to the div containing tab to add a file.
-					$(".permTab").children(".active").removeClass("active");
-				}
-				$("#introText").removeClass("active");
-				//create a new object for the newly uploaded file inside filesArray
-	    		filesArray.push( {});
-	    		//add a new header tab
-				filesArray[openFileIndex]["metaData"] = responseText[0];
-	    		$(".permTab").before( getFileTabHeaderHTML() );
-	    		$(".details-" + openFileIndex).popover({
-				    placement: 'bottom',
-				    trigger: 'click',
-				    html: "true"
-				});
-	    		//define what should happen on clicking this tab.
-	    		$(".fileTitle" + openFileIndex).click( function(){
-	    			openFileIndex = $(this).data("fileindex");
-	    			//hide all other right pages and just open right pane for this file.
-	    			$(".right-pane").addClass("hide");
-	    			$(".extractedPane" + openFileIndex).removeClass("hide");
-	    		});
-	    		// add extracted file text on left.
-	    		$(".filesContent").append( getFileTabContentHTML() );
-
-	    		// add file name
-	    		var fileName = "Untitled " + openFileIndex;
-	    		if( responseText[0]["title"] != undefined)
-	    			fileName = responseText[0]["title"];
-	    		$(".fileTitle" + openFileIndex).append( fileName);
-
-		      	//hide the upload modal
-		      	$("#fileModal").modal("hide");
-				fileContent = responseText[0]["X-TIKA:content"];
-				//remove initial new lines from file content
-				var regex = /^[a-z0-9]+$/i;
-				var init = 0;
-				for(  init=0; init<fileContent.length; init++)
-				{
-					if( fileContent[init].match( regex)){
-						break;
-					}
-				}
-				fileContent = fileContent.slice( init);
-				//saving it globally for future use.
-				studyText = fileContent;
-				//if this is the first file upload
-
-				filesArray[ openFileIndex]["studyText"] = studyText;
-				$("#file" + openFileIndex + ".extracted-text").addClass("pdf-view");
-				$("#file" + openFileIndex + ".extracted-text").html( "<pre>" + fileContent + "</pre>");
 
 
-				var rightPane = $(".right-pane-default");
-				rightPane.addClass("hide");
-				var extractedDataPanel = rightPane.find(".extractedDataPanel");
-				var tempFileIndex = openFileIndex;
-				extractedDataPanel.html( $(".loading-animation-code").html() );
-				$(".content > .container-fluid").append("<div class='col-md-4 right-pane extractedPane" + openFileIndex + "' data-fileindex='" + openFileIndex +"'>" + rightPane.html() + "</div>");
-				extractedDataPanel.html( "");
-
-				//wait for 1 second before checking if extracted data for previously uplodaded file has come or not.
-				var checkAjax = setInterval( function(){
-					
-					if( ! ajaxRunning){
-
-						ajaxRunning = true;
-						$.ajax({
-							headers: { 
-						        'Content-Type': 'text/plain' 
-						    },
-							url:"services/tika/ctakes", 
-							method:"put",
-							data: responseText[0]["X-TIKA:content"],
-							success:function( result){
-								ctakesData = result[0];
-								fileContent = ctakesData["X-TIKA:content"];
-								
-								//remove initial new line characters from returned XTIKA content.
-								for(  init=0; init<fileContent.length; init++)
-								{
-									if( fileContent[init].match( regex))
-										break;
-								}
-								fileContent = fileContent.slice( init);
-
-								// check to find out extracted data belongs to which extracted text.
-								// Currently, object for removed file is not removed. So, it is important to check if file object was removed.
-								for(var tempFileIndex=0; tempFileIndex<filesArray.length; tempFileIndex++)
-								{
-									if( $.trim( filesArray[tempFileIndex]["studyText"]) == $.trim( fileContent) && typeof filesArray[tempFileIndex]["removed"] == "undefined" && typeof filesArray[tempFileIndex]["ctakesReturned"] == "undefined")
-										break;
-								}
-								//set this for this file future use of above ^
-								filesArray[tempFileIndex]["ctakesReturned"] = true;
-								// make Select/Deselect option for extracted data options available.
-								$(".extractedPane" + tempFileIndex + " .all-selection-option").removeClass("hide");
-
-								filesArray[ tempFileIndex]["ctakesData"] = ctakesData;
-								showCtakesData( ctakesData, tempFileIndex, []);
-								//all should be unselected for the first time.
-								$(".extractedPane" + tempFileIndex + " .deselect-all-ctakes").click();
-								ajaxRunning = false;
-								clearInterval( checkAjax);
-							}
-						}).fail( function(){
-							$(".extractedPane" + tempFileIndex + " .extractedDataPanel").html( "<label class='alert alert-danger'> An error has occurred. Please refresh the page and try again.</label>");
-							ajaxRunning = false;	
-							clearInterval( checkAjax);
-						})
-					}
-
-				}, 1000);
-
-		    });
-		    this.on("complete", function(file) {
-		      	// Handle the responseText here. For example, add the text to the preview element:
-		    });
-  		},
-	};
-		
-	//to make upload image clickable inside dropzone
-	$(".upload-img").click( function(){
-		$(".dropzone").click();
-	})
-	
 	//Showing popover for search when text is selected
 	$(".filesContent").on( "mouseup", ".extracted-text", function( e){
 
@@ -326,6 +186,18 @@ $(document).ready( function(){
 	});
 
 });
+
+//instantiating Dropzone plugin to upload files
+var initFunc = Dropzone.options.dropFileArea["init"];
+var onSuccessFunc = function(){
+	//cTakesPanel();
+}
+Dropzone.options.dropFileArea = {
+		init: initFunc,
+		method: "put",
+		success: onSuccessFunc
+};
+
 
 $(".start-tour").click( function(){
 

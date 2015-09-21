@@ -19,6 +19,9 @@ the License.
         
     <Parameter name="shangridocs.homepage"
         value="org.shangridocs.HomePage"/>  
+        
+    <Parameter name="org.shangridocs.skin"
+        value=""/>
 
     <!-- shangridocs-services overlay params -->
     <Parameter name="org.shangridocs.tika.url"

@@ -21,13 +21,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
 <wicket:link>
-<script type="text/javascript" src="angular.min.js"></script>
-<script type="text/javascript" src="HomePage.js"></script>
-<script type="text/javascript" src="mainController.js"></script>
-
 <link rel="stylesheet" href="bootstrap.min.css"/>
 <link rel="stylesheet" href="HomePage.css"/>
-<link rel="stylesheet" href="dropzone.css"/>
 <link rel="stylesheet" href="bootstrap-tour.min.css"/>
 <link rel="stylesheet" href="font-awesome.css"/>
 </wicket:link>
@@ -59,39 +54,73 @@
 
 <div class="row content">
     <div class='container-fluid'>
-	     <div class="introduction">
-	         <div class="row intro-text">
-	             <div class="col-md-2">	             
-	                <wicket:link>
-	                 <img src ="shangrila_logo.gif" alt="Shangri Docs Logo" style="width: 80%; margin-left:32%"/>
-	                </wicket:link>
-	             </div>
-	             
-	             <div class="col-md-9" style="text-align:justify; margin-left:5%;">
-	                 <span class="lead"> Shangri Docs </span>is a document exploration tool for the biomedical 
-	                 domain which takes inspiration from <a href="http://utopiadocs.com/" target="_blank">Utopiadocs </a> 
-	                 but provides the following features:
-	             <p></p>
+	    <div class="introduction">
+	       <div class="row intro-text">
+	           <div class="col-md-2">
+	             <wicket:link>
+	               <img src ="shangrila_logo.gif" alt="Shangri Docs Logo" style="width: 80%; margin-left:32%">
+	             </wicket:link>
+	           </div>
+	           
+	           <div class="col-md-9" style="text-align:justify; margin-left:5%;">
+	               <span class="lead"> Shangri Docs </span>is a document exploration tool for research documents 
+	               domain which takes inspiration from <a href="http://utopiadocs.com/" target="_blank">Utopiadocs</a> 
+	               but improves upon it with the following following features:
+	           <p> </p>
 	
-                 <ul>
-                     <li>
-                     A fully functional Java EE Web Application (.war) for deployment in application servers such as Apache 
-                     Tomcat
-                     </li>
-                     <li>
-                     Shangri Docs many more biomedical data sources from which knowledge augmentation occurs and users can 
-                     benefit
-                     </li>
-                 </ul>   
-	                 
-	                 <hr />
-	
-	             </div>
-	         </div>	     
-        </div>
+	           <ul>
+	               <li>
+	               A fully functional Java EE Web Application (.war) for deployment in application servers such as 
+	               Apache Tomcat
+	               </li>
+	               <li>
+	               Shangri Docs many more biomedical data sources from which knowledge augmentation occurs and users 
+	               can benefit
+	               </li>
+	           </ul>   
+	           <hr />
+	           </div>
+	        </div> 
+	      </div> 
+              
+    <wicket:remove>
+        <link rel="stylesheet" href="dropzone.css"/>
+        <script src="dropzone.js"></script>
         
-        <div wicket:id="tika_panel" id="tika_panel">
-        </div>
+		<div class="allFiles col-md-8">
+		     <div role="tabpanel" class="tabs">
+		
+		         <!-- Nav tabs -->
+		       <ul class="nav nav-tabs fileList hide" role="tablist">
+		           <li role='presentation' class="permTab">
+		               <a href='#introText' class='active' role='tab' data-toggle='tab'><i class="fa fa-2x fa-plus"></i></a>
+		           </li>
+		       </ul>
+		
+		       <!-- Tab panes -->
+		       <div class="tab-content filesContent">
+		           <div role='tabpanel' class='tab-pane active' id='introText'>
+		  
+		                    <div class="row">
+		                    <h4 class="col-md-offset-1 col-md-10">Upload a file to extract data</h4>
+		                            <div class="text-center">
+		
+		                                <form action="./shangridocs/services/tika/rmeta/form" class="dropzone col-md-offset-1 col-md-10 well dropFileArea" id="dropFileArea">
+		                                    <img src="upload-3.png" class="upload-img" width="128" height="128"/>
+		                                  <br/>
+		                                  <span>Maximum allowed filesize: 25MB</span><br/>
+		                                  <span>Allowed file formats: PDF, Txt, Doc, JPG</span><br/>
+		                                </form>
+		                            </div>
+		                    </div>
+		        </div>
+		    </div>
+		</div>
+		</div>    
+    
+    </wicket:remove>
+    
+    <div wicket:id="tika_panel" id="tika_panel"></div>
 
      <div class="col-md-4 right-pane right-pane-default">
          <h4 class="text-center" id="extractedDataTour">Extracted Data</h4>
@@ -143,12 +172,16 @@
     </div>
 </div>
 <wicket:link>
-<script src="jquery.min.js"></script>
-<script src="bootstrap.min.js"></script>
-<script src="dropzone.js"></script>
-<script src="bootstrap-tour.min.js"></script>
-<script src="main.js"></script>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="bootstrap.min.js"></script>
+<script type="text/javascript" src="bootstrap-tour.min.js"></script>
+<script type="text/javascript" src="HomePage_wicket.js"></script>
 </wicket:link>
+
+
+<wicket:remove>
+  <script type="text/javascript" src="HomePage.js"></script>
+</wicket:remove>
 
     
 </body>

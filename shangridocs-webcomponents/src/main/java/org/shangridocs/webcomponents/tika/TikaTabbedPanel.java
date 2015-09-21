@@ -17,14 +17,17 @@
 
 package org.shangridocs.webcomponents.tika;
 
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 
 public class TikaTabbedPanel extends Panel {
 
   private static final long serialVersionUID = 2847393124918719670L;
   
-  public TikaTabbedPanel(String id) {
+  public TikaTabbedPanel(String id, boolean bootstrap) {
     super(id);
+    add(new WebMarkupContainer("bootstrap_css").setVisible(bootstrap));
+    add(new WebMarkupContainer("bootstrap_js").setVisible(bootstrap));
   }
   
 }

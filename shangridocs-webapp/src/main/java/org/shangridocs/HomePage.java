@@ -23,7 +23,7 @@ import org.shangridocs.webcomponents.tika.TikaTabbedPanel;
 public class HomePage extends WebPage {
 
   public HomePage() {
-    add(new TikaTabbedPanel("tika_panel"));
+    add(new TikaTabbedPanel("tika_panel", false));
   }
 
 }
