@@ -27,7 +27,37 @@
   <name>Shangridocs Wicket Web Components</name>
   <properties>
    <wicket.version>1.4.17</wicket.version>
-  </properties>    
+  </properties>   
+  <build>
+      <resources>
+          <resource>
+              <filtering>false</filtering>
+              <directory>src/main/resources</directory>
+          </resource>
+          <resource>
+              <filtering>false</filtering>
+              <directory>src/main/java</directory>
+              <includes>
+                  <include>**</include>
+              </includes>
+              <excludes>
+                  <exclude>**/*.java</exclude>
+              </excludes>
+          </resource>
+      </resources>
+      <testResources>
+          <testResource>
+              <filtering>false</filtering>
+              <directory>src/test/java</directory>
+              <includes>
+                  <include>**</include>
+              </includes>
+              <excludes>
+                  <exclude>**/*.java</exclude>
+              </excludes>
+          </testResource>
+      </testResources>
+  </build>   
   <dependencies>
     <dependency>
         <groupId>org.apache.wicket</groupId>
