@@ -17,7 +17,7 @@
 <html
     xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <head>
-<title>Apache OODT Curation Interface</title>
+<title>Shangridocs Interface</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
 <wicket:link>
@@ -58,7 +58,7 @@
 	       <div class="row intro-text">
 	           <div class="col-md-2">
 	             <wicket:link>
-	               <img src ="shangrila_logo.gif" alt="Shangri Docs Logo" style="width: 80%; margin-left:32%">
+	               <img src ="shangridocs_logo.gif" alt="Shangri Docs Logo" style="width: 80%; margin-left:32%">
 	             </wicket:link>
 	           </div>
 	           
@@ -84,9 +84,18 @@
 	      </div> 
               
     <wicket:remove>
-        <link rel="stylesheet" href="dropzone.css"/>
-        <script src="dropzone.js"></script>
+        <link rel="stylesheet" href="../../../../../../shangridocs-webcomponents/src/main/java/org/shangridocs/webcomponents/tika/dropzone.css"/>
+        <script src="../../../../../../shangridocs-webcomponents/src/main/java/org/shangridocs/webcomponents/tika/dropzone.js"></script>
         
+        <style type="text/css">
+          .upload-img{
+             padding:0px;
+          }
+          
+          #dropFileArea{
+             padding: 150px 0;
+          }
+        </style>
 		<div class="allFiles col-md-8">
 		     <div role="tabpanel" class="tabs">
 		

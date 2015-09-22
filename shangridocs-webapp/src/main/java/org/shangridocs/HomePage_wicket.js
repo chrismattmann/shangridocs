@@ -189,8 +189,9 @@ $(document).ready( function(){
 
 //instantiating Dropzone plugin to upload files
 var initFunc = Dropzone.options.dropFileArea["init"];
-var onSuccessFunc = function(){
+var onSuccessFunc = function(file, responseText){
 	//cTakesPanel();
+	console.log(responseText);
 }
 Dropzone.options.dropFileArea = {
 		init: initFunc,
