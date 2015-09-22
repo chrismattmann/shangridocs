@@ -188,7 +188,10 @@ $(document).ready( function(){
 });
 
 //instantiating Dropzone plugin to upload files
-var initFunc = Dropzone.options.dropFileArea["init"];
+var initFunc = function(){}
+if (typeof Dropzone.options == undefined){
+	initFunc = Dropzone.options.dropFileArea["init"];	
+}
 var onSuccessFunc = function(file, responseText){
 	//cTakesPanel();
 	console.log(responseText);
