@@ -35,3 +35,11 @@
 .icon-file:before {
     content: "\e004";
 }
+
+#dropFileArea{
+	padding: 150px 0;
+}
+
+.upload-img{
+	padding:0px;
+}
