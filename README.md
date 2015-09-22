@@ -1,6 +1,7 @@
 # Shangridocs
 
-<img src="https://github.com/chrismattmann/shangridocs/blob/convert-wicket/shangridocs-webapp/src/main/java/org/shangridocs/shangridocs_logo.gif" align="right" valign="top" width="200" height="150" />
+<img src="https://github.com/chrismattmann/shangridocs/blob/convert-wicket/shangridocs-webapp/src/main/java/org/shangridocs/shangridocs_logo.gif" align="right" valign="top" width="175" height="150" />
+<br/><br/>
 
 # Introduction
 Shangridocs is a document exploration tool for the biomedical domain which takes inspiration
