@@ -1,27 +1,43 @@
 # Shangridocs
 
-<img src="https://github.com/darth-pr/shangrila/blob/master/doc/logo.png" align="right" width="300" />
+<img src="https://github.com/chrismattmann/shangridocs/blob/convert-wicket/shangridocs-webapp/src/main/java/org/shangridocs/shangridocs_logo.gif" align="right" width="300" />
 
 # Introduction
 Shangridocs is a document exploration tool for the biomedical domain which takes inspiration
 from [Utopiadocs](http://utopiadocs.com/) but provides the following killer features
  * A fully functional Java EE Web Application (.war) for deployment in application servers such as Apache Tomcat
  * Shangridocs consults many more biomedical data sources from which knowledge augmentation occurs and users can benefit
- 
-# Build and Install
-To build you require [Apache Maven](https://maven.apache.org/), the Maven package will most likely 
-be available through your OS package manager so check there first before installing from the site.
-Once you have Maven, generating the web application deployment arifact is very easy
-```
-$ cd shangrila/celgene-shangrila
-$ mvn install
-```
-The artifact can then be located in the **/target** directory as follows
-```
-$ cd target
-$ ls 
-celgene-shangrila	celgene-shangrila.war	classes			m2e-wtp			maven-archiver		test-classes
-```
+
+# Build Instructions
+1. git clone -b convert-wicket https://github.com/chrismattmann/shangridocs
+2. cd shangridocs
+3. cd shangridocs-services && mvn install; cd ..
+4. cd shangridocs-webcomponents && mvn install; cd ..
+5. cd shangridocs-webapp && mvn install
+
+# Starting instructions
+Then, to start Shangridocs, you need:
+
+## Apache Tika Server ##
+
+1. cd shangridocs
+2. mkdir tika
+3. curl -kO http://repo1.maven.org/maven2/org/apache/tika/tika-server/1.10/tika-server-1.10.jar
+4. java -jar tika-server-1.10.jar > tika-server.log 2>&1&
+
+## Apache cTAKES Server ##
+
+1. See guide for installing cTAKES and Tika here:
+https://wiki.apache.org/tika/cTAKESParser
+2. Start the server on port 9999
+
+## Start Shangridocs web app in testing mode
+
+1. cd shangridocs/shangridocs-webapp
+2. mvn tomcat7:run
+
+Now visit http://localhost:8181/shangridocs/ and you 
+should see the web app!
 
 # Deploying and Installing the Web Application
 
