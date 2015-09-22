@@ -132,12 +132,18 @@
     <div wicket:id="tika_panel" id="tika_panel"></div>
 
      <div class="col-md-4 right-pane right-pane-default">
-         <h4 class="text-center" id="extractedDataTour">Extracted Data</h4>
-         <h6 class="all-selection-option hide"><input type="checkbox" checked class="deselect-all-ctakes"> Select/Deselect All </h6>
-         <div class="col-md-12 extractedData">
-             <div class="panel-group extractedDataPanel" id="accordion" role="tablist" aria-multiselectable="true"> 
-             </div>
-         </div>
+         <div wicket:id="ctakes_panel" id="ctakes_panel"/>
+         
+         <wicket:remove>
+	         <h4 class="text-center" id="extractedDataTour">Extracted Data</h4>
+	         <h6 class="all-selection-option hide"><input type="checkbox" checked class="deselect-all-ctakes"> Select/Deselect All </h6>
+	         <div class="col-md-12 extractedData">
+	             <div class="panel-group extractedDataPanel" id="accordion" role="tablist" aria-multiselectable="true"> 
+	             </div>
+	         </div>
+         </wicket:remove>
+         
+         
          <div class="col-md-12">
              <h4 class="text-center" id="searchResultsTour">Search</h4>
          </div>

@@ -99,16 +99,6 @@ $(document).ready( function(){
 
 	});
 
-	$(".permTab").click( function(){
-		//if permanent tab that allows uploading a new file is clicked.
-		$(".fileList li").removeClass("active");
-		$(this).addClass("active");
-		$(".filesContent .tab-pane").removeClass("active");
-		$("#introText").addClass("active");
-		$(".right-pane").addClass("hide");
-		$(".right-pane-default").removeClass("hide");
-	})
-
 	$(".content").on("keyup", ".search", function(e){
 	    if(e.keyCode == 13)
 	    {
@@ -116,66 +106,8 @@ $(document).ready( function(){
 	    }
 	});
 
-	//Handling event when checkbox is changed on an annotation
-	$(".content").on("change", ".key-highlight", function(){
-		var changedKey = $(this).val();
-		if( $(this).is(":checked"))
-		{
-			filesArray[ openFileIndex]["uncheckedKeys"] = $.grep( filesArray[ openFileIndex]["uncheckedKeys"], function( value){
-				return value != changedKey;
-			})
-		}
-		else
-			filesArray[ openFileIndex]["uncheckedKeys"].push( changedKey);
 
-		//after remaking if this panel should stay open if it was currently open
-		if( $("#collapse" + changedKey).hasClass("in"))
-			showCtakesData( filesArray[ openFileIndex]["ctakesData"], openFileIndex, filesArray[ openFileIndex]["uncheckedKeys"], changedKey);
-		else
-			showCtakesData( filesArray[ openFileIndex]["ctakesData"], openFileIndex, filesArray[ openFileIndex]["uncheckedKeys"]);
-	});
-
-	//Handling event when user wants to select/deselect all annotations
-	$(".content").on("click", ".deselect-all-ctakes", function(){
-		fileIndex = $(this).parent().parent().data("fileindex");
-		uncheckedKeys = [];
-		filesArray[ fileIndex]["uncheckedKeys"] = [];
-
-		if( ! $(this).hasClass(".select-all-ctakes"))
-		{
-			for( var key in filesArray[ fileIndex]["ctakesData"])
-			{
-				if( key.substring(0,7) == "ctakes:"){
-					filesArray[ fileIndex]["uncheckedKeys"].push( key.replace("ctakes:",""));
-				}
-			}
-			$(this).addClass(".select-all-ctakes");
-		}
-		else
-			$(this).removeClass(".select-all-ctakes");
-
-		showCtakesData( filesArray[ fileIndex]["ctakesData"], fileIndex, uncheckedKeys);
-	});
-
-
-	$(".content").on( "click", ".closeTab", function(){
-
-		var tabContentId = $(this).parent().attr("href");
-        $(this).parent().parent().remove(); //remove li of tab
-        $(tabContentId).remove(); //remove respective tab content
-       	fileIndex = $(this).data("fileindex");
-       	$(".extractedPane" + fileIndex).remove();
-
-       	//removing content from filesArray will confuse class and id names so filesArray is kept as it is
-       	//assuming not many files will be loaded at the same time.
-       	//Better solution required in the future.
-       	filesArray[ fileIndex]["removed"] = true;
-       	//open tab for uploading a new file by default.
-       	$(".permTab").click();
-	});
-
-	//Getting search preferences from the config
-	
+	//Getting search preferences from the config	
 	$.ajax({
 		url:"search-config.json", 
 		headers:{"Content-Type":"application/json"},
@@ -193,8 +125,8 @@ if (typeof Dropzone.options != undefined){
 	initFunc = Dropzone.options.dropFileArea["init"];	
 }
 var onSuccessFunc = function(file, responseText){
-	//cTakesPanel();
-	console.log(responseText);
+	//wait for 1 second before checking if extracted data for previously uplodaded file has come or not.
+	var checkAjax = setInterval(cTAKESPanel(responseText), 1000);
 }
 Dropzone.options.dropFileArea = {
 		init: initFunc,
@@ -211,172 +143,6 @@ $(".start-tour").click( function(){
 			$(".permTab").click();
 		tour.restart();
 })
-//add highlighting color to a value and update text on the left
-function colorText( value, color, fileIndex){
-	
-	var selectedColor = color;
-	if( color == "")
-	{
-		selectedColor = colorSwatch[ filesArray[ fileIndex]["swatchCounter"] ];
-		filesArray[ fileIndex]["swatchCounter"]++;
-	}
-	//Our swatch color list of selected colors is limited. if ctakes list exceeds the limit, get a random color.
-	if( selectedColor == undefined)
-		selectedColor = '#'+Math.floor(Math.random()*16777215).toString(16);
-
-	if( filesArray[ fileIndex]["textToColor"] == "")
-		filesArray[ fileIndex]["textToColor"] = filesArray[ openFileIndex]["studyText"];
-	else
-		filesArray[ fileIndex]["textToColor"] = filesArray[ fileIndex]["coloredText"];
-
-	splitText = filesArray[ fileIndex]["textToColor"].split( value);
-
-	var coloredText = splitText[0];
-	for( var i =0; i< splitText.length-1; i++)
-	{
-		coloredText += 	"<span style='background-color:" + selectedColor + ";'>" + value + "</span>" + splitText[i+1];
-	}
-	$("#file" + fileIndex + ".extracted-text").html( "<pre>" + coloredText + "</pre>");
-	filesArray[ fileIndex]["coloredText"] = coloredText;
-
-	return selectedColor;
-
-}
-
-//create the annotation list from ctakes json.
-function showCtakesData( data, fileIndex, uncheckedKeys, changedKey ) {
-
-	var studyData = data;
-	var value = valueHTML = ctakesHTML = "";
-	//Every time function is called, swatch colors get reinstantiated.
-	filesArray[ fileIndex]["swatchCounter"] = 0; filesArray[ fileIndex]["textToColor"] = "";
-	//to remain in context to which key has been checked/unchecked
-	changedKey = changedKey || null;
-
-	for( var key in studyData){
-		if( key.substring(0,7) == "ctakes:"){
-			var color = "";
-
-			extractedKey = key.replace("ctakes:","");
-
-			//this array should contain all children inside this key.
-			var allChildren = [];
-
-			//checked if key has to be ignored.
-			if( $.inArray(extractedKey, ignoredKeys) == -1)
-			{
-				var checked = false; checkedAttribute = "";
-
-				//check for this key is currently checked.
-			 	if( $.inArray( extractedKey, filesArray[ fileIndex]["uncheckedKeys"]) == -1)
-			 	{
-			 		checked = true;
-			 		checkedAttribute = "checked = 'checked'";
-			 	}
-			 	else
-			 		filesArray[ fileIndex]["swatchCounter"]++;
-
-			 	var metaValueCount = 1;
-				if( studyData[key].constructor === Array){
-
-				 		valueHTML = "";
-				 		metaValueCount = studyData[key].length;
-				 		for( var i=0; i< metaValueCount; i++)
-				 		{
-				 			valueArray = studyData[key][i].split(":");
-				 			value = valueArray[0];
-
-				 			// color the text on the left
-				 			if( checked)
-				 				color = colorText( value, color, fileIndex);
-
-				 			// for extracted data on the right
-						    allChildren.push(value.toLowerCase() );
-						}
-						
-						//remove duplicate data in extracted data
-						allChildren = $.unique(allChildren);
-						for( var i=0; i< allChildren.length; i++)
-				 		{
-				 			valueHTML += "<input type='checkbox' " + checkedAttribute + "> " + allChildren[i] + "<br/>"
-						}
-						metaValueCount = allChildren.length;
-				}
-			 	else
-			 	{
-	 	 			valueArray = studyData[key].split(":");
-		 			value = valueArray[0];
-		 			if( checked)
-				 		color = colorText( value, color, fileIndex);
-
-		 			valueHTML = "<input type='checkbox' " + checkedAttribute + "> " + value + "<br/>"
-			 	}
-
-				var openPanel = "";
-				if( changedKey == extractedKey)
-					openPanel = " in "
-
-				var extractedData = "<div class='panel panel-default'>" +
-									"<div class='panel-heading' role='tab' id='heading" + extractedKey + "'>"+
-										"<h4 class='panel-title'>" +
-										"<div class='checkbox-inline no_indent'>" +
-									   "<span  style='background-color:" + color + "; height:10px; width:10px; border-radius:10px; float:left; position: absolute; margin-top:3%;'></span>" +
-											"<label>" +
-											"<input class='key-highlight' type='checkbox'  " + checkedAttribute + " value='" + extractedKey + "'>" + 
-									   "<a data-toggle='collapse' data-parent='#accordion' style='margin-left:20px;' href='#collapse" + extractedKey + "-" + fileIndex + "' aria-expanded='true' aria-controls='collapse" + extractedKey + "'>" + 
-									   extractedKey + " (" + metaValueCount + ")</a>" +
-									   "</label>" +
-										"</div>" +
-										"</h4> </div>  <div id='collapse" + extractedKey + "-" + fileIndex + "' class='panel-collapse collapse" + openPanel + "' role='tabpanel' aria-labelledby='headingOne'>"+
-				"<div class='panel-body'>" + valueHTML + "</div></div> </div>";
-				ctakesHTML += extractedData;
-
-			}
-
-		}
-
-	}		
-	$(".extractedPane" + fileIndex + " .extractedDataPanel").html( ctakesHTML);
-	filesArray[ fileIndex]["ctakesHTML"] = ctakesHTML;
-	//if at the end, textToColor doesnt get filled up, we fill it with the initial text.
-	if( filesArray[ fileIndex]["textToColor"] == "")
-	{
-		$("#file" + fileIndex + ".extracted-text").html( "<pre>" + filesArray[ fileIndex]["studyText"] + "</pre>");
-	}
-}
-
-function getFileTabHeaderHTML(){
-	$( ".fileList li" ).each( function( index, element ){
-	    $(element).removeClass("active");
-	    $(element).children(".active").removeClass("active");
-	});
-	
-	activeClass = " active ";
-
-	metaDataHTML = "<table class='table table-striped table-bordered table-condensed'>";
-	for( var key in filesArray[openFileIndex]["metaData"]){
-		if( $.inArray(key, metaDataIgnoredKeys) == -1 )
-		{
-			metaDataHTML += "<tr><td>" + key + "</td><td>" + filesArray[openFileIndex]["metaData"][ key] + "</td></tr>";
-		}
-	}
-	metaDataHTML += "</table>";
-	return "<li role='presentation' class='" + activeClass + "'><a href='#file" + openFileIndex + "' class='fileTitle" + openFileIndex + activeClass + "' data-fileindex='" + openFileIndex + "' role='tab' data-toggle='tab'><i class='fa fa-info-circle details-" + openFileIndex + "' data-toggle='popover' data-trigger='focus' title='MetaData'  data-container='body' data-placement='bottom' data-content=\"" + metaDataHTML + "\"></i>&nbsp;&nbsp;<button class='close closeTab' data-fileindex='" + openFileIndex + "' type='button'>x</button></a></li>";
-}
-
-function getFileTabContentHTML(){
-	$(".extracted-text").removeClass("active");
-
-	activeClass = " active ";
-	return "<div role='tabpanel' class='tab-pane " + activeClass + " extracted-text' id='file" + openFileIndex + "' data-container='body' data-toggle='popover' data-trigger='focus' data-placement='bottom' data-content='Select text to search'></div>";
-
-	//setting up the popup for Searchh
-	$("#file" + openFileIndex).popover({
-	    placement: 'bottom',
-	    trigger: "manual",
-	    html: "true"
-	});
-}
 
 function searchSelectedText( selectedText)
 {

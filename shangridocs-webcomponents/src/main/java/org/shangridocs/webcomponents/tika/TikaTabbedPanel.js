@@ -109,3 +109,33 @@ function getFileTabContentHTML(){
 	    html: "true"
 	});
 }
+
+
+
+$(".content").on( "click", ".closeTab", function(){
+
+	var tabContentId = $(this).parent().attr("href");
+    $(this).parent().parent().remove(); //remove li of tab
+    $(tabContentId).remove(); //remove respective tab content
+   	fileIndex = $(this).data("fileindex");
+   	$(".extractedPane" + fileIndex).remove();
+
+   	//removing content from filesArray will confuse class and id names so filesArray is kept as it is
+   	//assuming not many files will be loaded at the same time.
+   	//Better solution required in the future.
+   	filesArray[ fileIndex]["removed"] = true;
+   	//open tab for uploading a new file by default.
+   	$(".permTab").click();
+});
+
+
+$(".permTab").click( function(){
+	//if permanent tab that allows uploading a new file is clicked.
+	$(".fileList li").removeClass("active");
+	$(this).addClass("active");
+	$(".filesContent .tab-pane").removeClass("active");
+	$("#introText").addClass("active");
+	$(".right-pane").addClass("hide");
+	$(".right-pane-default").removeClass("hide");
+})
+

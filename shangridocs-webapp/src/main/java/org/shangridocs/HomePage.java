@@ -18,12 +18,14 @@
 package org.shangridocs;
 
 import org.apache.wicket.markup.html.WebPage;
+import org.shangridocs.webcomponents.ctakes.CTakesPanel;
 import org.shangridocs.webcomponents.tika.TikaTabbedPanel;
 
 public class HomePage extends WebPage {
 
   public HomePage() {
     add(new TikaTabbedPanel("tika_panel", false));
+    add(new CTakesPanel("ctakes_panel", false, false));
   }
 
 }

@@ -25,7 +25,7 @@ the License.
 
     <!-- shangridocs-services overlay params -->
     <Parameter name="org.shangridocs.tika.url"
-        value="http://localhost:9998/rmeta"/>
+        value="http://localhost:9998/rmeta/text"/>
         
     <Parameter name="org.shangridocs.tika.ctakes.url"
         value="http://localhost:9999/rmeta"/>
