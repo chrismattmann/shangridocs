@@ -15,19 +15,20 @@
  * limitations under the License.
  */
 
-package org.shangridocs;
+package org.shangridocs.webcomponents.search;
 
-import org.apache.wicket.markup.html.WebPage;
-import org.shangridocs.webcomponents.ctakes.CTakesPanel;
-import org.shangridocs.webcomponents.search.SearchServicesPanel;
-import org.shangridocs.webcomponents.tika.TikaTabbedPanel;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.panel.Panel;
 
-public class HomePage extends WebPage {
+public class SearchServicesPanel extends Panel {
 
-  public HomePage() {
-    add(new TikaTabbedPanel("tika_panel", false));
-    add(new CTakesPanel("ctakes_panel", false, false));
-    add(new SearchServicesPanel("search_panel", false, false));
+  private static final long serialVersionUID = 3462635881085864621L;
+
+  public SearchServicesPanel(String id, boolean jQuery, boolean bootstrap) {
+    super(id);
+    add(new WebMarkupContainer("bootstrap_js").setVisible(bootstrap));
+    add(new WebMarkupContainer("bootstrap_css").setVisible(bootstrap));
+    add(new WebMarkupContainer("jquery").setVisible(jQuery));
   }
 
 }
