@@ -70,7 +70,7 @@ $(document).ready( function(){
 
 //instantiating Dropzone plugin to upload files
 var initFunc = function(){}
-if (typeof Dropzone.options != undefined){
+if (typeof Dropzone.options.dropFileArea != "undefined"){
 	initFunc = Dropzone.options.dropFileArea["init"];	
 }
 var onSuccessFunc = function(file, responseText){
