@@ -12,9 +12,7 @@ from [Utopiadocs](http://utopiadocs.com/) but provides the following killer feat
 # Build Instructions
 1. git clone -b convert-wicket https://github.com/chrismattmann/shangridocs
 2. cd shangridocs
-3. cd shangridocs-services && mvn install; cd ..
-4. cd shangridocs-webcomponents && mvn install; cd ..
-5. cd shangridocs-webapp && mvn install
+3. mvn install
 
 # Starting instructions
 Then, to start Shangridocs, you need:
