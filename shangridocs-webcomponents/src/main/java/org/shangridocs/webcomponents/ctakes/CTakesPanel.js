@@ -1,9 +1,9 @@
-if (typeof openFileIndex == undefined) {
+if (typeof openFileIndex == "undefined") {
 	var openFileIndex = 0;
 }
 
-function cTAKESPanel(responseText) {
-	if (typeof ajaxRunning == undefined) {
+function cTAKESPanel(responseText, checkAjax) {
+	if (typeof ajaxRunning == "undefined") {
 		var ajaxRunning = false;
 	}
 
@@ -29,7 +29,6 @@ function cTAKESPanel(responseText) {
 							},
 							url : "./services/tika/ctakes",
 							method : "put",
-							async : true,
 							data : responseText[0]["X-TIKA:content"],
 							success : function(result) {
 								ctakesData = result[0];
@@ -49,13 +48,11 @@ function cTAKESPanel(responseText) {
 								// removed. So, it is important to check if file
 								// object was removed.
 								for (var tempFileIndex = 0; tempFileIndex < filesArray.length; tempFileIndex++) {
-									if ($
-											.trim(filesArray[tempFileIndex]["studyText"]) == $
-											.trim(fileContent)
-											&& typeof filesArray[tempFileIndex]["removed"] == "undefined"
-											&& typeof filesArray[tempFileIndex]["ctakesReturned"] == "undefined")
+									if ($.trim(filesArray[tempFileIndex]["studyText"]) == $.trim(fileContent) && typeof filesArray[tempFileIndex]["removed"] == "undefined" && typeof filesArray[tempFileIndex]["ctakesReturned"] == "undefined"){
 										break;
+									}
 								}
+								
 								// set this for this file future use of above ^
 								filesArray[tempFileIndex]["ctakesReturned"] = true;
 								// make Select/Deselect option for extracted
@@ -73,6 +70,7 @@ function cTAKESPanel(responseText) {
 												+ " .deselect-all-ctakes")
 										.click();
 								ajaxRunning = false;
+								clearInterval(checkAjax);
 							}
 						})
 				.fail(
@@ -83,6 +81,7 @@ function cTAKESPanel(responseText) {
 									.html(
 											"<label class='alert alert-danger'> An error has occurred. Please refresh the page and try again.</label>");
 							ajaxRunning = false;
+							clearInterval(checkAjax);							
 						});
 	}
 
