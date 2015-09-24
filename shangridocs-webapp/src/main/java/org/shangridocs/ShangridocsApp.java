@@ -34,6 +34,7 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.file.File;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
+import org.shangridocs.webcomponents.search.SearchServicesPanel;
 
 public class ShangridocsApp extends WebApplication {
 
@@ -55,6 +56,9 @@ public class ShangridocsApp extends WebApplication {
 
     doImageMounts(getImageFiles(ShangridocsApp.class.getPackage().getName()),
         (Class<?>) HomePage.class);
+
+    mountSharedResource("/config/search-config.json", new ResourceReference(
+        SearchServicesPanel.class, "search-config.json").getSharedResourceKey());
   }
 
   @Override
