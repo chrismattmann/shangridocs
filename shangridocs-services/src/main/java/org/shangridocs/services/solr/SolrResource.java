@@ -61,7 +61,7 @@ public class SolrResource {
   public Response status() {
     return Response
         .ok("<h1>This is Tika Solr Resource: running correctly</h1><h2>Solr Proxy: /query</h2><p>"
-            + (this.baseUrl != null ? this.baseUrl : "Not Configured")+"</p>")
+            + (this.baseUrl != null ? this.baseUrl : "Not Configured") + "</p>")
         .build();
   }
 
@@ -82,14 +82,20 @@ public class SolrResource {
     String queryUrl = this.baseUrl;
     queryUrl += SOLR_SELECT_ENDPOINT;
     return forwardProxy(query, queryUrl, this.username, this.password);
-
   }
 
   private Response forwardProxy(String query, String url, final String user,
       final String pass) {
     LOG.info("Issuing query [" + query + "] to Solr at :[" + url + "]");
-    WebClient client = WebClient.create(url, user, pass, null).accept(
-        "application/json");
+    WebClient client = null;
+
+    if (isCredentialed()) {
+      client = WebClient.create(url, user, pass, null);
+    } else {
+      client = WebClient.create(url);
+    }
+
+    client = client.accept("application/json");
     Response response = client.query("wt", "json").query("q", query).get();
     String json = response.readEntity(String.class);
     LOG.info("Response received: " + json);
@@ -112,5 +118,10 @@ public class SolrResource {
       cleanseUrl = url;
     }
     return cleanseUrl;
+  }
+
+  private boolean isCredentialed() {
+    return this.username != null && !this.username.equals("")
+        && this.password != null && !this.password.equals("");
   }
 }
