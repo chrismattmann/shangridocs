@@ -27,7 +27,8 @@ the License.
       <param-value>
         org.shangridocs.services.tika.TikaCtakesResource,
         org.shangridocs.services.pubmed.PubmedResource,
-        org.shangridocs.services.wikipedia.WikipediaResource
+        org.shangridocs.services.wikipedia.WikipediaResource,
+        org.shangridocs.services.solr.SolrResource
       </param-value>
      </init-param>
     <load-on-startup>1</load-on-startup>

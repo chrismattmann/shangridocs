@@ -38,5 +38,17 @@ the License.
 
     <Parameter name="org.shangridocs.wikipedia.baseUrl"
         value="https://en.wikipedia.org/w/api.php"/>   
+        
+    <Parameter name="org.shangridocs.solr.url"
+        value=""/>    
+
+    <Parameter name="org.shangridocs.solr.username"
+        value=""/>  
+        
+    <Parameter name="org.shangridocs.solr.password"
+        value=""/>    
+        
+    <Parameter name="org.shangridocs.solr.resultURL"
+        value=""/>
                     
 </Context>
