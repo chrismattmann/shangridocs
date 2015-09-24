@@ -43,7 +43,7 @@ $(".filesContent").on( "mouseup", ".extracted-text", function( e){
 
 //Getting search preferences from the config	
 $.ajax({
-	url:"search-config.json", 
+	url:"./config/search-config.json", 
 	headers:{"Content-Type":"application/json"},
 	method:"GET",
 	success:function( data){
@@ -120,19 +120,30 @@ function searchSelectedText( selectedText)
 				else if( engine == "StudySearch")
 				{
 					var currentEngine2 = engine;
+					var urlPrefix = "";
+					$.ajax({
+						url : "./services/solr/config",
+						method: "get",
+						success:function(responseTxt){
+							urlPrefix = responseTxt["resultUrlPrefix"];
+						}
+					});
+					
+					
+					
 					$.ajax({
 						url: searchPreferences[engine]["restURL"] + selectedText, 
 						method:"get",
 						data: {},
 						success:function( responseObjects){
 							//$(".loading-img").remove();
-							responseObjects = $.parseJSON( responseObjects);
+							//responseObjects = $.parseJSON( responseObjects);
 							responseObjects = responseObjects["response"]["docs"];
 							$(".searchTab" + openFileIndex).append("<li role='presentation' class='active'><a href='#" + currentEngine2  + openFileIndex + "' data-toggle='tab'>" + currentEngine2 + " (" + responseObjects.length + ")</a></li>");
 							var searchResultStudy = "<div role='tabpanel' class='tab-pane active' id='" + currentEngine2  + openFileIndex + "'><ul class='searchList'>";
 							for (var i=0; i< responseObjects.length; i++) {
 							
-								searchResultStudy +="<li><a href=\"" + "../facetview/studyview/index.html?id=" + responseObjects[i]["id"] + "\" target='_blank'>" + responseObjects[i]["Combined_Study_Title"] + "</a></li><hr/>";
+								searchResultStudy +="<li><a href=\"" + urlPrefix + "?id=" + responseObjects[i]["id"] + "\" target='_blank'>" + responseObjects[i]["Combined_Study_Title"] + "</a></li><hr/>";
 							}
 							if( responseObjects.length == 0)
 								searchResultStudy += "No results";
