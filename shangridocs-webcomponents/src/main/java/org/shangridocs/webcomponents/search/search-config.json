@@ -1,0 +1,16 @@
+{
+  "services": {
+		"PubMed" : {
+		    "restURL" : "services/pubmed/query",
+		    "set":true
+		},
+		"StudySearch" : {
+			"restURL" : "services/solr/query?q=",
+			"set":true
+		},
+		"Wikipedia" : {
+			"restURL" : "services/wikipedia/search",
+			"set":true
+		}
+	}
+}

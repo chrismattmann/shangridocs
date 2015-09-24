@@ -1,0 +1,32 @@
+<wicket:panel>
+ <wicket:link>
+  <link rel="stylesheet" type="text/css" href="bootstrap.min.css" wicket:id="bootstrap_css"/>
+  <link rel="stylesheet" type="text/css" href="CTakesPanel.css"/>
+
+  <script src="jquery.min.js" type="text/javascript" wicket:id="jquery"></script>  
+  <script src="bootstrap.min.js" type="text/javascript" wicket:id="bootstrap_js"></script>
+  <script src="CTakesPanel.js" type="text/javascript"></script>
+ </wicket:link>
+ 
+ <div class="hide loading-animation-code">
+    <div class='loading-img'>
+        <div class='loading-gif text-center'>
+            <div class='bubblingG'>
+                <span id='bubblingG_1'></span>
+                <span id='bubblingG_2'></span>
+                <span id='bubblingG_3'></span>
+            </div>
+        </div>
+    </div>
+</div>  
+
+ <h4 class="text-center" id="extractedDataTour">Extracted Data</h4>
+ <h6 class="all-selection-option hide"><input type="checkbox" checked class="deselect-all-ctakes"> Select/Deselect All </h6>
+ <div class="col-md-12 extractedData">
+     <div class="panel-group extractedDataPanel" id="accordion" role="tablist" aria-multiselectable="true"> 
+     </div>
+ </div>
+  
+
+
+</wicket:panel>

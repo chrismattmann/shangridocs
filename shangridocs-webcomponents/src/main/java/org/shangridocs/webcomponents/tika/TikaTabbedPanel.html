@@ -1,0 +1,49 @@
+<wicket:panel>
+ <wicket:link>
+  <link rel="stylesheet" type="text/css" href="dropzone.css"/>
+  <link rel="stylesheet" type="text/css" href="bootstrap.min.css" wicket:id="bootstrap_css"/>
+  <link rel="stylesheet" type="text/css" href="font-awesome.css"/>
+  <link rel="stylesheet" type="text/css" href="TikaTabbedPanel.css"/>
+
+  <script src="jquery.min.js" type="text/javascript"></script>  
+  <script src="dropzone.js" type="text/javascript"></script>    
+  <script src="bootstrap.min.js" type="text/javascript" wicket:id="bootstrap_js"></script>
+  <script src="TikaTabbedPanel.js" type="text/javascript"></script>
+ </wicket:link>
+
+     
+ <div class="allFiles col-md-8">
+     <div role="tabpanel" class="tabs">
+
+         <!-- Nav tabs -->
+       <ul class="nav nav-tabs fileList hide" role="tablist">
+           <li role='presentation' class="permTab">
+               <a href='#introText' class='active' role='tab' data-toggle='tab'><i class="fa fa-2x fa-plus"></i></a>
+           </li>
+       </ul>
+
+       <!-- Tab panes -->
+       <div class="tab-content filesContent">
+           <div role='tabpanel' class='tab-pane active' id='introText'>
+               
+  
+                    <div class="row">
+                    <h4 class="col-md-offset-1 col-md-10">Upload a file to extract data</h4>
+                            <div class="text-center">
+
+                                <form action="./services/tika/rmeta/form" class="dropzone col-md-offset-1 col-md-10 well dropFileArea" id="dropFileArea">
+                                  <wicket:link>
+                                    <img src="upload-3.png" class="upload-img" width="128" height="128"/>
+                                  </wicket:link>
+                                  <br/>
+                                  <span>Maximum allowed filesize: 25MB</span><br/>
+                                  <span>Allowed file formats: PDF, Txt, Doc, JPG</span><br/>
+                                </form>
+                            </div>
+                    </div>
+        </div>
+    </div>
+</div>
+</div>
+     
+</wicket:panel>

@@ -1,0 +1,45 @@
+.shangrila-logo{
+    position: inherit !important;
+    width:auto !important;
+    padding-top: 53% !important;
+}
+
+.pdf-view{
+    padding:1%;
+    border:2px solid #eee;
+    border-top:0;
+}
+
+.extractedData, .searchResults{
+    float:left;
+    height: 300px;
+    /*resize:vertical; */
+    overflow-y: auto;
+    border:1px solid #aaa; 
+    margin-bottom: 20px;
+    width:100%;
+}
+
+.icon-file:before {
+    font-family: 'icomoon';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+}
+
+.icon-file:before {
+    content: "\e004";
+}
+
+#dropFileArea{
+	padding: 150px 0;
+}
+
+.upload-img{
+	padding:0px;
+}
