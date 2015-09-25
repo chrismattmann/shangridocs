@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package gov.nasa.jpl.celgene.shangrila.spark;
+package org.shangridocs.services.spark;
 
 import java.io.InputStream;
 import java.net.MalformedURLException;
