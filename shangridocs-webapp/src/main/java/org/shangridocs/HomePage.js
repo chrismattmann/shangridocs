@@ -153,8 +153,8 @@ $(document).ready( function(){
 							headers: { 
 						        'Content-Type': 'text/plain' 
 						    },
-							url:"services/tika/ctakes", 
-							method:"put",
+							url:"services/spark/jobs", 
+							method:"post",
 							data: responseText[0]["X-TIKA:content"],
 							success:function( result){
 								ctakesData = result[0];

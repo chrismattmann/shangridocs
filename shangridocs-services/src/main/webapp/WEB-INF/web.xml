@@ -25,6 +25,7 @@ the License.
      <init-param>
       <param-name>jaxrs.serviceClasses</param-name>
       <param-value>
+        org.shangridocs.services.spark.SparkCtakesResource,
         org.shangridocs.services.tika.TikaCtakesResource,
         org.shangridocs.services.pubmed.PubmedResource,
         org.shangridocs.services.wikipedia.WikipediaResource,

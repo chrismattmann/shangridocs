@@ -29,6 +29,22 @@ the License.
         
     <Parameter name="org.shangridocs.tika.ctakes.url"
         value="http://localhost:9999/rmeta/text"/>
+
+    <!-- 
+    Starts a new job on spark-jobserver, use ?sync=true to wait for results 
+    This has to be a POST request e.g POST /jobs
+    -->    
+    <Parameter name="org.shangridocs.spark.jobs.url"
+        value="http://localhost:8090/jobs"/> 
+
+    <!--
+    Uploads a new file to spark-jobserver, the full path of the file on the server 
+    is returned, the prefix is the prefix of the actual filename used on the 
+    server (a timestamp is added to ensure uniqueness) 
+    This has to be a POST request e.g. POST /data/<prefix> 
+    -->
+    <Parameter name="org.shangridocs.spark.data.url"
+        value="http://localhost:8090/data"/> 
         
     <Parameter name="org.shangridocs.pubmed.baseUrl"
         value="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"/>
