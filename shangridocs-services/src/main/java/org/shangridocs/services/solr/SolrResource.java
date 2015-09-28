@@ -27,7 +27,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import org.apache.cxf.jaxrs.client.WebClient;
+import org.apache.oodt.cas.metadata.util.PathUtils;
 
 @Path("/solr")
 public class SolrResource {
@@ -105,7 +107,7 @@ public class SolrResource {
   private String getContextParam(ServletContext sc, String name) {
     if (sc.getInitParameter(name) != null
         && !sc.getInitParameter(name).equals("")) {
-      return sc.getInitParameter(name);
+      return PathUtils.replaceEnvVariables(sc.getInitParameter(name));
     } else
       return null;
   }
