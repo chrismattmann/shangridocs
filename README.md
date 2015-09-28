@@ -10,7 +10,7 @@ from [Utopiadocs](http://utopiadocs.com/) but provides the following killer feat
  * Shangridocs consults many more biomedical data sources from which knowledge augmentation occurs and users can benefit
 
 # Build Instructions
-1. git clone -b convert-wicket https://github.com/chrismattmann/shangridocs
+1. git clone https://github.com/chrismattmann/shangridocs
 2. cd shangridocs
 3. mvn install
 
