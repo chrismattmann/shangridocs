@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one or more
+ contributor license agreements.  See the NOTICE file distributed with
+ this work for additional information regarding copyright ownership.
+ The ASF licenses this file to You under the Apache License, Version 2.0
+ (the "License"); you may not use this file except in compliance with
+ the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<html
+    xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">    
+	<wicket:link>
+	<link rel="stylesheet" href="bootstrap.min.css"/>
+	<link rel="stylesheet" href="HomePage.css"/>
+	<link rel="stylesheet" href="bootstrap-tour.min.css"/>
+	<link rel="stylesheet" href="font-awesome.css"/>
+	</wicket:link>
+</head>
+<body>
+<div id="page">
+    <div id="ncibanner">
+
+        <div id="ncibanner-inner">
+          <a href="http://www.cancer.gov/"><h2 class="ncilogo">National Cancer Institute</h2></a>
+          <a href="http://www.cancer.gov/"><h2 class="cdglogo">www.cancer.gov</h2></a>
+          <a href="http://www.nih.gov/"><h2 class="nihlogo">National Institutes of Health</h2></a>
+        </div>
+    </div>
+    <br class="clr"/>
+
+    <div id="edrnlogo">
+        <h1  class="header-title"><wicket:link><img id="edrnlogo-logo" src="edrn-logo.png"/></wicket:link>Early Detection Research Network</h1>
+        <h2  class="header-title">Biomarkers: The Key to Early Detection</h2>
+    </div>
+    <div id="dcplogo">
+        <h2 class="dcplogo"><a href="http://prevention.cancer.gov">Division of Cancer Prevention</a></h2>
+    </div>
+
+
+<div class="row content">
+    <div class='container-fluid'>
+	    <div class="introduction">
+	       <div class="row intro-text">
+	           <div class="col-md-9" style="text-align:justify; margin-left:0%;">
+	               <span class="lead"> Shangri Docs </span>is a document exploration tool for research documents 
+	               domain which takes inspiration from <a href="http://utopiadocs.com/" target="_blank">Utopiadocs</a> 
+	               but improves upon it with the following following features:
+	           <p> </p>
+	
+	           <ul>
+	               <li>
+	               A fully functional Java EE Web Application (.war) for deployment in application servers such as 
+	               Apache Tomcat
+	               </li>
+	               <li>
+	               Shangri Docs many more biomedical data sources from which knowledge augmentation occurs and users 
+	               can benefit
+	               </li>
+	           </ul>   
+	           <hr />
+	           </div>
+	        </div> 
+	      </div> 
+              
+    <wicket:remove>
+        <link rel="stylesheet" href="../../../../../../shangridocs-webcomponents/src/main/java/org/shangridocs/webcomponents/tika/dropzone.css"/>
+        <script src="../../../../../../shangridocs-webcomponents/src/main/java/org/shangridocs/webcomponents/tika/dropzone.js"></script>
+        
+        <style type="text/css">
+          .upload-img{
+             padding:0px;
+          }
+          
+          #dropFileArea{
+             padding: 150px 0;
+          }
+        </style>
+		<div class="allFiles col-md-8">
+		     <div role="tabpanel" class="tabs">
+		
+		         <!-- Nav tabs -->
+		       <ul class="nav nav-tabs fileList hide" role="tablist">
+		           <li role='presentation' class="permTab">
+		               <a href='#introText' class='active' role='tab' data-toggle='tab'><i class="fa fa-2x fa-plus"></i></a>
+		           </li>
+		       </ul>
+		
+		       <!-- Tab panes -->
+		       <div class="tab-content filesContent">
+		           <div role='tabpanel' class='tab-pane active' id='introText'>
+		  
+		                    <div class="row">
+		                    <h4 class="col-md-offset-1 col-md-10">Upload a file to extract data</h4>
+		                            <div class="text-center">
+		
+		                                <form action="./shangridocs/services/tika/rmeta/form" class="dropzone col-md-offset-1 col-md-10 well dropFileArea" id="dropFileArea">
+		                                    <img src="../../../../../../shangridocs-webcomponents/src/main/java/org/shangridocs/webcomponents/tika/upload-3.png" class="upload-img" width="128" height="128"/>
+		                                  <br/>
+		                                  <span>Maximum allowed filesize: 25MB</span><br/>
+		                                  <span>Allowed file formats: PDF, Txt, Doc, JPG</span><br/>
+		                                </form>
+		                            </div>
+		                    </div>
+		        </div>
+		    </div>
+		</div>
+		</div>    
+    
+    </wicket:remove>
+    
+    <div wicket:id="tika_panel" id="tika_panel"></div>
+
+     <div class="col-md-4 right-pane right-pane-default">
+         <div wicket:id="ctakes_panel" id="ctakes_panel"></div>
+         
+         <wicket:remove>
+	         <h4 class="text-center" id="extractedDataTour">Extracted Data</h4>
+	         <h6 class="all-selection-option hide"><input type="checkbox" checked class="deselect-all-ctakes"> Select/Deselect All </h6>
+	         <div class="col-md-12 extractedData">
+	             <div class="panel-group extractedDataPanel" id="accordion" role="tablist" aria-multiselectable="true"> 
+	             </div>
+	         </div>
+         </wicket:remove>
+         
+         <div wicket:id="search_panel" id="search_panel"></div>
+         
+         <wicket:remove>
+	         <div class="col-md-12">
+	             <h4 class="text-center" id="searchResultsTour">Search</h4>
+	         </div>
+	         <div class ="search-bar">
+	             <div class="input-group">
+	               <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
+	               <input type ="text" class="form-control search" placeholder="Search from PubMed, Wikipedia and StudySearch" />
+	             </div>
+	         </div>
+	         <div class="col-md-12 searchResults" >
+	             <div class="panel-group extractedSearchPanel" id="accordion" role="tablist" aria-multiselectable="true"> 
+	             </div>
+	         </div>
+         </wicket:remove>
+    </div>
+
+ </div> <!-- container fluid ends here -->
+</div> <!-- row ends here -->
+
+  </div> 
+
+<div id="footer">
+    A Service of the National Cancer Institute<br/><br/>
+  <wicket:link>
+    <a href="http://hhs.gov" style="text-decoration:none;">
+        <img src="footer_hhs.gif" alt="Department of Health and Human Services"/>
+    </a>
+
+    <a href="http://nih.gov" style="text-decoration:none;">      
+        <img src="footer_nih.gif" alt="National Institutes of Health"/>
+    </a>
+    <a href="http://usa.gov" style="text-decoration:none;">
+        <img src="footer_usagov.gif"/>
+    </a>
+  </wicket:link>
+</div>
+
+    <wicket:link>
+       <link rel="stylesheet" type="text/css" href="edrn-informatics_wicket.css"/>   
+    </wicket:link> 
+    
+    <wicket:remove>
+      <link rel="stylesheet" type="text/css" href="edrn-informatics.css"/>   
+    </wicket:remove>
+
+
+
+<div class="hide loading-animation-code">
+    <div class='loading-img'>
+        <div class='loading-gif text-center'>
+            <div class='bubblingG'>
+                <span id='bubblingG_1'></span>
+                <span id='bubblingG_2'></span>
+                <span id='bubblingG_3'></span>
+            </div>
+        </div>
+    </div>
+</div>
+<wicket:link>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="bootstrap.min.js"></script>
+<script type="text/javascript" src="bootstrap-tour.min.js"></script>
+<script type="text/javascript" src="HomePage_wicket.js"></script>
+</wicket:link>
+
+
+<wicket:remove>
+  <script type="text/javascript" src="HomePage.js"></script>
+</wicket:remove>
+
+    
+</body>
+</html>
