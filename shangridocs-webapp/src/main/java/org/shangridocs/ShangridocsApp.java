@@ -44,6 +44,8 @@ public class ShangridocsApp extends WebApplication {
   public static final String SHANGRIDOCS_HOMEPAGE = "shangridocs.homepage";
 
   public static final String SHANGRIDOCS_SKIN = "org.shangridocs.skin";
+  
+  private boolean loggedSkinMessage = false;
 
   /*
    * (non-Javadoc)
@@ -91,7 +93,10 @@ public class ShangridocsApp extends WebApplication {
     ShangridocsSession session = new ShangridocsSession(request);
     String skin = getSkin();
     if (skin != null && !skin.equals("")) {
-      LOG.log(Level.INFO, "Setting skin to: [" + skin + "]");
+      if (!loggedSkinMessage){
+        LOG.log(Level.INFO, "Setting skin to: [" + skin + "]");
+        loggedSkinMessage = true;
+      }
       session.setStyle(skin);
     }
     return session;
