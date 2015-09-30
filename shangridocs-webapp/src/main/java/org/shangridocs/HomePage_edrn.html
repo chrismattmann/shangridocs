@@ -1,8 +1,9 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <!--
  Licensed to the Apache Software Foundation (ASF) under one or more
  contributor license agreements.  See the NOTICE file distributed with
  this work for additional information regarding copyright ownership.
- The ASF  b licenses this file to You under the Apache License, Version 2.0
+ The ASF licenses this file to You under the Apache License, Version 2.0
  (the "License"); you may not use this file except in compliance with
  the License.  You may obtain a copy of the License at
 
@@ -17,51 +18,39 @@
 <html
     xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <head>
-<title>Shangridocs Interface</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-
-<wicket:link>
-<link rel="stylesheet" href="bootstrap.min.css"/>
-<link rel="stylesheet" href="HomePage.css"/>
-<link rel="stylesheet" href="bootstrap-tour.min.css"/>
-<link rel="stylesheet" href="font-awesome.css"/>
-</wicket:link>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">    
+	<wicket:link>
+	<link rel="stylesheet" href="bootstrap.min.css"/>
+	<link rel="stylesheet" href="HomePage.css"/>
+	<link rel="stylesheet" href="bootstrap-tour.min.css"/>
+	<link rel="stylesheet" href="font-awesome.css"/>
+	</wicket:link>
 </head>
-
-
 <body>
+<div id="page">
+    <div id="ncibanner">
 
- <nav class="navbar-default navbar-inverse">
-     <div class="container-fluid">
-     <!-- Brand and toggle get grouped for better mobile display -->
-         <div class="navbar-header">
-             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                 <span class="sr-only">Toggle navigation</span>
-                 <span class="icon-bar"></span>
-                 <span class="icon-bar"></span>
-                 <span class="icon-bar"></span>
-             </button>
-             <ul class=" navbar-nav">
-             <li class="active navbar-brand"><a href="#">Shangri Docs</a></li>
-             <li class="navbar-brand"></li>
-             <li class="navbar-brand"><a href="#" target="_blank">Home</a></li>
-             <li class="navbar-brand start-tour">Tour</li>
-             </ul>
-         </div>
+        <div id="ncibanner-inner">
+          <a href="http://www.cancer.gov/"><h2 class="ncilogo">National Cancer Institute</h2></a>
+          <a href="http://www.cancer.gov/"><h2 class="cdglogo">www.cancer.gov</h2></a>
+          <a href="http://www.nih.gov/"><h2 class="nihlogo">National Institutes of Health</h2></a>
+        </div>
+    </div>
+    <br class="clr"/>
 
-     </div>
- </nav>
+    <div id="edrnlogo">
+        <h1  class="header-title"><wicket:link><img id="edrnlogo-logo" src="edrn-logo.png"/></wicket:link>Early Detection Research Network</h1>
+        <h2  class="header-title">Biomarkers: The Key to Early Detection</h2>
+    </div>
+    <div id="dcplogo">
+        <h2 class="dcplogo"><a href="http://prevention.cancer.gov">Division of Cancer Prevention</a></h2>
+    </div>
+
 
 <div class="row content">
     <div class='container-fluid'>
 	    <div class="introduction">
 	       <div class="row intro-text">
-	           <div class="col-md-2">
-	             <wicket:link>
-	               <img src ="shangridocs_logo.gif" alt="Shangri Docs Logo" style="width: 50%; margin-left:32%">
-	             </wicket:link>
-	           </div>
-	           
 	           <div class="col-md-9" style="text-align:justify; margin-left:0%;">
 	               <span class="lead"> Shangri Docs </span>is a document exploration tool for research documents 
 	               domain which takes inspiration from <a href="http://utopiadocs.com/" target="_blank">Utopiadocs</a> 
@@ -164,20 +153,34 @@
 
  </div> <!-- container fluid ends here -->
 </div> <!-- row ends here -->
-<div class="row">
-    <!-- Site footer -->
-    
-    <div class="page-bottom container-fluid">
-        
-            <div class="col-md-4">
-                <ul> <h5>Contact Us : <a href="mailto:lintagliata@celgene.com"> Lauren Intagliata </a> or <a href="mailto:chris.a.mattmann@nasa.gov" > Chris A Mattmann </a></h5>
-                
-                </ul>
-            </div>    
-        
-    </div>
+
+  </div> 
+
+<div id="footer">
+    A Service of the National Cancer Institute<br/><br/>
+  <wicket:link>
+    <a href="http://hhs.gov" style="text-decoration:none;">
+        <img src="footer_hhs.gif" alt="Department of Health and Human Services"/>
+    </a>
+
+    <a href="http://nih.gov" style="text-decoration:none;">      
+        <img src="footer_nih.gif" alt="National Institutes of Health"/>
+    </a>
+    <a href="http://usa.gov" style="text-decoration:none;">
+        <img src="footer_usagov.gif"/>
+    </a>
+  </wicket:link>
 </div>
+
+    <wicket:link>
+       <link rel="stylesheet" type="text/css" href="edrn-informatics_wicket.css"/>   
+    </wicket:link> 
     
+    <wicket:remove>
+      <link rel="stylesheet" type="text/css" href="edrn-informatics.css"/>   
+    </wicket:remove>
+
+
 
 <div class="hide loading-animation-code">
     <div class='loading-img'>

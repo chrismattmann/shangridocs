@@ -53,18 +53,21 @@ the License.
         value="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"/>
 
     <Parameter name="org.shangridocs.wikipedia.baseUrl"
-        value="https://en.wikipedia.org/w/api.php"/>   
+        value="https://en.wikipedia.org/w/api.php"/>           
         
     <Parameter name="org.shangridocs.solr.url"
-        value=""/>    
+        value="[SOLR_URL]"/>    
 
     <Parameter name="org.shangridocs.solr.username"
-        value=""/>  
+        value="[SOLR_USERNAME]"/>  
         
     <Parameter name="org.shangridocs.solr.password"
-        value=""/>    
+        value="[SOLR_PASSWORD]"/>    
         
     <Parameter name="org.shangridocs.solr.resultURL"
-        value=""/>
+        value="[SOLR_RESULT_URL]"/>  
+        
+    <Parameter name="configuration"
+        value="development"/> <!-- valid values {development,deployment} -->
                     
 </Context>

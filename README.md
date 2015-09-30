@@ -10,7 +10,7 @@ from [Utopiadocs](http://utopiadocs.com/) but provides the following killer feat
  * Shangridocs consults many more biomedical data sources from which knowledge augmentation occurs and users can benefit
 
 # Build Instructions
-1. git clone -b convert-wicket https://github.com/chrismattmann/shangridocs
+1. git clone https://github.com/chrismattmann/shangridocs
 2. cd shangridocs
 3. mvn install
 
@@ -20,9 +20,12 @@ Then, to start Shangridocs, you need:
 ## Apache Tika Server ##
 
 1. cd shangridocs
-2. mkdir tika
-3. curl -kO http://repo1.maven.org/maven2/org/apache/tika/tika-server/1.10/tika-server-1.10.jar
-4. java -jar tika-server-1.10.jar > tika-server.log 2>&1&
+2. mkdir -p tika/server
+3. mkdir -p tika/ctakes
+4. cd tika/server
+5. git clone https://github.com/apache/tika.git
+6. cd tika && mvn install
+4. java -jar tika-server/target/tika-server-1.11-SNAPSHOT.jar > ../tika-server.log 2>&1&
 
 ## Apache cTAKES Server ##
 
