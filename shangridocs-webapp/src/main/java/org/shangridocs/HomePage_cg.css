@@ -1,0 +1,327 @@
+/**********************************************
+  *   Generic Mods to Bootstrap
+  *********************************************/
+
+html, body {
+  background-color: #eee;
+  font-size: 13px;
+  color: #444;
+}
+
+body {
+  font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+}
+
+a {
+  color: #043FA3;
+}
+
+a:hover {
+  border-bottom: 1px solid #FA7841;
+  background-color: #E6E6E6;
+  text-decoration: none;
+  margin-bottom: -1px;
+}
+
+.table tbody tr:hover td, .table tbody tr:hover th {
+  background-color: inherit;
+}
+
+/* TESTING DIV
+div {
+  border: 1px dotted red;
+}
+ */
+
+.content {
+  background-color: #fff;
+  -webkit-border-radius: 0 0 6px 6px;
+     -moz-border-radius: 0 0 6px 6px;
+          border-radius: 0 0 6px 6px;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+          box-shadow: 0 1px 2px rgba(0,0,0,.15);
+}
+
+.searchcontent {
+  padding: 20px;
+  margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
+}
+
+.detailscontent {
+  padding: 40px;
+}
+
+.page-header {
+  background-color: #f5f5f5;
+  padding: 20px 20px 10px;
+  margin: -20px -20px 20px;
+}
+
+.container > footer p {
+  text-align: center;
+}
+
+/* specific additions for the example index page */
+.nav-logo img {
+  margin-top: 4px;
+}
+
+h4 {
+  line-height: 28px;
+  margin-bottom: 10px;
+}
+
+h4.section-head {
+  font-weight: 400;
+  line-height: 2em;
+  font-size: 1.3em;
+  margin-bottom:5px;
+  text-transform: uppercase;
+}
+
+.section-nav {
+  font-weight: 600;
+  font-size: 1.3em;
+  padding: 50px 0 0 0;
+  list-style:none;
+  display:inline;
+}
+
+.facetview_filterchoice{
+    display:block;
+}
+
+.section-button {
+  color: #043FA3;
+  background-color: #CCC;
+  line-height: 3em;
+  width: 100%;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: 400;
+  padding-left: 1em;
+  padding-right: 1em;
+  display: block;
+}
+
+.section-button:focus, .section-button:hover {
+  border-left: 1px solid gray;
+  border-right: 2px solid #FA7841;
+  background-color: #E6E6E6;
+  color: #043FA3;
+  text-decoration: none;
+}
+
+.active-section-button {
+  color: #043FA3;
+  background-color: #E6E6E6;
+  line-height: 3em;
+  width: 100%;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+
+.section-nav li {
+  margin-right: -30px;
+  margin-left: -30px;
+}
+
+.studyData {
+  max-width:100%;
+}
+
+.descriptionbody {
+  font-weight: 400;
+  font-size: 1.2em;
+  line-height: 1.4em;
+  max-width: 45em;
+  color: #444;
+}
+
+.descriptionheader {
+  font-size: 1.6em;
+  line-height:1.25em;
+  font-weight: 400;
+  max-width: 45em;
+}
+
+.descriptionheader a:hover {
+  color: #043FA3;
+  background-color: #E6E6E6;
+  border-bottom: 2px solid #FA7841;
+  text-decoration: none;
+}
+
+.footerbody {
+  font-weight: 300;
+  font-size: 1.1em;
+  line-height: 1.4em;
+}
+
+.footervalue {
+  font-weight: 400;
+}
+
+
+font.light {
+  font-weight: 300;
+}
+
+font.bold {
+  font-weight: 600;
+}
+
+font.italic {
+  font-weight: 400;
+  font-style: italic;
+}
+
+strong {
+  font-weight: 600;
+}
+
+em {
+  font-weight: 400;
+  font-style: italic;
+}
+
+a {
+  color: #043FA3;
+  text-decoration: none;
+}
+
+a.tool-link {
+  color: #043FA3;
+  background-color: #CCC;
+  border-bottom: 2px solid gray;
+  border-top: 1px solid gray;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  text-transform: uppercase;
+  font-weight: 400;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  border-radius: 2px;
+}
+
+a.tool-link:hover {
+  border-bottom: 2px solid #FA7841;
+  border-top: 1px solid gray;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  background-color: #E6E6E6;
+  color: #043FA3;
+  text-decoration: none;
+}
+
+th {
+  font-weight: 600;
+}
+
+td.facettable {
+  border-top-color: white;
+  font-weight: 300;
+}
+
+.table-name-column {
+  font-weight: 600;
+  vertical-align: top;
+}
+
+.table-value-column {
+  word-break: break-word;
+  vertical-align: top;
+}
+
+.table>tbody>tr>td.bottom-padded {
+  padding-bottom: 2em;
+}
+
+#facetview_results tbody tr td {
+  padding-bottom: 2em;
+}
+
+.navbar-inner, .navbar-default {
+  background-color: #375DA1;
+  background-image: none;
+}
+
+.navbar-inner>li {
+  font-size: 1.2em;
+}
+
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover{
+  color: #E6E6E6;
+  background-color: #375DA1;
+}
+
+.navbar .nav .active>a:hover {
+  color: #043FA3;
+  border-bottom: 2px solid #FA7841;
+  background-color: #E6E6E6;
+  margin-bottom: -2px;
+}
+
+.navbar .nav>li>a {
+  color: #E6E6E6;
+  background-color: #375DA1;
+}
+
+.navbar .nav>li>a:hover {
+  color: #043FA3;
+  border-bottom: 2px solid #FA7841;
+  background-color: #E6E6E6;
+  margin-bottom: -2px;
+}
+
+::selection {
+  color: #CCC;
+  background-color: #043FA3;
+}
+
+.facettable-header {
+  border-top-color:#DDD;
+  font-weight: 400;
+  color: #CCC;
+}
+
+.btn-info {
+  background-color: #0E8702;
+  color: #E6E6E6;
+  background-image: none;
+  border-color: #0E6B02;
+}
+
+.btn-info:hover,
+.btn-info:active,
+.btn-info.active,
+.btn-info.disabled,
+.btn-info[disabled] {
+  background-color: #0E8702;
+  border: 1px solid #0E6B02;
+}
+
+.btn-info:active, .btn-info.active {
+  background-color: #14C003 \9;
+}
+
+.page-bottom{
+  background-color: #375DA1;
+}
+
+.page-bottom>div>ul>h5>a{
+  color: #9d9d9d;	
+}
+
+.page-bottom>div>ul>h5{
+  color: #E6E6E6;	
+}
