@@ -20,9 +20,12 @@ Then, to start Shangridocs, you need:
 ## Apache Tika Server ##
 
 1. cd shangridocs
-2. mkdir tika
-3. curl -kO http://repo1.maven.org/maven2/org/apache/tika/tika-server/1.10/tika-server-1.10.jar
-4. java -jar tika-server-1.10.jar > tika-server.log 2>&1&
+2. mkdir -p tika/server
+3. mkdir -p tika/ctakes
+4. cd tika/server
+5. git clone https://github.com/apache/tika.git
+6. cd tika && mvn install
+4. java -jar tika-server/target/tika-server-1.11-SNAPSHOT.jar > ../tika-server.log 2>&1&
 
 ## Apache cTAKES Server ##
 
