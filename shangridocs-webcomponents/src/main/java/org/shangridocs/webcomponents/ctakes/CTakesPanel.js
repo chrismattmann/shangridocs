@@ -27,9 +27,9 @@ function cTAKESPanel(responseText, checkAjax) {
 							headers : {
 								'Content-Type' : 'text/plain'
 							},
-							url : "./services/spark/jobs",
-							method : "post",
-							data : responseText[0]["X-TIKA:content"],
+							url : "./services/spark/jobs?appName=test&classPath=spark.jobserver.WordCountExample",
+							method : "POST",
+							data : "input.string=" + responseText[0]["X-TIKA:content"],
 							success : function(result) {
 								ctakesData = result[0];
 								fileContent = ctakesData["X-TIKA:content"];
