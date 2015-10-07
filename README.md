@@ -52,12 +52,19 @@ This starts Tika Server on http://localhost:9998
 ```
 $ git clone -b shangridocs https://github.com/lewismc/spark-jobserver.git
 $ cd spark-jobserver 
+$ sbt job-server-tests/package
 $ sbt assembly
 $ sbt
 $ reStart
 ```
-This produces a server-side 'uber-jar' including all of the cTAKES dependencies required to run the ctakes-clinical-pipeline over data fed into Shangridocs.
-It also starts the spark-jobserver REST service and provides an administration webapp on http://localhost:8090
+This produces a server-side 'uber-jar' including all of the cTAKES dependencies required to run the ctakes-clinical-pipeline over data fed into Shangridocs. It also builds and packages the actual ctakes-clinical-pipeline Spark application.
+
+## Post our Application to Spark JobServer ##
+```
+$ cd spark-jobserver
+$ curl --data-binary @job-server-tests/target/scala-2.10/job-server-tests_2.10-0.6.1-SNAPSHOT.jar localhost:8090/jars/ctakes
+```
+If you now browse to http://localhost:8090 you will see the spark-jobserver administration webapp. If you navigate to the 'Jars' tab you will see the 'ctakes' jar uploaded and available for execution. This is invoked through the Shangridocs application.
 
 ## Start Shangridocs web app in testing mode
 ```

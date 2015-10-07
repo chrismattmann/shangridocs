@@ -27,7 +27,7 @@ function cTAKESPanel(responseText, checkAjax) {
 							headers : {
 								'Content-Type' : 'text/plain'
 							},
-							url : "./services/spark/jobs?appName=test&classPath=spark.jobserver.WordCountExample",
+							url : "./services/spark/jobs?appName=ctakes&classPath=spark.jobserver.ShangriDocsClinicalPipeline",
 							method : "POST",
 							data : "input.string=" + responseText[0]["X-TIKA:content"],
 							success : function(result) {
@@ -48,7 +48,9 @@ function cTAKESPanel(responseText, checkAjax) {
 								// removed. So, it is important to check if file
 								// object was removed.
 								for (var tempFileIndex = 0; tempFileIndex < filesArray.length; tempFileIndex++) {
-									if ($.trim(filesArray[tempFileIndex]["studyText"]) == $.trim(fileContent) && typeof filesArray[tempFileIndex]["removed"] == "undefined" && typeof filesArray[tempFileIndex]["ctakesReturned"] == "undefined"){
+									if ($.trim(filesArray[tempFileIndex]["studyText"]) == $.trim(fileContent) 
+										&& typeof filesArray[tempFileIndex]["removed"] == "undefined" 
+										&& typeof filesArray[tempFileIndex]["ctakesReturned"] == "undefined"){
 										break;
 									}
 								}
