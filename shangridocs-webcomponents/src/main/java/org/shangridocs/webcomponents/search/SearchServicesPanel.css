@@ -6,13 +6,6 @@
     margin-bottom:0;
 }
 
-.page-bottom{
-    background-color: #080808;
-    color: white;
-    position: relative;
-    z-index:100;
-}
-
 .searchResults {
     padding:0;
     overflow: hidden;

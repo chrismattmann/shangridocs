@@ -21,7 +21,7 @@ the License.
         value="org.shangridocs.HomePage"/>  
         
     <Parameter name="org.shangridocs.skin"
-        value=""/>
+        value=""/> <!-- valid values include {edrn, cg, or ""} -->
 
     <!-- shangridocs-services overlay params -->
     <Parameter name="org.shangridocs.tika.url"
