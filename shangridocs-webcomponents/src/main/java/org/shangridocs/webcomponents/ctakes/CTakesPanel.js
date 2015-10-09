@@ -12,6 +12,7 @@ function cTAKESPanel(responseText, checkAjax) {
 	rightPane.addClass("hide");
 	var extractedDataPanel = rightPane.find(".extractedDataPanel");
 	var tempFileIndex = openFileIndex;
+	var string = "\"\"input.string = \"\"\"" + escapeSpecialChars(responseText[0]["X-TIKA:content"]) + "\"\"\"\"\"";
 	extractedDataPanel.html($(".loading-animation-code").html());
 	$(".content > .container-fluid").append(
 			"<div class='col-md-4 right-pane extractedPane" + openFileIndex
@@ -27,12 +28,11 @@ function cTAKESPanel(responseText, checkAjax) {
 							headers : {
 								'Content-Type' : 'text/plain'
 							},
-							url : "./services/spark/jobs?appName=ctakes&classPath=spark.jobserver.ShangriDocsClinicalPipeline",
+							url : "./services/spark/jobs",
 							method : "POST",
-							data : "input.string=" + responseText[0]["X-TIKA:content"],
+							data : string,
 							success : function(result) {
-								ctakesData = result[0];
-								fileContent = ctakesData["X-TIKA:content"];
+								fileContent = result[0]
 
 								// remove initial new line characters from
 								// returned XTIKA content.
@@ -88,6 +88,17 @@ function cTAKESPanel(responseText, checkAjax) {
 	}
 
 }
+
+/* 
+ * Function attaches to the prototype chain of any String object. 
+ * The presence of new line breaks (\n) causes issues when POST'ing
+ * therefore we need to escape such characters.
+ * This function can be used directly on String objects as follows
+ * myJSONString.escapeSpecialChars();
+ */
+escapeSpecialChars = function(str) {
+    return str.replace(/[\n]/g, '\\n');
+};
 
 // Handling event when user wants to select/deselect all annotations
 $(".content").on(

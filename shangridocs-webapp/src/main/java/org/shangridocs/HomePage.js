@@ -24,7 +24,7 @@ var ctakesData = studyText = coloredText = textToColor = "";
 //stores keys that users unchecks.
 var uncheckedKeys = [];
 //stores keys that currently need to be ignored while showing annotations.
-var ignoredKeys = ["schema", "RomanNumeralAnnotation"];
+var ignoredKeys = ["schema", "RomanNumeralAnnotation", "DateAnnoation", "RangeAnnotation", "MeasurementAnnotation", "FractionAnnotation"];
 //stores search preferences object from config file
 var searchPreferences = "";
 //filesArray that would store data for all uploaded files

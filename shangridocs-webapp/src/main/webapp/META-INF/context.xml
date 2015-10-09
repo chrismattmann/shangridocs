@@ -21,7 +21,7 @@ the License.
         value="org.shangridocs.HomePage"/>  
         
     <Parameter name="org.shangridocs.skin"
-        value=""/> <!-- valid values include {edrn, cg, or ""} -->
+        value="cg"/> <!-- valid values include {edrn, cg, or ""} -->
 
     <!-- shangridocs-services overlay params -->
     <Parameter name="org.shangridocs.tika.url"
@@ -35,7 +35,7 @@ the License.
     This has to be a POST request e.g POST /jobs
     -->    
     <Parameter name="org.shangridocs.spark.jobs.url"
-        value="http://localhost:8090/jobs"/> 
+        value="http://localhost:8090/jobs?appName=ctakes&amp;classPath=spark.jobserver.ShangriDocsClinicalPipeline&amp;sync=true"/> 
 
     <!--
     Uploads a new file to spark-jobserver, the full path of the file on the server 

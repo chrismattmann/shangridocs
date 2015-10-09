@@ -23,10 +23,8 @@ import java.net.URL;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletContext;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
-import javax.ws.rs.PUT;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -35,7 +33,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.cxf.jaxrs.client.WebClient;
-import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.cxf.transport.http.HTTPConduit;
 
 @Path("/spark")
@@ -112,7 +109,7 @@ public class SparkCtakesResource {
     HTTPConduit conduit = WebClient.getConfig(client).getHttpConduit();
     conduit.getClient().setConnectionTimeout(DEFAULT_TIMEOUT);
     conduit.getClient().setReceiveTimeout(DEFAULT_TIMEOUT);
-    Response response = client.put(is);
+    Response response = client.post(is);
     String json = response.readEntity(String.class);
     LOG.info("Response received: " + json);
     return Response.ok(json, MediaType.APPLICATION_JSON).build();
