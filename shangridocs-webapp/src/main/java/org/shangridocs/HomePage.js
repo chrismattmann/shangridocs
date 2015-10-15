@@ -24,7 +24,7 @@ var ctakesData = studyText = coloredText = textToColor = "";
 //stores keys that users unchecks.
 var uncheckedKeys = [];
 //stores keys that currently need to be ignored while showing annotations.
-var ignoredKeys = ["schema", "RomanNumeralAnnotation", "DateAnnotation", "RangeAnnotation", "MeasurementAnnotation", "FractionAnnotation"];
+var ignoredKeys = ["schema", "RomanNumeralAnnotation"];
 //stores search preferences object from config file
 var searchPreferences = "";
 //filesArray that would store data for all uploaded files
@@ -57,7 +57,7 @@ var tour = new Tour({
   }
 ]});
 
-
+		
 
 $(document).ready( function(){
 	// Initialize the tour
@@ -145,21 +145,21 @@ $(document).ready( function(){
 
 				//wait for 1 second before checking if extracted data for previously uplodaded file has come or not.
 				var checkAjax = setInterval( function(){
-
+					
 					if( ! ajaxRunning){
 
 						ajaxRunning = true;
 						$.ajax({
-							headers: {
-						        'Content-Type': 'text/plain'
+							headers: { 
+						        'Content-Type': 'text/plain' 
 						    },
-							url:"services/tika/ctakes",
+							url:"services/tika/ctakes", 
 							method:"put",
 							data: responseText[0]["X-TIKA:content"],
 							success:function( result){
 								ctakesData = result[0];
 								fileContent = ctakesData["X-TIKA:content"];
-
+								
 								//remove initial new line characters from returned XTIKA content.
 								for(  init=0; init<fileContent.length; init++)
 								{
@@ -189,7 +189,7 @@ $(document).ready( function(){
 							}
 						}).fail( function(){
 							$(".extractedPane" + tempFileIndex + " .extractedDataPanel").html( "<label class='alert alert-danger'> An error has occurred. Please refresh the page and try again.</label>");
-							ajaxRunning = false;
+							ajaxRunning = false;	
 							clearInterval( checkAjax);
 						})
 					}
@@ -202,12 +202,12 @@ $(document).ready( function(){
 		    });
   		},
 	};
-
+		
 	//to make upload image clickable inside dropzone
 	$(".upload-img").click( function(){
 		$(".dropzone").click();
 	})
-
+	
 	//Showing popover for search when text is selected
 	$(".filesContent").on( "mouseup", ".extracted-text", function( e){
 
@@ -227,8 +227,8 @@ $(document).ready( function(){
 			{
 				elem.popover("hide");
 				$(".extractedPane" + openFileIndex + " .search").val(selectedText);
-
-				searchSelectedText(selectedText.toString() );
+				
+				searchSelectedText(selectedText.toString() ); 
 			});
 		}
 		else{
@@ -315,9 +315,9 @@ $(document).ready( function(){
 	});
 
 	//Getting search preferences from the config
-
+	
 	$.ajax({
-		url:"search-config.json",
+		url:"search-config.json", 
 		headers:{"Content-Type":"application/json"},
 		method:"GET",
 		success:function( data){
@@ -337,7 +337,7 @@ $(".start-tour").click( function(){
 })
 //add highlighting color to a value and update text on the left
 function colorText( value, color, fileIndex){
-
+	
 	var selectedColor = color;
 	if( color == "")
 	{
@@ -417,7 +417,7 @@ function showCtakesData( data, fileIndex, uncheckedKeys, changedKey ) {
 				 			// for extracted data on the right
 						    allChildren.push(value.toLowerCase() );
 						}
-
+						
 						//remove duplicate data in extracted data
 						allChildren = $.unique(allChildren);
 						for( var i=0; i< allChildren.length; i++)
@@ -446,8 +446,8 @@ function showCtakesData( data, fileIndex, uncheckedKeys, changedKey ) {
 										"<div class='checkbox-inline no_indent'>" +
 									   "<span  style='background-color:" + color + "; height:10px; width:10px; border-radius:10px; float:left; position: absolute; margin-top:3%;'></span>" +
 											"<label>" +
-											"<input class='key-highlight' type='checkbox'  " + checkedAttribute + " value='" + extractedKey + "'>" +
-									   "<a data-toggle='collapse' data-parent='#accordion' style='margin-left:20px;' href='#collapse" + extractedKey + "-" + fileIndex + "' aria-expanded='true' aria-controls='collapse" + extractedKey + "'>" +
+											"<input class='key-highlight' type='checkbox'  " + checkedAttribute + " value='" + extractedKey + "'>" + 
+									   "<a data-toggle='collapse' data-parent='#accordion' style='margin-left:20px;' href='#collapse" + extractedKey + "-" + fileIndex + "' aria-expanded='true' aria-controls='collapse" + extractedKey + "'>" + 
 									   extractedKey + " (" + metaValueCount + ")</a>" +
 									   "</label>" +
 										"</div>" +
@@ -459,7 +459,7 @@ function showCtakesData( data, fileIndex, uncheckedKeys, changedKey ) {
 
 		}
 
-	}
+	}		
 	$(".extractedPane" + fileIndex + " .extractedDataPanel").html( ctakesHTML);
 	filesArray[ fileIndex]["ctakesHTML"] = ctakesHTML;
 	//if at the end, textToColor doesnt get filled up, we fill it with the initial text.
@@ -474,7 +474,7 @@ function getFileTabHeaderHTML(){
 	    $(element).removeClass("active");
 	    $(element).children(".active").removeClass("active");
 	});
-
+	
 	activeClass = " active ";
 
 	metaDataHTML = "<table class='table table-striped table-bordered table-condensed'>";
@@ -517,9 +517,9 @@ function searchSelectedText( selectedText)
 
 	$(".searchTab" + openFileIndex).html("");
     $(".searchContent" + openFileIndex).html("");
-	if ( searchPreferences != "")
+	if ( searchPreferences != "") 
 	{
-		for (var engine in searchPreferences)
+		for (var engine in searchPreferences) 
 		{
 			if(searchPreferences[engine]["set"])
 			{
@@ -530,17 +530,17 @@ function searchSelectedText( selectedText)
 						headers : {
 							"Content-Type" : "text/plain"
 						},
-						url: searchPreferences[engine]["restURL"],
+						url: searchPreferences[engine]["restURL"], 
 						method:"put",
 						data: selectedText,
 						success:function( responseObjects){
 							//$(".loading-img").remove();
 							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine1 + openFileIndex + "' data-toggle='tab'>" + currentEngine1 + " (" + responseObjects.length + ")</a></li>");
-
+							
 							var searchResultPub = "<div role='tabpanel' class='tab-pane' id='" + currentEngine1 + openFileIndex + "'><ul class='searchList'>";
-							for (var i=0; i< responseObjects.length; i++)
+							for (var i=0; i< responseObjects.length; i++) 
 							{
-
+							
 								searchResultPub += "<li><a href=\"" + responseObjects[i]["url"] + "\" target='_blank'>" + responseObjects[i]["title"] + "</a></li><hr/>";
 							}
 							searchResultPub += "</ul></div>";
@@ -549,13 +549,13 @@ function searchSelectedText( selectedText)
 						error: function( e){
 							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine1  + openFileIndex + "' data-toggle='tab'>" + currentEngine1 + " (Error)</a></li>");
 							var searchResultPub = "<div role='tabpanel' class='tab-pane' id='" + currentEngine1  + openFileIndex + "'><ul class='searchList'>";
-
+							
 							//sometimes even correct results error out because response is a string instead of an object.
 							/*
 							responseObjects = $.parseJSON( e.responseText );
-							for (var i=0; i< responseObjects.length; i++)
+							for (var i=0; i< responseObjects.length; i++) 
 							{
-
+							
 								searchResultPub += "<li><a href=\"" + responseObjects[i]["url"] + "\" target='_blank'>" + responseObjects[i]["title"] + "</a></li><hr/>";
 							}
 							*/
@@ -571,7 +571,7 @@ function searchSelectedText( selectedText)
 				{
 					var currentEngine2 = engine;
 					$.ajax({
-						url: searchPreferences[engine]["restURL"] + selectedText,
+						url: searchPreferences[engine]["restURL"] + selectedText, 
 						method:"get",
 						data: {},
 						success:function( responseObjects){
@@ -581,7 +581,7 @@ function searchSelectedText( selectedText)
 							$(".searchTab" + openFileIndex).append("<li role='presentation' class='active'><a href='#" + currentEngine2  + openFileIndex + "' data-toggle='tab'>" + currentEngine2 + " (" + responseObjects.length + ")</a></li>");
 							var searchResultStudy = "<div role='tabpanel' class='tab-pane active' id='" + currentEngine2  + openFileIndex + "'><ul class='searchList'>";
 							for (var i=0; i< responseObjects.length; i++) {
-
+							
 								searchResultStudy +="<li><a href=\"" + "../facetview/studyview/index.html?id=" + responseObjects[i]["id"] + "\" target='_blank'>" + responseObjects[i]["Combined_Study_Title"] + "</a></li><hr/>";
 							}
 							if( responseObjects.length == 0)
@@ -601,12 +601,12 @@ function searchSelectedText( selectedText)
 						headers : {
 							"Content-Type" : "text/plain"
 						},
-						url: searchPreferences[engine]["restURL"],
+						url: searchPreferences[engine]["restURL"], 
 						method:"put",
 						data: selectedText,
 						success:function( responseObjects){
 							//$(".loading-img").remove();
-
+							
 							var wikiSearchLength = 0; searchResultWiki = "";
 							for (var key in responseObjects) {
 								wikiSearchLength++;
@@ -614,7 +614,7 @@ function searchSelectedText( selectedText)
 							}
 							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3  + openFileIndex + "' data-toggle='tab'>" + currentEngine3 + " (" + wikiSearchLength + ")</a></li>");
 							var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3  + openFileIndex + "'><ul class='searchList'>" + searchResultWiki;
-
+							
 							if($.isEmptyObject(responseObjects))
 								searchResultWiki+= "No results";
 							searchResultWiki += "</ul></div>";
@@ -624,11 +624,11 @@ function searchSelectedText( selectedText)
 							//sometimes even correct results error out because response is a string instead of an object.
 							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3  + openFileIndex + "' data-toggle='tab'>" + currentEngine3 + "(Error)</a></li>");
 							var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3  + openFileIndex + "'><ul class='searchList'>";
-
+							
 							/*
 							responseObjects = $.parseJSON( e.responseText );
 							for (var key in responseObjects) {
-
+							
 								searchResultWiki += "<li><a href=\"" + responseObjects[key]["link"] + "\" target='_blank'>" + key + "</a></li><hr/>";
 							}
 							*/

@@ -24,7 +24,7 @@ var ctakesData = studyText = coloredText = textToColor = "";
 //stores keys that users unchecks.
 var uncheckedKeys = [];
 //stores keys that currently need to be ignored while showing annotations.
-var ignoredKeys = ["schema", "RomanNumeralAnnotation", "DateAnnotation", "RangeAnnotation", "MeasurementAnnotation", "FractionAnnotation"];
+var ignoredKeys = ["schema", "RomanNumeralAnnotation"];
 //stores search preferences object from config file
 var searchPreferences = "";
 //filesArray that would store data for all uploaded files
@@ -57,7 +57,7 @@ var tour = new Tour({
   }
 ]});
 
-
+		
 
 $(document).ready( function(){
 	// Initialize the tour
@@ -71,7 +71,7 @@ $(document).ready( function(){
 //instantiating Dropzone plugin to upload files
 var initFunc = function(){}
 if (typeof Dropzone.options.dropFileArea != "undefined"){
-	initFunc = Dropzone.options.dropFileArea["init"];
+	initFunc = Dropzone.options.dropFileArea["init"];	
 }
 var onSuccessFunc = function(file, responseText){
 	//wait for 1 second before checking if extracted data for previously uplodaded file has come or not.
