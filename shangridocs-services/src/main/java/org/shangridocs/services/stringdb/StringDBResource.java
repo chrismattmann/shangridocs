@@ -110,6 +110,8 @@ public class StringDBResource {
             }
         }
 
+        jsonStrBuf.append("]");
+
         return Response.ok(jsonStrBuf.toString(), MediaType.APPLICATION_JSON).build();
     }
 
