@@ -45,10 +45,13 @@ should see the web app!
 
 # Testing out the Services
 # Query PubMed for IDs matching the text, “organ”
-curl -X PUT -d "organ" -H "Content-type: text/plain" http://localhost:8181/shangridocs/services/pubmed/text
+`curl -X PUT -d "organ" -H "Content-type: text/plain" http://localhost:8181/shangridocs/services/pubmed/text`
 
 # Query PubMed for abstract info on those IDs
-curl -X PUT -d "26368927,26368857,26368567,26368552,26368505,26368301,26368042,26368024,26367958,26367780,26367742,26367591,26367387,26367361,26367113,26367090,26367026,26366861,26366794,26366793" -H "Content-type: text/plain" http://localhost:8181/shangridocs/services/pubmed/ids
+`curl -X PUT -d "26368927,26368857,26368567,26368552,26368505,26368301,26368042,26368024,26367958,26367780,26367742,26367591,26367387,26367361,26367113,26367090,26367026,26366861,26366794,26366793" -H "Content-type: text/plain" http://localhost:8181/shangridocs/services/pubmed/ids`
+
+# Query GeneCard for gene information
+`curl -X PUT -d "ALB" http://localhost:8181/shangridocs-services/services/genecard/query -H "Content-Type: text/plain" -H "Accept: application/json" -v`
 
 # License
 Shangridocs source code and project is licensed and released under the [Apache License v2.0]() 

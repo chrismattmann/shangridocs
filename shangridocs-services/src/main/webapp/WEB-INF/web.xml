@@ -28,6 +28,7 @@ the License.
         org.shangridocs.services.tika.TikaCtakesResource,
         org.shangridocs.services.pubmed.PubmedResource,
         org.shangridocs.services.wikipedia.WikipediaResource,
+        org.shangridocs.services.genecard.GenecardResource,
         org.shangridocs.services.solr.SolrResource,
         org.shangridocs.services.stringdb.StringDBResource
       </param-value>
