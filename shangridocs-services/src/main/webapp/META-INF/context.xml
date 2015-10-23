@@ -42,6 +42,9 @@ the License.
         value="[SOLR_PASSWORD]"/>    
         
     <Parameter name="org.shangridocs.solr.resultURL"
-        value="[SOLR_RESULT_URL]"/>             
-            
+        value="[SOLR_RESULT_URL]"/>
+
+    <Parameter name="org.shangridocs.stringdb.baseUrl"
+               value="http://string-db.org"/>
+
 </Context>
