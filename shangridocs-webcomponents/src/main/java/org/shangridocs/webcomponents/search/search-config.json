@@ -12,5 +12,9 @@
 			"restURL" : "services/wikipedia/search",
 			"set":true
 		}
+	    "StringDB" : {
+		    "restURL" : "services/stringdb/query",
+		    "set" : true
+		}
 	}
 }
