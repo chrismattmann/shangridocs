@@ -22,12 +22,16 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.List;
+
+import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.config.CookieSpecs;
@@ -42,6 +46,7 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.cookie.BrowserCompatSpec;
 import org.apache.http.protocol.HttpContext;
+
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.HttpWebConnection;
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -55,8 +60,10 @@ import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
 @Path("/malacard")
 public class MalacardResource {
 
-    private final static String BASE_URL = "http://www.malacards.org";
+    private final static String BASE_URL_KEY = "org.shangridocs.malacard.baseUrl";
     private final static String SEARCH_PATH = "/search/results/";
+    
+    private String baseUrl;
 
     private enum MalacardData {
         Index(0), Family(2), MCID(3), Name(4), MIFTS(5), Score(6);
@@ -76,9 +83,11 @@ public class MalacardResource {
         }
     };
 
-    public MalacardResource() {
+    public MalacardResource(@Context ServletContext sc) {
         java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(
                 java.util.logging.Level.OFF);
+        this.baseUrl = sc.getInitParameter(BASE_URL_KEY);
+
     }
 
     @PUT
@@ -92,7 +101,7 @@ public class MalacardResource {
             webClient.getOptions().setRedirectEnabled(true);
 
             String searchText = IOUtils.toString(is, "UTF-8");
-            WebRequest request = new WebRequest(new URL(BASE_URL + SEARCH_PATH + searchText));
+            WebRequest request = new WebRequest(new URL(baseUrl + SEARCH_PATH + searchText));
             final HtmlPage page = webClient.getPage(request);
             StringBuilder response = new StringBuilder();
             HtmlTable searchResultsTable = (HtmlTable) page.getElementsByTagName("table").get(0);
@@ -122,7 +131,7 @@ public class MalacardResource {
                             response.append(cells.get(MalacardData.Name.getValue()).getTextContent());
                             response.append( "\",");
                             response.append("\"link\":\"");
-                            response.append(BASE_URL);
+                            response.append(baseUrl);
                             response.append(cells.get(MalacardData.Name.getValue()).getFirstElementChild()
                                     .getAttribute("href"));
                             response.append( "\",");

@@ -38,14 +38,14 @@ public class StringDBResource {
     private static final Logger LOG = Logger.getLogger(StringDBResource.class
             .getName());
 
-    private static final String STRINGDB_BASE_URL = "org.shangridocs.stringdb.baseUrl";
+    private static final String BASE_URL_KEY = "org.shangridocs.stringdb.baseUrl";
     private static final String RESOLVE_API_PATH = "/api/json/resolve";
     private static final String DETAILS_PATH = "/newstring_cgi/show_network_section.pl?identifier=";
 
     private String baseUrl;
 
     public StringDBResource(@Context ServletContext sc) {
-        this.baseUrl = sc.getInitParameter(STRINGDB_BASE_URL);
+        this.baseUrl = sc.getInitParameter(BASE_URL_KEY);
     }
 
     @PUT
