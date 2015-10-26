@@ -47,4 +47,7 @@ the License.
     <Parameter name="org.shangridocs.stringdb.baseUrl"
                value="http://string-db.org"/>
 
+     <Parameter name="org.shangridocs.omim.apikey"
+               value="F087041DB60FC17E5EA850F5BC10530B3EBC3E7E"/>          
+
 </Context>
