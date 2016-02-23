@@ -115,6 +115,8 @@ public class PubmedResource {
       String id = (String) idArr.get(i);
       JSONObject idObj = (JSONObject) resultObj.get(id);
       String title = (String) idObj.get("title");
+      String journalName = (String) idObj.get("fulljournalname");
+     
       responseBldr.append("{\"id\" : \"");
       responseBldr.append(id);
       responseBldr.append("\",");
@@ -123,6 +125,26 @@ public class PubmedResource {
       responseBldr.append(idArr.get(i));
       responseBldr.append("\", \"title\" : \"");
       responseBldr.append(title);
+      responseBldr.append("\", \"journalName\" : \"");
+      responseBldr.append(journalName);
+      JSONArray pubtypeArr = (JSONArray) idObj.get("pubtype");
+      if(pubtypeArr!= null && pubtypeArr.size()>0){
+    	  String pubtype = (String) (pubtypeArr.get(0));
+    	  responseBldr.append("\", \"pubtype\" : \"");
+          responseBldr.append(pubtype);
+      }
+      JSONArray authorsArr = (JSONArray) idObj.get("authors");
+      if(authorsArr!= null && authorsArr.size()>0){
+    	  StringBuilder authorListBuilder = new StringBuilder();
+    	  for (int j = 0; j < authorsArr.size(); j++) {
+    		  
+    		  JSONObject authorObj = (JSONObject) authorsArr.get(j);
+    		  authorListBuilder.append((String) (authorObj.get("name"))).append(",");
+    	  }
+    	  
+    	  responseBldr.append("\", \"authors\" : \"");
+          responseBldr.append(authorListBuilder.toString());
+      }
       responseBldr.append("\"");
       responseBldr.append("}");
       if (i + 1 < idArr.size()) {
