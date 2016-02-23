@@ -1,0 +1,239 @@
+/*
+Project Name: ShangriDocs
+Client: Celgene
+Author: Lauren Wong
+*/
+
+/******************************************
+/* SETUP
+/*******************************************/
+
+body, html {
+  margin: 0;
+  overflow: hidden;
+  height:100%;
+  background-color: #f8f8f8;
+}
+
+#left {
+    position: absolute;
+    top: 0px;
+    bottom: 0;
+    left: 0;
+    overflow-y: scroll;
+    height:100%;
+    padding: 3% 5% 0 5%;
+    background-color: white;
+}
+
+#right {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    overflow-y: scroll;
+    height:100%;
+}
+
+/******************************************
+/* BASE STYLES
+/*******************************************/
+
+body {
+  font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+}
+
+a {
+  font-size: 17px;
+  color: #375DA1;
+  text-decoration: none;
+}
+
+a.resultsTitle{
+  font-size: 16px;
+  color:#375DA1;
+}
+
+a.results{
+  font-size: .9em;
+  color: #FA7841;
+  font-style: italic;
+}
+
+a.subResults{
+  font-style: italic;
+  font-size: 15px;
+  color:#375DA1;
+}
+
+img#logo{
+  margin-right: 20px;
+}
+
+/*NAVIGATION*/
+
+.navbar-top{
+  background-color: #375DA1;
+}
+
+.navbar-inner {
+  background-color: #375DA1;
+}
+
+.nav>li {
+  font-size: 1.2em;
+}
+
+.nav>li>a, .navbar .nav .active>a {
+  color: #375DA1;
+}
+
+.navbar .nav>li>a {
+  color: black;
+}
+
+.navbar .nav>li>a:hover {
+  background-color: #E6E6E6;
+  margin-bottom: -2px;
+}
+
+/******************************************
+/* DOCUMENT
+/*******************************************/
+
+div.page-header{
+  padding-left: 4%;
+  padding-right: 4%;
+}
+div.content{
+  padding-left: 3%;
+  padding-right: 3%;
+  max-width: 60em;
+}
+
+p {
+  text-indent: 30px;
+  line-height: 1.4em;
+  font-size: 17px;
+}
+
+h4#search{
+  padding-left: 20px;
+}
+
+/******************************************
+/* SIDEBAR
+/*******************************************/
+
+#externalSearches{
+  padding-top: 25px;
+}
+
+ul.nav.nav-list{
+  padding-top: 10px;
+}
+
+ul.nav .nav-tabs{
+  border-bottom: none;
+}
+
+.sidebar-nav{
+  padding-top: 7%;
+}
+
+.sidebar-nav .navbar .navbar-collapse {
+  padding: 0;
+}
+
+.sidebar-nav .navbar{
+  border-radius:0;
+  margin-bottom:0;
+  border:0;
+}
+
+.sidebar-nav .navbar ul {
+  float: none;
+  display: block;
+}
+
+.sidebar-nav .navbar li {
+  display: block;
+}
+
+.sidebar-nav .navbar li a {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.sidebar-nav .navbar li a > .caret {
+  margin-top: 8px;
+}
+
+div.navbar.navbar-default{
+  padding-top: 20px;
+}
+
+/******************************************
+/* ADDITIONAL STYLES
+/*******************************************/
+#searchTab{
+  padding: 20px;
+  border-bottom: 1px solid #EEEEEE;
+  font-weight: bold;
+}
+
+#dataTab{
+  background-color: #E6E6E6;
+  border-bottom: 1px solid #EEEEEE;
+  font-weight: bold;
+  padding: 20px;
+}
+
+span.badge{
+  background-color: #E6E6E6;
+  color: #333;
+}
+
+/******************************************
+/* SEARCH BOX
+/*******************************************/
+
+#custom-search-input {
+        margin:0;
+        margin-top: 10px;
+        padding: 0;
+}
+
+#custom-search-input .search-query {
+        padding-right: 3px;
+        padding-right: 4px \9;
+        padding-left: 3px;
+        padding-left: 4px \9;
+        /* IE7-8 doesn't have border-radius, so don't indent the padding */
+
+        margin-bottom: 0;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+}
+
+#custom-search-input button {
+        border: 0;
+        background: none;
+        /** belows styles are working good */
+        padding: 2px 5px;
+        margin-top: 2px;
+        position: relative;
+        left: -28px;
+        /* IE7-8 doesn't have border-radius, so don't indent the padding */
+        margin-bottom: 0;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        color:#000;
+}
+
+.search-query:focus + button {
+        z-index: 3;
+}

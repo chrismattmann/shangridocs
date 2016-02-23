@@ -1,0 +1,577 @@
+
+<html
+	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<head>
+<meta name="generator"
+	content="HTML Tidy for Linux/x86 (vers 25 March 2009), see www.w3.org" />
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<meta name="ShangriDocs" content="" />
+<meta name="Lauren Wong" content="" />
+
+<title>ShangriDocs</title>
+<!-- Google Fonts -->
+<!-- Bootstrap core CSS -->
+
+<wicket:link>
+	<link rel="stylesheet" href="new_skin_css/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="new_skin_css/style.css" />
+</wicket:link>
+<!-- <link href="bower_components/bootstrap/dist/css/bootstrap.min.css"
+	rel="stylesheet" type="text/css" />
+<link href="style.css" rel="stylesheet" type="text/css" /> -->
+</head>
+<!-- This is where the navigation goes -->
+
+<body>
+	<nav class="navbar-top navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+			</div>
+			<div id="navbar" class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="index.html">ShangriDocs</a></li>
+					<li><a href="about.html">About</a></li>
+					<li><a href="contact.html">How to Use</a></li>
+				</ul>
+			</div>
+			<!--/.nav-collapse -->
+		</div>
+	</nav>
+	<!-- This is where the Document goes -->
+
+	<div wicket:id="tika_panel" id="tika_panel"></div>
+
+	<!-- Here is the Sidebar goes -->
+
+	<div class="col-sm-4 col-md-4" id="right">
+		<div class="sidebar-nav">
+			<div class="navbar navbar-default" role="navigation">
+				<div class="navbar-collapse collapse sidebar-navbar-collapse">
+					<ul class="nav nav-tabs">
+						<!-- Web Searches -->
+						<!-- searchTab> -->
+
+						<li class="active"><a data-toggle="tab"
+							href="#externalSearches">Web Searches</a></li>
+						<!-- Extracted Data -->
+						<!-- dataTab> -->
+
+						<li><a data-toggle="tab" href="#extractedData">Extracted
+								Data</a></li>
+					</ul>
+				</div>
+
+				<div id="custom-search-input">
+					<div class="input-group col-md-6">
+						<input type="text" class=" search-query form-control"
+							placeholder="Search" />
+					</div>
+				</div>
+
+				<div class="tab-content">
+					<!-- Here is where the External Searches go -->
+
+					<div id="externalSearches" class="tab-pane fade in active">
+						<!-- Study Search -->
+
+						<ul>
+							<li><a href="#" data-toggle="collapse"
+								data-target="#toggleDemo" data-parent="#sidenav01"
+								class="collapsed"><span class="badge">42</span> &nbsp; Study
+									Search</a>
+
+								<div class="collapse" id="toggleDemo" style="height: 0px;">
+									<ul class="nav nav-list">
+										<li>
+											<ul class="studySearch">
+												<li><a class="resultsTitle" href="#">1. Zebrafish
+														IMiDs RNA</a></li>
+
+												<li>Affymetrix Zebrafish expression arrays were used to
+													profile expression during early development. Lenalidomide,
+													pomalidomide and thalidomide combinations were tracked over
+													3 timepoints(0hr, 6hr, and 12hr) 2 hours post-fertilization
+													with 3 repicates.</li>
+
+												<li><strong>Study Factors:</strong> Compound, Dose,
+													Dose Time, Development Time</li>
+
+												<li><strong>Assay:</strong> DNA microarray</li>
+
+												<li><strong>Measurement Type:</strong> transcription
+													profiling</li>
+
+												<li><strong>Data Asset Number:</strong> DA0000079</li>
+
+												<li><a class="results" href="#">View details...</a></li>
+											</ul> <br />
+
+											<ul class="studySearch">
+												<li><a class="resultsTitle" href="#">2. Zebrafish
+														IMiDs RNA</a></li>
+
+												<li>Affymetrix Zebrafish expression arrays were used to
+													profile expression during early development. Lenalidomide,
+													pomalidomide and thalidomide combinations were tracked over
+													3 timepoints(0hr, 6hr, and 12hr) 2 hours post-fertilization
+													with 3 repicates.</li>
+
+												<li><strong>Study Factors:</strong> Compound, Dose,
+													Dose Time, Development Time</li>
+
+												<li><strong>Assay:</strong> DNA microarray</li>
+
+												<li><strong>Measurement Type:</strong> transcription
+													profiling</li>
+
+												<li><strong>Data Asset Number:</strong> DA0000079</li>
+
+												<li><a class="results" href="#">View details...</a></li>
+											</ul> <br />
+
+											<ul class="studySearch">
+												<li><a class="resultsTitle" href="#">3. Zebrafish
+														IMiDs RNA</a></li>
+
+												<li>Affymetrix Zebrafish expression arrays were used to
+													profile expression during early development. Lenalidomide,
+													pomalidomide and thalidomide combinations were tracked over
+													3 timepoints(0hr, 6hr, and 12hr) 2 hours post-fertilization
+													with 3 repicates.</li>
+
+												<li><strong>Study Factors:</strong> Compound, Dose,
+													Dose Time, Development Time</li>
+
+												<li><strong>Assay:</strong> DNA microarray</li>
+
+												<li><strong>Measurement Type:</strong> transcription
+													profiling</li>
+
+												<li><strong>Data Asset Number:</strong> DA0000079</li>
+
+												<li><a class="results" href="#">View details...</a></li>
+											</ul> <br />
+
+											<ul class="studySearch">
+												<li><a class="resultsTitle" href="#">4. Zebrafish
+														IMiDs RNA</a></li>
+
+												<li>Affymetrix Zebrafish expression arrays were used to
+													profile expression during early development. Lenalidomide,
+													pomalidomide and thalidomide combinations were tracked over
+													3 timepoints(0hr, 6hr, and 12hr) 2 hours post-fertilization
+													with 3 repicates.</li>
+
+												<li><strong>Study Factors:</strong> Compound, Dose,
+													Dose Time, Development Time</li>
+
+												<li><strong>Assay:</strong> DNA microarray</li>
+
+												<li><strong>Measurement Type:</strong> transcription
+													profiling</li>
+
+												<li><strong>Data Asset Number:</strong> DA0000079</li>
+
+												<li><a class="results" href="#">View details...</a></li>
+											</ul>
+										</li>
+
+										<li><a class="results" href="#">Study Search Results
+												Page...</a></li>
+									</ul>
+								</div></li>
+
+							<li style="list-style: none; display: inline">
+								<hr /> <!-- Pub Med -->
+							</li>
+
+							<li><a href="#" data-toggle="collapse"
+								data-target="#toggleDemo3" data-parent="#sidenav01"
+								class="collapsed"><span class="badge">21</span>&nbsp; PubMed</a>
+
+								<div class="collapse" id="toggleDemo3" style="height: 0px;">
+									<ul class="nav nav-list">
+										<li style="list-style: none; display: inline">
+											<ul class="pubMed">
+												<li><a class="resultsTitle" href="#">1. Alterations
+														in Cellular Metabolome after Pharmacological Inhibition of
+														Notch in Glioblastoma Cells.</a></li>
+
+												<li><strong>Author:</strong> Wang Y, Yang L, Zhou K,
+													Zhang Y, Song Z, He S.</li>
+
+												<li>Genome Biol Evol. 2015 Oct 9. pii: evv192. [Epub
+													ahead of print]</li>
+
+												<li><a class="results" href="#">Free Article,</a> <a
+													class="results" href="#">Similar Articles</a></li>
+											</ul> <br />
+
+											<ul class="pubMed">
+												<li><a class="resultsTitle" href="#">2. Alterations
+														in Cellular Metabolome after Pharmacological Inhibition of
+														Notch in Glioblastoma Cells.</a></li>
+
+												<li><strong>Author:</strong> Wang Y, Yang L, Zhou K,
+													Zhang Y, Song Z, He S.</li>
+
+												<li>Genome Biol Evol. 2015 Oct 9. pii: evv192. [Epub
+													ahead of print]</li>
+
+												<li><a class="results" href="#">Free Article,</a> <a
+													class="results" href="#">Similar Articles</a></li>
+											</ul> <br />
+
+											<ul class="pubMed">
+												<li><a class="resultsTitle" href="#">3. Bacterial
+														membrane vesicles, an overlooked environmental colloid:
+														Biology, environmental perspectives and applications.</a></li>
+
+												<li><strong>Author:</strong> Wang Y, Yang L, Zhou K,
+													Zhang Y, Song Z, He S.</li>
+
+												<li>Genome Biol Evol. 2015 Oct 9. pii: evv192. [Epub
+													ahead of print]</li>
+
+												<li><a class="results" href="#">Free Article,</a> <a
+													class="results" href="#">Similar Articles</a></li>
+											</ul> <br />
+
+											<ul class="pubMed">
+												<li><a class="resultsTitle" href="#">4. Cloning,
+														expression and biochemical characterization of recombinant
+														superoxide dismutase from Antarctic psychrophilic
+														bacterium Pseudoalteromonas sp. ANT506.</a></li>
+
+												<li><strong>Author:</strong> Wang Y, Yang L, Zhou K,
+													Zhang Y, Song Z, He S.</li>
+
+												<li>Genome Biol Evol. 2015 Oct 9. pii: evv192. [Epub
+													ahead of print]</li>
+
+												<li><a class="results" href="#">Free Article,</a> <a
+													class="results" href="#">Similar Articles</a></li>
+											</ul>
+										</li>
+
+										<li><a href="#">Pub Med Results Page...</a></li>
+									</ul>
+								</div></li>
+						</ul>
+					</div>
+					<hr />
+					<!-- Wikipedia -->
+
+					<ul>
+						<li><a href="#" data-toggle="collapse"
+							data-target="#toggleDemo4" data-parent="#sidenav01"
+							class="collapsed"><span class="badge">43</span>&nbsp;
+								Wikipedia</a>
+
+							<div class="collapse" id="toggleDemo4" style="height: 0px;">
+								<div style="margin-left: 2em" class="nav nav-list">
+									<ul class="wikipedia">
+										<li><a class="resultsTitle" href="#">1. Gene</a></li>
+
+										<li>A gene is a locus (or region) of DNA that encodes a
+											functional RNA or protein product, and is the molecular unit
+											of heredity</li>
+										<!-- Could be h3s from Wikipedia page/ contents titles and subtitles -->
+
+										<li><a class="subResults" href="#">History,</a> <a
+											class="subResults" href="#">Molecular basis,</a> <a
+											class="subResults" href="#">Structure and Function,</a> <a
+											class="subResults" href="#">Gene Expression,</a> <a
+											class="subResults" href="#">Inheritance,</a> <a
+											class="subResults" href="#">Molecular Evolution,</a> <a
+											class="subResults" href="#">Genome,</a> <a class="subResults"
+											href="#">Genetic Engineering</a></li>
+
+										<li><a class="results" href="#">View details...</a></li>
+									</ul>
+									<br />
+
+									<ul class="wikipedia">
+										<li><a class="resultsTitle" href="#">1. Genetics</a></li>
+
+										<li>Genetics is the study of genes, heredity, and genetic
+											variation in living organisims. It is generall considered a
+											field of biology, but it intersects frequently with many of
+											the life sciences and is strongly linked with the study of
+											information systems</li>
+										<!-- Could be h3s from Wikipedia page/ contents titles and subtitles -->
+
+										<li><a class="subResults" href="#">History,</a> <a
+											class="subResults" href="#">Molecular basis,</a> <a
+											class="subResults" href="#">Structure and Function,</a> <a
+											class="subResults" href="#">Gene Expression,</a> <a
+											class="subResults" href="#">Inheritance,</a> <a
+											class="subResults" href="#">Molecular Evolution,</a> <a
+											class="subResults" href="#">Genome,</a> <a class="subResults"
+											href="#">Genetic Engineering</a></li>
+
+										<li><a class="results" href="#">View details...</a></li>
+									</ul>
+									<br />
+
+									<ul class="wikipedia">
+										<li><a class="resultsTitle" href="#">1. General
+												Relativity</a></li>
+
+										<li>General relativity, also known as the general theory
+											of gravitation published by Albert Einstein in 1915 and the
+											current description of gravitation in modern physics.</li>
+										<!-- Could be h3s from Wikipedia page/ contents titles and subtitles -->
+
+										<li><a class="subResults" href="#">History,</a> <a
+											class="subResults" href="#">Molecular basis,</a> <a
+											class="subResults" href="#">Structure and Function,</a> <a
+											class="subResults" href="#">Gene Expression,</a> <a
+											class="subResults" href="#">Inheritance,</a> <a
+											class="subResults" href="#">Molecular Evolution,</a> <a
+											class="subResults" href="#">Genome,</a> <a class="subResults"
+											href="#">Genetic Engineering</a></li>
+
+										<li><a class="results" href="#">View details...</a></li>
+									</ul>
+								</div>
+							</div></li>
+
+						<li style="list-style: none; display: inline">
+							<hr /> <!-- GeneCard -->
+						</li>
+
+						<li><a href="#" data-toggle="collapse"
+							data-target="#toggleDemo5" data-parent="#sidenav01"
+							class="collapsed"><span class="badge">17</span>&nbsp;
+								GeneCard</a>
+
+							<div class="collapse" id="toggleDemo5" style="height: 0px;">
+								<ul class="nav nav-list">
+									<li style="list-style: none; display: inline">
+										<ul class="geneCard">
+											<li><strong>Symbol:</strong> ALB</li>
+
+											<li><strong>Description:</strong> Albumium</li>
+
+											<li><a class="results" href="#">View Details...</a></li>
+										</ul> <br />
+
+										<ul class="geneCard">
+											<li><strong>Symbol:</strong> CUBN</li>
+
+											<li><strong>Description:</strong> Cubilin (Intrinsic
+												Factor-Cobalamin Receptor)</li>
+
+											<li><a class="results" href="#">View Details...</a></li>
+										</ul> <br />
+
+										<ul class="geneCard">
+											<li><strong>Symbol:</strong> AFP</li>
+
+											<li><strong>Description:</strong> Alpha-Fetoprotein</li>
+
+											<li><a class="results" href="#">View Details...</a></li>
+										</ul> <br />
+
+										<ul class="geneCard">
+											<li><strong>Symbol:</strong> AFM</li>
+
+											<li><strong>Description:</strong> Afamin</li>
+
+											<li><a class="results" href="#">View Details...</a></li>
+										</ul> <br />
+
+										<ul class="geneCard">
+											<li><strong>Symbol:</strong> FBF1</li>
+
+											<li><strong>Description:</strong> Fas (TNFRSF6) Binding
+												Factor 1</li>
+
+											<li><a class="results" href="#">View Details...</a></li>
+										</ul>
+									</li>
+
+									<li><a class="results" href="#">GeneCard Results
+											Page...</a></li>
+								</ul>
+							</div></li>
+
+						<li style="list-style: none; display: inline">
+							<hr /> <!-- String DB -->
+						</li>
+
+						<li><a href="#" data-toggle="collapse"
+							data-target="#toggleDemo6" data-parent="#sidenav01"
+							class="collapsed"><span class="badge">15</span>&nbsp;
+								StringDB</a>
+
+							<div class="collapse" id="toggleDemo6" style="height: 0px;">
+								<ul class="nav nav-list">
+									<li style="list-style: none; display: inline">
+										<ul class="stringDB">
+											<li><strong>Organism:</strong> Homo Sapiens</li>
+
+											<li><strong>Description:</strong> TDO1-trytophan
+												2,3-dioxygenase; Incorporates oxygen into the indole moiety
+												of tryptophan. Has a broad specificity..</li>
+
+											<li><a class="results" href="#">View Details...</a></li>
+										</ul> <br />
+
+										<ul class="stringDB">
+											<li><strong>Organism:</strong> Homo Sapiens</li>
+
+											<li><strong>Description:</strong> TDO1-trytophan
+												2,3-dioxygenase; Incorporates oxygen into the indole moiety
+												of tryptophan. Has a broad specificity..</li>
+
+											<li><a class="results" href="#">View Details...</a></li>
+										</ul> <br />
+
+										<ul class="stringDB">
+											<li><strong>Organism:</strong> Homo Sapiens</li>
+
+											<li><strong>Description:</strong> TDO1-trytophan
+												2,3-dioxygenase; Incorporates oxygen into the indole moiety
+												of tryptophan. Has a broad specificity..</li>
+
+											<li><a class="results" href="#">View Details...</a></li>
+										</ul>
+									</li>
+
+									<li><a href="#">View All Results...</a></li>
+								</ul>
+							</div></li>
+
+						<li style="list-style: none; display: inline">
+							<hr /> <!-- OMIM -->
+						</li>
+
+						<li><a href="#" data-toggle="collapse"
+							data-target="#toggleDemo7" data-parent="#sidenav01"
+							class="collapsed"><span class="badge">32</span>&nbsp; OMIM</a>
+
+							<div class="collapse" id="toggleDemo7" style="height: 0px;">
+								<ul class="nav nav-list">
+									<li style="list-style: none; display: inline">
+										<ul class="omim">
+											<li><strong>Title:</strong> 609423. HUMAN
+												IMMUNODEFICIENCY VIRUS TYPE 1, SUSCEPTIBILITY TO</li>
+
+											<li><strong>Description:</strong></li>
+
+											<li><strong>Gene Phenotype:</strong></li>
+
+											<li><a class="results" href="#">View Details...</a></li>
+										</ul> <br />
+
+										<ul class="omim">
+											<li><strong>Title:</strong> 609423. HUMAN
+												IMMUNODEFICIENCY VIRUS TYPE 1, SUSCEPTIBILITY TO</li>
+
+											<li><strong>Description:</strong></li>
+
+											<li><strong>Gene Phenotype:</strong></li>
+
+											<li><a class="results" href="#">View Details...</a></li>
+										</ul> <br />
+
+										<ul class="omim">
+											<li><strong>Title:</strong> 609423. HUMAN
+												IMMUNODEFICIENCY VIRUS TYPE 1, SUSCEPTIBILITY TO</li>
+
+											<li><strong>Description:</strong></li>
+
+											<li><strong>Gene Phenotype:</strong></li>
+
+											<li><a class="results" href="#">View Details...</a></li>
+										</ul>
+									</li>
+
+									<li><a href="#">View All Results...</a></li>
+								</ul>
+							</div></li>
+
+						<li style="list-style: none; display: inline">
+							<hr /> <!-- UniProt -->
+						</li>
+
+						<li><a href="#" data-toggle="collapse"
+							data-target="#toggleDemo8" data-parent="#sidenav01"
+							class="collapsed"><span class="badge">22</span>&nbsp; UniProt</a>
+
+							<div class="collapse" id="toggleDemo8" style="height: 0px;">
+								<ul class="nav nav-list">
+									<li style="list-style: none; display: inline">
+										<ul class="uniprot">
+											<li><strong>Protein:</strong> Sterol Carrier Protein- X</li>
+
+											<li><strong>Organism:</strong> Aedes Aegypti
+												(Yellowfever mosquito) (Culex aegypti)</li>
+
+											<li><a class="results" href="#">View Details...</a></li>
+										</ul> <br />
+
+										<ul class="uniprot">
+											<li><strong>Protein:</strong> Sterol Carrier Protein- X</li>
+
+											<li><strong>Organism:</strong> Aedes Aegypti
+												(Yellowfever mosquito) (Culex aegypti)</li>
+
+											<li><a class="results" href="#">View Details...</a></li>
+										</ul> <br />
+
+										<ul class="uniprot">
+											<li><strong>Protein:</strong> Sterol Carrier Protein- X</li>
+
+											<li><strong>Organism:</strong> Aedes Aegypti
+												(Yellowfever mosquito) (Culex aegypti)</li>
+
+											<li><a class="results" href="#">View Details...</a></li>
+										</ul>
+									</li>
+
+									<li><a href="#">View all results...</a></li>
+								</ul>
+							</div></li>
+
+						<li style="list-style: none; display: inline">
+							<hr />
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- Here is where the Extracted Data goes -->
+
+			<div id="extractedData" class="tab-pane fade"></div>
+		</div>
+	</div>
+	<!--/.nav-collapse -->
+	<!-- Bootstrap core JavaScript
+================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+
+	<wicket:link>
+		<script type="text/javascript" src="jquery.min.js"></script>
+		<script type="text/javascript" src="bootstrap.min.js"></script>
+		<script type="text/javascript" src="bootstrap-tour.min.js"></script>
+		<script type="text/javascript" src="homePage_wicket_v2.js"></script>
+		<script type="text/javascript" src="homePage_v2.js"></script>
+	</wicket:link>
+
+
+	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+	<!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>-->
+</body>
+</html>
