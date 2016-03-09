@@ -38,9 +38,9 @@ import javax.ws.rs.core.Response;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.simple.JSONValue;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -53,7 +53,7 @@ public class UniprotResource {
   @Path("/search")
   @Produces("application/json")
   public Response createBody(@QueryParam("query") String query)
-      throws JSONException, IOException, SAXException,
+      throws IOException, SAXException,
       ParserConfigurationException {
 
     return Response.ok(uniprot(query), MediaType.APPLICATION_JSON).build();
@@ -69,14 +69,13 @@ public class UniprotResource {
     return sb.toString();
   }
 
-  public static JSONObject readJsonFromUrl(String url) throws IOException,
-      JSONException {
+  public static JSONObject readJsonFromUrl(String url) throws IOException {
     InputStream is = new URL(url).openStream();
     try {
       BufferedReader rd = new BufferedReader(new InputStreamReader(is,
           Charset.forName("UTF-8")));
       String jsonText = readAll(rd);
-      JSONObject json = new JSONObject(jsonText);
+      JSONObject json = (JSONObject)JSONValue.parse(jsonText);
       return json;
     } finally {
       is.close();
@@ -128,27 +127,26 @@ public class UniprotResource {
   }
 
   public static Document readXMLFromUrl(String url) throws IOException,
-      JSONException, SAXException, ParserConfigurationException {
+      SAXException, ParserConfigurationException {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setNamespaceAware(true);
     return factory.newDocumentBuilder().parse(new URL(url).openStream());
   }
 
-  public static JSONArray readJsonArrayFromUrl(String url) throws IOException,
-      JSONException {
+ public static JSONArray readJsonArrayFromUrl(String url) throws IOException {
     InputStream is = new URL(url).openStream();
     try {
       BufferedReader rd = new BufferedReader(new InputStreamReader(is,
           Charset.forName("UTF-8")));
       String jsonText = readAll(rd);
-      JSONArray json = new JSONArray(jsonText);
+      JSONArray json = (JSONArray)JSONValue.parse(jsonText);
       return json;
     } finally {
       is.close();
     }
   }
 
-  public static String uniprot(String query) throws JSONException, IOException,
+  public static String uniprot(String query) throws IOException,
       SAXException, ParserConfigurationException {
     JSONArray ar1 = readJsonArrayFromUrl("http://www.uniprot.org/uniprot/?query="
         + query + "&columns=id&start=0&limit=5&format=json");
@@ -157,7 +155,7 @@ public class UniprotResource {
     String Num_results = "";
     ArrayList<HashMap<String, String>> entries = new ArrayList<HashMap<String, String>>();
 
-    for (int i = 0; i < ar1.length(); i++) {
+    for (int i = 0; i < ar1.size(); i++) {
       HashMap<String, String> map = new HashMap<String, String>();
       JSONObject temp1 = (JSONObject) ar1.get(i);
       String s = (String) temp1.get("id");

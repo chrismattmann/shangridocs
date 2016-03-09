@@ -22,26 +22,29 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
+import org.apache.commons.io.IOUtils;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.simple.JSONValue;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+
+import org.apache.oodt.cas.metadata.util.PathUtils;
 
 @Path("/omim")
 public class OmimResource {
@@ -50,14 +53,17 @@ public class OmimResource {
 
   public OmimResource(@Context ServletContext sc) {
     omimkey = sc.getInitParameter("org.shangridocs.omim.apikey");
+    if (omimkey != null){
+	omimkey = PathUtils.replaceEnvVariables(omimkey);
+    }
   }
 
-  @GET
+  @PUT
   @Path("/search")
   @Produces("application/json")
-  public Response createColumnArray(@QueryParam("query") String query)
-      throws JSONException, IOException {
-
+  public Response createColumnArray(InputStream is)
+      throws  IOException {
+    String query = IOUtils.toString(is, "UTF-8");
     return Response.ok(omim(query), MediaType.APPLICATION_JSON).build();
 
   }
@@ -71,14 +77,13 @@ public class OmimResource {
     return sb.toString();
   }
 
-  public static JSONObject readJsonFromUrl(String url) throws IOException,
-      JSONException {
+  public static JSONObject readJsonFromUrl(String url) throws IOException {
     InputStream is = new URL(url).openStream();
     try {
       BufferedReader rd = new BufferedReader(new InputStreamReader(is,
           Charset.forName("UTF-8")));
       String jsonText = readAll(rd);
-      JSONObject json = new JSONObject(jsonText);
+      JSONObject json = (JSONObject)JSONValue.parse(jsonText);
       return json;
     } finally {
       is.close();
@@ -101,7 +106,6 @@ public class OmimResource {
       json += "\"ID\":\"" + map.get("ID") + "\",";
       map.remove("ID");
       json += "\"Description\":\"" + map.get("Description") + "\",";
-      // System.out.println("DEBUG"+map.get("Description"));
       map.remove("Description");
       json += "\"Detail_link\":\"" + map.get("Detail_link") + "\",";
       map.remove("Detail_link");
@@ -130,27 +134,27 @@ public class OmimResource {
   }
 
   public static Document readXMLFromUrl(String url) throws IOException,
-      JSONException, SAXException, ParserConfigurationException {
+      SAXException, ParserConfigurationException {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setNamespaceAware(true);
     return factory.newDocumentBuilder().parse(new URL(url).openStream());
   }
 
-  public static JSONArray readJsonArrayFromUrl(String url) throws IOException,
-      JSONException {
+  public static JSONArray readJsonArrayFromUrl(String url) throws IOException
+      {
     InputStream is = new URL(url).openStream();
     try {
       BufferedReader rd = new BufferedReader(new InputStreamReader(is,
           Charset.forName("UTF-8")));
       String jsonText = readAll(rd);
-      JSONArray json = new JSONArray(jsonText);
+      JSONArray json = (JSONArray)JSONValue.parse(jsonText);
       return json;
     } finally {
       is.close();
     }
   }
 
-  public static String omim(String query) throws JSONException, IOException {
+  public static String omim(String query) throws  IOException {
 
     String Search_link = "";
     String Num_results = "";
@@ -159,53 +163,48 @@ public class OmimResource {
     JSONObject json = readJsonFromUrl("http://api.omim.org/api/entry/search?search="
         + query + "&start=0&limit=5&apiKey=" + omimkey + "&format=json");
 
-    JSONObject temp1 = (JSONObject) json.get("omim");
-    JSONObject temp2 = (JSONObject) temp1.get("searchResponse");
-    Integer totalresults = (Integer) temp2.get("totalResults");
-    JSONArray ar1 = (JSONArray) temp2.get("entryList");
+    JSONObject omimObj = (JSONObject) json.get("omim");
+    JSONObject searchResponseObj = (JSONObject) omimObj.get("searchResponse");
+    Long totalresults = (Long) searchResponseObj.get("totalResults");
+    JSONArray entryList = (JSONArray) searchResponseObj.get("entryList");
 
-    for (int i = 0; i < ar1.length(); i++) {
+    for (int i = 0; i < entryList.size(); i++) {
 
       HashMap<String, String> map = new HashMap<String, String>();
-      JSONObject temp4 = (JSONObject) ar1.get(i);
-      JSONObject temp5 = (JSONObject) temp4.get("entry");
-      JSONObject temp6 = (JSONObject) temp5.get("titles");
-      String t2 = (String) temp6.get("preferredTitle");
-      String t1 = (String) temp5.get("mimNumber");
-      String t3 = "";
+      JSONObject entryObj = (JSONObject) entryList.get(i);
+      JSONObject theEntryObj = (JSONObject)entryObj.get("entry");
+      JSONObject titlesObj = (JSONObject)theEntryObj.get("titles");
+      String preferredTitle = (String)titlesObj.get("preferredTitle");
+      String mimNumber = (String)theEntryObj.get("mimNumber");
 
-      JSONObject jsontemp = readJsonFromUrl("http://api.omim.org/api/entry?mimNumber="
-          + t1 + "&include=text:description&apiKey=" + omimkey + "&format=json");
+      JSONObject remoteEntryJson  = readJsonFromUrl("http://api.omim.org/api/entry?mimNumber="
+          + mimNumber + "&include=text:description&apiKey=" + omimkey + "&format=json");
 
-      JSONObject temp7 = (JSONObject) jsontemp.get("omim");
-      JSONArray ar2 = (JSONArray) temp7.get("entryList");
-      JSONObject temp9 = (JSONObject) ar2.get(0);
-      JSONObject temp11 = (JSONObject) temp9.get("entry");
+      JSONObject omim = (JSONObject) remoteEntryJson.get("omim");
+      JSONObject remoteEntry = (JSONObject)((JSONArray)omim.get("entryList")).get(0);
+      JSONObject remoteEntryObj = (JSONObject)remoteEntry.get("entry");
+      String textSectionContent = null;
+     
       try {
-        JSONArray ar3 = (JSONArray) temp11.get("textSectionList");
-        JSONObject temp8 = (JSONObject) ar3.get(0);
-        JSONObject temp10 = (JSONObject) temp8.get("textSection");
-        t3 = (String) temp10.get("textSectionContent");
-
+	  JSONArray textSectionListArray = (JSONArray)remoteEntryObj.get("textSectionList");
+	  if (textSectionListArray != null && textSectionListArray.size() > 0){
+	      JSONObject textSectionEntry = (JSONObject)textSectionListArray.get(0);
+	      JSONObject textSectionObj = (JSONObject)textSectionEntry.get("textSection");
+	      textSectionContent = (String)textSectionObj.get("textSectionContent");
+	  }
       } catch (Exception e) {
-
+	  e.printStackTrace();
+	  textSectionContent = "";
       }
 
-      // System.out.println("DEBUG"+"Title:"+t2);
-      // System.out.println("DEBUG"+"ID:"+t1);
-      // System.out.println("DEBUG"+"Description:"+t3);
-      // System.out.println("DEBUG"+"Detail_link:http://omim.org/entry/"+t1);
-      // System.out.println("DEBUG"+"\n\n\n\n");
-      map.put("Title", t2);
-      map.put("ID", t1);
-      map.put("Description", t3);
-      map.put("Detail_link", "http://omim.org/entry/" + t1);
+      map.put("Title", preferredTitle);
+      map.put("ID", mimNumber);
+      map.put("Description", textSectionContent);
+      map.put("Detail_link", "http://omim.org/entry/" + mimNumber);
 
       entries.add(map);
 
     }
-    // System.out.println("DEBUG"+"Num_results:"+totalresults);
-    // System.out.println("DEBUG"+"Search_link:http://www.ncbi.nlm.nih.gov/omim/?term="+query);
 
     Search_link = "http://www.ncbi.nlm.nih.gov/omim/?term=" + query;
     Num_results = String.valueOf(totalresults);

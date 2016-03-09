@@ -53,6 +53,9 @@ should see the web app!
 # Query GeneCard for gene information
 `curl -X PUT -d "ALB" http://localhost:8181/shangridocs-services/services/genecard/query -H "Content-Type: text/plain" -H "Accept: application/json" -v`
 
+# Query Omim for mouse information
+`curl -X PUT -d "mouse" http://localhost:8181/shangridocs-services/services/omim/search -H "Content-Type: text/plain" -H "Accept: application/json"`
+
 # License
 Shangridocs source code and project is licensed and released under the [Apache License v2.0]() 
 
