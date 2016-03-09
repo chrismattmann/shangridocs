@@ -98,7 +98,6 @@ public class UniprotResource {
       json += "\"ID\":\"" + map.get("ID") + "\",";
       map.remove("ID");
       json += "\"Description\":\"" + map.get("Description") + "\",";
-      // System.out.println("DEBUG"+"BOOOOO "+map.get("Description"));
       map.remove("Description");
       json += "\"Detail_link\":\"" + map.get("Detail_link") + "\",";
       map.remove("Detail_link");
@@ -159,13 +158,11 @@ public class UniprotResource {
       HashMap<String, String> map = new HashMap<String, String>();
       JSONObject temp1 = (JSONObject) ar1.get(i);
       String s = (String) temp1.get("id");
-      // System.out.println("DEBUG"+"ID:"+s);
       map.put("ID", s);
 
       Document doc = readXMLFromUrl("http://www.uniprot.org/uniprot/" + s
           + ".xml");
 
-      // System.out.println("DEBUG"+"Detail_link:"+"http://www.uniprot.org/uniprot/"+s);
       map.put("Detail_link", "http://omim.org/entry/" + s);
 
       NodeList temp = doc.getElementsByTagName("organism");
@@ -192,7 +189,6 @@ public class UniprotResource {
       temp = e.getElementsByTagName("fullName");
       e = (Element) temp.item(0);
 
-      // System.out.println("DEBUG"+"Title:"+e.getTextContent());
       map.put("Title", e.getTextContent());
 
       temp = doc.getElementsByTagName("gene");
@@ -204,11 +200,7 @@ public class UniprotResource {
       NodeList nList = doc.getElementsByTagName("comment");
       for (int indx = 0; indx < nList.getLength(); indx++) {
         Element eElement = (Element) nList.item(indx);
-        // System.out.println(""DEBUG"+eElement.getNodeName());
         if (eElement.getAttribute("type").equals("function")) {
-          // System.out.println(""DEBUG"+"hi");
-          System.out.println("DEBUG" + "Description:"
-              + eElement.getTextContent());
           map.put("Description", eElement.getTextContent());
         }
       }
@@ -217,8 +209,6 @@ public class UniprotResource {
 
     }
 
-    // System.out.println("DEBUG"+"Search_link:http://www.uniprot.org/uniprot/?query="+query);
-    // System.out.println("DEBUG"+"Num_results:");
     Search_link = "http://www.uniprot.org/uniprot/?query=" + query;
     return createStandardJson(Search_link, Num_results, entries);
   }
