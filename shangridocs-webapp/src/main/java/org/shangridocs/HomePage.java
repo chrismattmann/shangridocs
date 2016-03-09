@@ -17,34 +17,16 @@
 
 package org.shangridocs;
 
-import javax.servlet.ServletContext;
-
-import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.protocol.http.WebApplication;
 import org.shangridocs.webcomponents.ctakes.CTakesPanel;
 import org.shangridocs.webcomponents.search.SearchServicesPanel;
-import org.shangridocs.webcomponents.tika.TikaTabbedPanel;
 
-public class HomePage extends WebPage {
+public class HomePage extends BaseHomePage {
 
 	public static final String SHANGRIDOCS_SKIN = "org.shangridocs.skin";
 
 	public HomePage() {
-		
-//		v2 is the revamped version of shangridocs and it has different panels in it in comparison to the older versions.
-		if("v2".equalsIgnoreCase(getServletContext().getInitParameter(SHANGRIDOCS_SKIN))){
-			add(new TikaTabbedPanel("tika_panel", false));
-		}else{
-			add(new TikaTabbedPanel("tika_panel", false));
-			add(new CTakesPanel("ctakes_panel", false, false));
-			add(new SearchServicesPanel("search_panel", false, false));
-		}	
+
+		add(new CTakesPanel("ctakes_panel", false, false));
+		add(new SearchServicesPanel("search_panel", false, false));
 	}
-
-	private ServletContext getServletContext() {
-
-		ServletContext servletContext = WebApplication.get().getServletContext();
-		return servletContext;
-	}
-
 }

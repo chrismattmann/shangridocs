@@ -17,8 +17,11 @@ the License.
 -->
 <Context path="/shangridocs">
         
-    <Parameter name="shangridocs.homepage"
-        value="org.shangridocs.HomePage"/>  
+    <Parameter name="shangridocs.homepage.default"
+        value="org.shangridocs.HomePage"/>
+          
+    <Parameter name="shangridocs.homepage.v2"
+        value="org.shangridocs.HomePageV2"/>  
         
     <Parameter name="org.shangridocs.skin"
         value="v2"/> <!-- valid values include {edrn, cg, or ""} -->

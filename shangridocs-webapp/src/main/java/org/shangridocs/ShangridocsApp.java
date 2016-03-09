@@ -66,7 +66,16 @@ public class ShangridocsApp extends WebApplication {
   @Override
   public Class<? extends Page> getHomePage() {
     try {
-      return (Class<? extends Page>) Class.forName(getHomePageClass());
+    	
+    	String skin_version = getSkin();
+    	String versionedHomePageClass = getServletContext().getInitParameter(SHANGRIDOCS_HOMEPAGE+"."+skin_version);
+    	
+    	if(versionedHomePageClass!= null && !versionedHomePageClass.isEmpty()){
+    		return (Class<? extends Page>) Class.forName(versionedHomePageClass);
+    	}else
+    		// Else return the default home page class.
+    		return (Class<? extends Page>) Class.forName(getHomePageClass());
+      
     } catch (ClassNotFoundException e) {
       e.printStackTrace();
       return HomePage.class;
@@ -74,7 +83,7 @@ public class ShangridocsApp extends WebApplication {
   }
 
   public String getHomePageClass() {
-    return getServletContext().getInitParameter(SHANGRIDOCS_HOMEPAGE);
+    return getServletContext().getInitParameter(SHANGRIDOCS_HOMEPAGE + ".default");
   }
 
   public String getSkin() {
