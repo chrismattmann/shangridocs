@@ -27,11 +27,12 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.commons.io.IOUtils;
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -46,16 +47,18 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import org.apache.oodt.commons.xml.XMLUtils;
+
 @Path("/uniprot")
 public class UniprotResource {
 
-  @GET
+  @PUT
   @Path("/search")
   @Produces("application/json")
-  public Response createBody(@QueryParam("query") String query)
+  public Response createBody(InputStream is)
       throws IOException, SAXException,
       ParserConfigurationException {
-
+    String query = IOUtils.toString(is, "UTF-8");
     return Response.ok(uniprot(query), MediaType.APPLICATION_JSON).build();
 
   }
@@ -98,7 +101,6 @@ public class UniprotResource {
       json += "\"ID\":\"" + map.get("ID") + "\",";
       map.remove("ID");
       json += "\"Description\":\"" + map.get("Description") + "\",";
-      // System.out.println("DEBUG"+"BOOOOO "+map.get("Description"));
       map.remove("Description");
       json += "\"Detail_link\":\"" + map.get("Detail_link") + "\",";
       map.remove("Detail_link");
@@ -148,68 +150,48 @@ public class UniprotResource {
 
   public static String uniprot(String query) throws IOException,
       SAXException, ParserConfigurationException {
-    JSONArray ar1 = readJsonArrayFromUrl("http://www.uniprot.org/uniprot/?query="
+    JSONArray queryResults = readJsonArrayFromUrl("http://www.uniprot.org/uniprot/?query="
         + query + "&columns=id&start=0&limit=5&format=json");
 
     String Search_link = "";
-    String Num_results = "";
+    String Num_results = "" + String.valueOf(queryResults != null ? queryResults.size():"0");;
     ArrayList<HashMap<String, String>> entries = new ArrayList<HashMap<String, String>>();
 
-    for (int i = 0; i < ar1.size(); i++) {
+    for (int i = 0; i < queryResults.size(); i++) {
       HashMap<String, String> map = new HashMap<String, String>();
-      JSONObject temp1 = (JSONObject) ar1.get(i);
-      String s = (String) temp1.get("id");
-      // System.out.println("DEBUG"+"ID:"+s);
-      map.put("ID", s);
+      JSONObject result = (JSONObject) queryResults.get(i);
+      String id = (String) result.get("id");
+      map.put("ID", id);
 
-      Document doc = readXMLFromUrl("http://www.uniprot.org/uniprot/" + s
+      Document doc = readXMLFromUrl("http://www.uniprot.org/uniprot/" + id 
           + ".xml");
+      Element docElem = doc.getDocumentElement();
 
-      // System.out.println("DEBUG"+"Detail_link:"+"http://www.uniprot.org/uniprot/"+s);
-      map.put("Detail_link", "http://omim.org/entry/" + s);
+      map.put("Detail_link", "http://www.uniprot.org/uniprot/" + id);
+      NodeList organismList = doc.getElementsByTagName("organism");
 
-      NodeList temp = doc.getElementsByTagName("organism");
+      Element firstOrganism = (Element) organismList.item(0);
+      NodeList nameElementList = firstOrganism.getElementsByTagName("name");
 
-      Element e = (Element) temp.item(0);
-      temp = e.getElementsByTagName("name");
+      for (int indx = 0; indx < nameElementList.getLength(); indx++) {
+        Element nameElement = (Element) nameElementList.item(indx);
 
-      for (int indx = 0; indx < temp.getLength(); indx++) {
-        Element eElement = (Element) temp.item(indx);
-
-        if (eElement.getAttribute("type").equals("scientific")) {
-
-          System.out.println("DEBUG" + "Organism:" + eElement.getTextContent());
-          map.put("Organism", eElement.getTextContent());
+        if (nameElement.getAttribute("type").equals("scientific")) {
+          map.put("Organism", nameElement.getTextContent());
         }
       }
 
-      temp = doc.getElementsByTagName("protein");
-      e = (Element) temp.item(0);
+      Element proteinElem = XMLUtils.getFirstElement("protein", docElem);
+      Element recommendedNameElem = XMLUtils.getFirstElement("recommendedName", proteinElem);
+      Element fullNameElem = XMLUtils.getFirstElement("fullName", recommendedNameElem);
+      map.put("Title", XMLUtils.getSimpleElementText(fullNameElem));
+      map.put("Gene", XMLUtils.getElementText("gene", docElem));
 
-      temp = e.getElementsByTagName("recommendedName");
-      e = (Element) temp.item(0);
-
-      temp = e.getElementsByTagName("fullName");
-      e = (Element) temp.item(0);
-
-      // System.out.println("DEBUG"+"Title:"+e.getTextContent());
-      map.put("Title", e.getTextContent());
-
-      temp = doc.getElementsByTagName("gene");
-      e = (Element) temp.item(0);
-
-      // System.out.println("DEBUG"+"Gene:"+e.getTextContent());
-      map.put("Gene", e.getTextContent());
-
-      NodeList nList = doc.getElementsByTagName("comment");
-      for (int indx = 0; indx < nList.getLength(); indx++) {
-        Element eElement = (Element) nList.item(indx);
-        // System.out.println(""DEBUG"+eElement.getNodeName());
-        if (eElement.getAttribute("type").equals("function")) {
-          // System.out.println(""DEBUG"+"hi");
-          System.out.println("DEBUG" + "Description:"
-              + eElement.getTextContent());
-          map.put("Description", eElement.getTextContent());
+      NodeList commentList = doc.getElementsByTagName("comment");
+      for (int indx = 0; indx < commentList.getLength(); indx++) {
+        Element commentElement = (Element) commentList.item(indx);
+        if (commentElement.getAttribute("type").equals("function")) {
+          map.put("Description", commentElement.getTextContent());
         }
       }
 
@@ -217,8 +199,6 @@ public class UniprotResource {
 
     }
 
-    // System.out.println("DEBUG"+"Search_link:http://www.uniprot.org/uniprot/?query="+query);
-    // System.out.println("DEBUG"+"Num_results:");
     Search_link = "http://www.uniprot.org/uniprot/?query=" + query;
     return createStandardJson(Search_link, Num_results, entries);
   }
