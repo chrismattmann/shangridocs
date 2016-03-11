@@ -23,8 +23,8 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
  * Sub class of SubSection Response :
  * Sections details of the sections listed in Parsed Response
  * 
- * line : Subsection number of a sections in a page.
- * level : Section Number in the page
+ * @param line : Subsection number of a sections in a page.
+ * @param level : Section Number in the page
  * 
  * */
 @JsonIgnoreProperties(ignoreUnknown = true)

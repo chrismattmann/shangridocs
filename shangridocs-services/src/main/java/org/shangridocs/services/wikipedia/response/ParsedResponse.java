@@ -25,9 +25,9 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
  * 
  * Sub class of SubSection Response :
  *  
- * title: title of the Wikipedia Pages
- * pageid : Unique identifier of each WIKI Page
- * sections : List of Subsections in the page
+ * @param title: title of the Wikipedia Pages
+ * @param pageid : Unique identifier of each WIKI Page
+ * @param sections : List of Subsections in the page
  * 
  * */
 

@@ -21,9 +21,10 @@ package org.shangridocs.services.wikipedia.response;
 
 /**
  *
- * Wiki Page gives the link:URL of the page,
- * desc : Heading of the page, 
- * section info: Sub section of that page
+ * WikiPages gives the basic details of the page
+ * @param link:URL of the page,
+ * @param desc : Heading of the page, 
+ * @param section info: Sub section of that page
  *
  */
 public class WikiPages {
