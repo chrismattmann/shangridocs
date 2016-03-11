@@ -40,9 +40,9 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONValue;
-import org.shangridocs.services.wikipedia.Response.ParsedResponse;
-import org.shangridocs.services.wikipedia.Response.SubSectionResponse;
-import org.shangridocs.services.wikipedia.Response.WikiPages;
+import org.shangridocs.services.wikipedia.response.ParsedResponse;
+import org.shangridocs.services.wikipedia.response.SubSectionResponse;
+import org.shangridocs.services.wikipedia.response.WikiPages;
 
 @Path("/wikipedia")
 public class WikipediaResource {
@@ -107,10 +107,10 @@ public class WikipediaResource {
 	  WebClient client = WebClient.create(wikipediaBaseUrlStr)
 		        .query("action", "parse").query("page", query)
 		        .query("format", "json").query("prop", "sections").accept(MediaType.APPLICATION_JSON);
-	  LOG.info("Issuing wikipedia query for " + query);
+	  LOG.info("Issuing wikipedia subsections query for " + query);
 	  Response r = client.get();
 	  String responseJson = r.readEntity(String.class);
-	  System.out.println(responseJson);
+	  
 	  ObjectMapper mapper = new ObjectMapper();
 	  
 	  SubSectionResponse subSectionResponse = new SubSectionResponse();
