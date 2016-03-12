@@ -19,6 +19,8 @@ package org.shangridocs.services.wikipedia;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletContext;
@@ -33,8 +35,14 @@ import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.cxf.jaxrs.client.WebClient;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONValue;
+import org.shangridocs.services.wikipedia.response.ParsedResponse;
+import org.shangridocs.services.wikipedia.response.SubSectionResponse;
+import org.shangridocs.services.wikipedia.response.WikiPages;
 
 @Path("/wikipedia")
 public class WikipediaResource {
@@ -72,29 +80,53 @@ public class WikipediaResource {
     JSONArray wikiDescs = (JSONArray) objList.get(2);
     JSONArray wikiLinks = (JSONArray) objList.get(3);
 
-    StringBuilder jsonStrBuf = new StringBuilder("{");
+    String jsonResponse = "";
+    Map<String, WikiPages> wikiSearchResponse= new HashMap<String, WikiPages>();
+    
     for (int i = 0; i < wikiTitles.size(); i++) {
       String title = (String) wikiTitles.get(i);
       String link = (String) wikiLinks.get(i);
       String desc = (String) wikiDescs.get(i);
-      jsonStrBuf.append("\"");
-      jsonStrBuf.append(title);
-      jsonStrBuf.append("\" : { \"link\" : \"");
-      jsonStrBuf.append(link);
-      jsonStrBuf.append("\", \"desc\" : \"");
-      jsonStrBuf.append(desc);
-      if (i < wikiTitles.size() - 1) {
-        jsonStrBuf.append("\"},");
-      } else {
-        jsonStrBuf.append("\"}");
-      }
+      ParsedResponse parsedResponse = getWikipediaSubSections(title);
+      WikiPages wikiPage = new WikiPages();
+      wikiPage.setLink(link);
+      wikiPage.setDesc(desc);
+      wikiPage.setSectionInfo(parsedResponse);
+      wikiSearchResponse.put(title, wikiPage);
 
     }
-    jsonStrBuf.append("}");
-    return Response.ok(jsonStrBuf.toString(), MediaType.APPLICATION_JSON).build();
+    ObjectMapper mapper = new ObjectMapper();
+    jsonResponse = mapper.writeValueAsString(wikiSearchResponse);
+    
+    return Response.ok(jsonResponse, MediaType.APPLICATION_JSON).build();
 
   }
 
+  public ParsedResponse getWikipediaSubSections(String query){
+	  
+	  WebClient client = WebClient.create(wikipediaBaseUrlStr)
+		        .query("action", "parse").query("page", query)
+		        .query("format", "json").query("prop", "sections").accept(MediaType.APPLICATION_JSON);
+	  LOG.info("Issuing wikipedia subsections query for " + query);
+	  Response r = client.get();
+	  String responseJson = r.readEntity(String.class);
+	  
+	  ObjectMapper mapper = new ObjectMapper();
+	  
+	  SubSectionResponse subSectionResponse = new SubSectionResponse();
+	  try {
+		subSectionResponse = mapper.readValue(responseJson, SubSectionResponse.class);
+	} catch (JsonParseException e) {
+		LOG.info("Error while parsing the Wikipedia Sub Section Response for query: "+ query);
+	} catch (JsonMappingException e) {
+		LOG.info("Error while maping json in the Wikipedia Sub Section Response for query: "+ query);
+	} catch (IOException e) {
+		LOG.info("IO Exception while parsing the Wikipedia Sub Section Response for query: "+ query);
+	}
+	  
+	 return subSectionResponse.getParse();
+  }
+  
   @GET
   @Path("/status")
   @Produces("text/html")
