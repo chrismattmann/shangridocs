@@ -15,18 +15,24 @@
  * limitations under the License.
  */
 
-package org.shangridocs;
 
-import org.shangridocs.webcomponents.ctakes.CTakesPanel;
-import org.shangridocs.webcomponents.search.SearchServicesPanel;
+package org.shangridocs.webcomponents.search;
 
-public class HomePage extends BaseHomePage {
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.panel.Panel;
 
-	public static final String SHANGRIDOCS_SKIN = "org.shangridocs.skin";
+public class SearchServicesPanel_v2 extends Panel {
 
-	public HomePage() {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5056373016660060557L;
 
-		add(new CTakesPanel("ctakes_panel", false, false));
-		add(new SearchServicesPanel("search_panel", false, false));
-	}
+	public SearchServicesPanel_v2(String id, boolean jQuery, boolean bootstrap) {
+	    super(id);
+	    add(new WebMarkupContainer("bootstrap_js").setVisible(bootstrap));
+	    add(new WebMarkupContainer("bootstrap_css").setVisible(bootstrap));
+	    add(new WebMarkupContainer("jquery").setVisible(jQuery));
+	  }
+
 }

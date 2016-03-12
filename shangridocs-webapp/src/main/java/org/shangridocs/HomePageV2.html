@@ -1,0 +1,83 @@
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one or more
+ contributor license agreements.  See the NOTICE file distributed with
+ this work for additional information regarding copyright ownership.
+ The ASF  b licenses this file to You under the Apache License, Version 2.0
+ (the "License"); you may not use this file except in compliance with
+ the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<html
+	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<head>
+<meta name="generator"
+	content="HTML Tidy for Linux/x86 (vers 25 March 2009), see www.w3.org" />
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<meta name="ShangriDocs" content="" />
+<meta name="Lauren Wong" content="" />
+
+<title>ShangriDocs</title>
+<!-- Google Fonts -->
+<!-- Bootstrap core CSS -->
+
+<wicket:link>
+	<link rel="stylesheet" href="new_skin_css/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="new_skin_css/style.css" />
+</wicket:link>
+
+</head>
+<!-- This is where the navigation goes -->
+
+<body>
+	<nav class="navbar-top navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+			</div>
+			<div id="navbar" class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="index.html">ShangriDocs</a></li>
+					<li><a href="about.html">About</a></li>
+					<li><a href="contact.html">How to Use</a></li>
+				</ul>
+			</div>
+			<!--/.nav-collapse -->
+		</div>
+	</nav>
+	<!-- This is where the Document goes -->
+
+	<div wicket:id="tika_panel" id="tika_panel"></div>
+
+	<!-- Here is the Sidebar goes -->
+	<div wicket:id="search_panel_v2" id="search_panel_v2"></div>
+	
+	<!--/.nav-collapse -->
+	<!-- Bootstrap core JavaScript
+================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+
+	<wicket:link>
+		<script type="text/javascript" src="jquery.min.js"></script>
+		<script type="text/javascript" src="bootstrap.min.js"></script>
+		<script type="text/javascript" src="bootstrap-tour.min.js"></script>
+		<script type="text/javascript" src="homePage_wicket_v2.js"></script>
+	</wicket:link>
+</body>
+</html>

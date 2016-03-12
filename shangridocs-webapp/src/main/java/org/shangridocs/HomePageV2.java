@@ -17,16 +17,18 @@
 
 package org.shangridocs;
 
-import org.shangridocs.webcomponents.ctakes.CTakesPanel;
-import org.shangridocs.webcomponents.search.SearchServicesPanel;
+import org.shangridocs.webcomponents.search.SearchServicesPanel_v2;
 
-public class HomePage extends BaseHomePage {
+/**
+ * HomePage V2 : is the new version of shangridocs skin created as of date : 11th March 2016
+ *
+ */
+public class HomePageV2 extends BaseHomePage {
 
-	public static final String SHANGRIDOCS_SKIN = "org.shangridocs.skin";
+	public HomePageV2() {
 
-	public HomePage() {
+		add(new SearchServicesPanel_v2("search_panel_v2", false, false));
 
-		add(new CTakesPanel("ctakes_panel", false, false));
-		add(new SearchServicesPanel("search_panel", false, false));
 	}
+
 }

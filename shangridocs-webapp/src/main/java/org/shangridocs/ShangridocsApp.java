@@ -66,7 +66,9 @@ public class ShangridocsApp extends WebApplication {
   @Override
   public Class<? extends Page> getHomePage() {
     try {
-      return (Class<? extends Page>) Class.forName(getHomePageClass());
+    	
+    	return (Class<? extends Page>) Class.forName(getHomePageClass());
+      
     } catch (ClassNotFoundException e) {
       e.printStackTrace();
       return HomePage.class;

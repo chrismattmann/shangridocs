@@ -17,16 +17,19 @@
 
 package org.shangridocs;
 
-import org.shangridocs.webcomponents.ctakes.CTakesPanel;
-import org.shangridocs.webcomponents.search.SearchServicesPanel;
+import org.apache.wicket.markup.html.WebPage;
+import org.shangridocs.webcomponents.tika.TikaTabbedPanel;
 
-public class HomePage extends BaseHomePage {
+/**
+ *
+ *This is the Base class of all the homepages in shangridocs tool.
+ *Contains the common elements added in all the homepage versions.
+ *
+ */
+public abstract class BaseHomePage extends WebPage {
 
-	public static final String SHANGRIDOCS_SKIN = "org.shangridocs.skin";
+	public BaseHomePage() {
 
-	public HomePage() {
-
-		add(new CTakesPanel("ctakes_panel", false, false));
-		add(new SearchServicesPanel("search_panel", false, false));
+		add(new TikaTabbedPanel("tika_panel", false));
 	}
 }
