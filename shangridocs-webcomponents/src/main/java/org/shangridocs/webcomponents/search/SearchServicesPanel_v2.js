@@ -22,7 +22,6 @@ $(".filesContent").on( "mouseup", ".extracted-text", function( e){
 										"<input type='button' value='Search' class='searchSelected btn btn-primary'>" +
 									"</div>"
 								  );
-		//elem.on("hidden",searchSelectedTextDummy(selectedText));
 		//sending Selected text to search component on the right.
 		$(".searchSelected").click( function()
 		{
@@ -54,11 +53,6 @@ $.ajax({
 	    //return alert("Hey: " + textStatus);
 	  }
 });
-	
-function searchSelectedTextDummy(selectedText){
-	alert(selectedText);
-	searchSelectedText(selectedText);
-}
 
 function searchSelectedText(selectedText)
 {
