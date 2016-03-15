@@ -177,7 +177,7 @@ function searchSelectedText(selectedText)
 							
 							for (var key in responseObjects) {
 								wikiSearchLength++;
-								searchResultWiki += "<ul class='wikipedia'>" + "<lli><a class='resultsTitle' href='#'>"+(wikiSearchLength+1) +". " + key +"</a></li><li>" + 
+								searchResultWiki += "<ul class='wikipedia'>" + "<lli><a class='resultsTitle' href='#'>"+(wikiSearchLength) +". " + key +"</a></li><li>" + 
 								responseObjects[key]["desc"] + "</li><li>";
 								sectionInfoLists = responseObjects[key]["sectionInfo"];
 								subsectionLen = sectionInfoLists["sections"].length;
@@ -197,6 +197,98 @@ function searchSelectedText(selectedText)
 								searchResultWiki+= "No results";
 							$("#toggleDemo4").html("");
 							$("#toggleDemo4").append( searchResultWiki);
+						},
+						error: function( e){
+							//sometimes even correct results error out because response is a string instead of an object.
+							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3  + openFileIndex + "' data-toggle='tab'>" + currentEngine3 + "(Error)</a></li>");
+							var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3  + openFileIndex + "'><ul class='searchList'>";
+							searchResultWiki += "<label> Wikipedia results couldn't be fetched correctly. We are working on this issue.</label>";
+							$(".searchContent" + openFileIndex).append( searchResultWiki);
+
+						}
+					}).fail( function(){
+						//$(".searchContent"+ openFileIndex).html( "<label class='alert alert-danger'> An error has occurred. Please refresh the page and try again.</label>");
+					});
+				}
+				else if( engine == "GeneCard")
+				{
+					var currentEngine3 = engine;
+					$.ajax({
+						headers : {
+							"Content-Type" : "text/plain"
+						},
+						url: searchPreferences[engine]["restURL"], 
+						method:"put",
+						data: selectedText,
+						success:function( responseObjects){
+							//$(".loading-img").remove();
+							
+							var geneCardSearchLength = 0; geneCardResult = "";
+							
+							var searchResultGeneCard = "<ul class='nav nav-list'><li style='list-style: none; display: inline'>";
+							
+							for (var key in responseObjects) {
+								geneCardSearchLength++;
+								geneCardResult += "<ul class='geneCard'><li><strong>Symbol:</strong>"+responseObjects[key]["Symbol"] +"</li><li><strong>Description:</strong>" + 
+								responseObjects[key]["Description"] + "</li><li><a class='results' href='#'>View Details...</a></li></ul> <br />";
+							}
+							$("#geneCard .badge").html("<span class='badge'>"+ geneCardSearchLength +"</span>");
+//							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3  + openFileIndex + "' data-toggle='tab'>" + currentEngine3 + " (" + wikiSearchLength + ")</a></li>");
+//							var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3  + openFileIndex + "'><ul class='searchList'>" + searchResultWiki;
+//							
+							if($.isEmptyObject(responseObjects))
+								geneCardResult+= "No results";
+							else{
+								geneCardResult+= "</li><li><a class='results' href='#'>GeneCard ResultsPage...</a></li></ul>"
+							}
+							$("#toggleDemo5").html("");
+							$("#toggleDemo5").append( geneCardResult);
+						},
+						error: function( e){
+							//sometimes even correct results error out because response is a string instead of an object.
+							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3  + openFileIndex + "' data-toggle='tab'>" + currentEngine3 + "(Error)</a></li>");
+							var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3  + openFileIndex + "'><ul class='searchList'>";
+							searchResultWiki += "<label> Wikipedia results couldn't be fetched correctly. We are working on this issue.</label>";
+							$(".searchContent" + openFileIndex).append( searchResultWiki);
+
+						}
+					}).fail( function(){
+						//$(".searchContent"+ openFileIndex).html( "<label class='alert alert-danger'> An error has occurred. Please refresh the page and try again.</label>");
+					});
+				}
+				else if( engine == "StringDB")
+				{
+					var currentEngine3 = engine;
+					$.ajax({
+						headers : {
+							"Content-Type" : "text/plain"
+						},
+						url: searchPreferences[engine]["restURL"], 
+						method:"put",
+						data: selectedText,
+						success:function( responseObjects){
+							//$(".loading-img").remove();
+							
+							var stringDBSearchLength = 0; searchResultStringDB = "";
+							
+							var searchResultStringDB = "<ul class='nav nav-list'><li style='list-style: none; display: inline'>";
+							
+							for (var key in responseObjects) {
+								stringDBSearchLength++;
+								searchResultStringDB += "<ul class='stringDB'><li><strong>Organism:</strong>"+responseObjects[key]["taxonName"] +"</li><li><strong>Description:</strong>" + 
+								responseObjects[key]["description"] + "</li><li><a class='results' href='"+responseObjects[key]["link"]+"'>View Details...</a></li></ul> <br />";
+							}
+							$("#stringDB .badge").html("<span class='badge'>"+ stringDBSearchLength +"</span>");
+//							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3  + openFileIndex + "' data-toggle='tab'>" + currentEngine3 + " (" + wikiSearchLength + ")</a></li>");
+//							var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3  + openFileIndex + "'><ul class='searchList'>" + searchResultWiki;
+//							
+							if($.isEmptyObject(responseObjects))
+								searchResultStringDB+= "No results";
+							else{
+								searchResultStringDB+= "</li><li><a class='results' href='#'>View All Results...</a></li></ul>"
+							}
+							$("#toggleDemo6").html("");
+							$("#toggleDemo6").append( searchResultStringDB);
 						},
 						error: function( e){
 							//sometimes even correct results error out because response is a string instead of an object.
