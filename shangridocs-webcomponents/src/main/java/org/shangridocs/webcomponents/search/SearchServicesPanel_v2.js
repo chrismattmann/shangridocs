@@ -46,12 +46,8 @@ $.ajax({
 	headers:{"Content-Type":"application/json"},
 	method:"GET",
 	success:function( data){
-		//alert("success")
 		searchPreferences = data.services;
-	},
-	complete: function(response, textStatus) {
-	    //return alert("Hey: " + textStatus);
-	  }
+	}
 });
 
 function searchSelectedText(selectedText)
@@ -91,7 +87,6 @@ function searchSelectedText(selectedText)
 						method:"put",
 						data: selectedText,
 						success:function( responseObjects){
-							//$(".loading-img").remove();
 							$("#pubmedTitle .badge").html("<span class='badge'>"+ responseObjects.length +"</span>");
 							
 							var searchResultPub = "<ul class='nav nav-list'><li style='list-style: none; display: inline'>";
@@ -117,7 +112,7 @@ function searchSelectedText(selectedText)
 							$(".searchContent"+ openFileIndex).append( searchResultPub);
 						}
 					}).fail( function(){
-						//$(".searchContent"+ openFileIndex).html( "<label class='alert alert-danger'> An error has occurred. Please refresh the page and try again.</label>");
+						//Not adding a fail function here. If the search fails-> the search block will have blank title with 0 results.
 					});
 				}
 				else if( engine == "StudySearch")
@@ -139,8 +134,6 @@ function searchSelectedText(selectedText)
 						method:"get",
 						data: {},
 						success:function( responseObjects){
-							//$(".loading-img").remove();
-							//responseObjects = $.parseJSON( responseObjects);
 							responseObjects = responseObjects["response"]["docs"];
 							$(".searchTab" + openFileIndex).append("<li role='presentation' class='active'><a href='#" + currentEngine2  + openFileIndex + "' data-toggle='tab'>" + currentEngine2 + " (" + responseObjects.length + ")</a></li>");
 							var searchResultStudy = "<div role='tabpanel' class='tab-pane active' id='" + currentEngine2  + openFileIndex + "'><ul class='searchList'>";
@@ -155,7 +148,7 @@ function searchSelectedText(selectedText)
 							$(".searchContent" + openFileIndex).append( searchResultStudy);
 						}
 					}).fail( function(){
-						//$(".searchContent"+ openFileIndex).html( "<label class='alert alert-danger'> An error has occurred. Please refresh the page and try again.</label>");
+						//Not adding a fail function here. If the search fails-> the search block will have blank title with 0 results.
 					});
 				}
 				else if( engine == "Wikipedia")
@@ -169,8 +162,6 @@ function searchSelectedText(selectedText)
 						method:"put",
 						data: selectedText,
 						success:function( responseObjects){
-							//$(".loading-img").remove();
-							
 							var wikiSearchLength = 0; searchResultWiki = "";
 							
 							var searchResultWiki = "<div style='margin-left: 2em; padding-bottom: 5px' class='nav nav-list'>";
@@ -190,9 +181,6 @@ function searchSelectedText(selectedText)
 								searchResultWiki += "</li><li><a class='results' href='"+responseObjects[key]["link"] +"'>View details...</a></li></ul><br />";
 							}
 							$("#wikiTitle .badge").html("<span class='badge'>"+ wikiSearchLength +"</span>");
-//							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3  + openFileIndex + "' data-toggle='tab'>" + currentEngine3 + " (" + wikiSearchLength + ")</a></li>");
-//							var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3  + openFileIndex + "'><ul class='searchList'>" + searchResultWiki;
-//							
 							if($.isEmptyObject(responseObjects))
 								searchResultWiki+= "No results";
 							$("#toggleDemo4").html("");
@@ -207,7 +195,7 @@ function searchSelectedText(selectedText)
 
 						}
 					}).fail( function(){
-						//$(".searchContent"+ openFileIndex).html( "<label class='alert alert-danger'> An error has occurred. Please refresh the page and try again.</label>");
+						//Not adding a fail function here. If the search fails-> the search block will have blank title with 0 results.
 					});
 				}
 				else if( engine == "GeneCard")
@@ -233,9 +221,6 @@ function searchSelectedText(selectedText)
 								responseObjects[key]["Description"] + "</li><li><a class='results' href='#'>View Details...</a></li></ul> <br />";
 							}
 							$("#geneCard .badge").html("<span class='badge'>"+ geneCardSearchLength +"</span>");
-//							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3  + openFileIndex + "' data-toggle='tab'>" + currentEngine3 + " (" + wikiSearchLength + ")</a></li>");
-//							var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3  + openFileIndex + "'><ul class='searchList'>" + searchResultWiki;
-//							
 							if($.isEmptyObject(responseObjects))
 								geneCardResult+= "No results";
 							else{
@@ -253,7 +238,7 @@ function searchSelectedText(selectedText)
 
 						}
 					}).fail( function(){
-						//$(".searchContent"+ openFileIndex).html( "<label class='alert alert-danger'> An error has occurred. Please refresh the page and try again.</label>");
+						//Not adding a fail function here. If the search fails-> the search block will have blank title with 0 results.
 					});
 				}
 				else if( engine == "StringDB")
@@ -267,7 +252,6 @@ function searchSelectedText(selectedText)
 						method:"put",
 						data: selectedText,
 						success:function( responseObjects){
-							//$(".loading-img").remove();
 							
 							var stringDBSearchLength = 0; searchResultStringDB = "";
 							
@@ -279,9 +263,6 @@ function searchSelectedText(selectedText)
 								responseObjects[key]["description"] + "</li><li><a class='results' href='"+responseObjects[key]["link"]+"'>View Details...</a></li></ul> <br />";
 							}
 							$("#stringDB .badge").html("<span class='badge'>"+ stringDBSearchLength +"</span>");
-//							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3  + openFileIndex + "' data-toggle='tab'>" + currentEngine3 + " (" + wikiSearchLength + ")</a></li>");
-//							var searchResultWiki = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3  + openFileIndex + "'><ul class='searchList'>" + searchResultWiki;
-//							
 							if($.isEmptyObject(responseObjects))
 								searchResultStringDB+= "No results";
 							else{
@@ -299,9 +280,10 @@ function searchSelectedText(selectedText)
 
 						}
 					}).fail( function(){
-						//$(".searchContent"+ openFileIndex).html( "<label class='alert alert-danger'> An error has occurred. Please refresh the page and try again.</label>");
+						//Not adding a fail function here. If the search fails-> the search block will have blank title with 0 results.
 					});
 				}
+
 			}
 		}
 	}
