@@ -41,7 +41,8 @@ public class StringDBResource {
     private static final String BASE_URL_KEY = "org.shangridocs.stringdb.baseUrl";
     private static final String RESOLVE_API_PATH = "/api/json/resolve";
     private static final String DETAILS_PATH = "/newstring_cgi/show_network_section.pl?identifier=";
-
+    private static final String BASE_URL = "http://string-db.org";
+    
     private String baseUrl;
 
     public StringDBResource(@Context ServletContext sc) {
@@ -54,7 +55,7 @@ public class StringDBResource {
     @Consumes("text/plain")
     public Response query(InputStream is) throws IOException {
         String query = IOUtils.toString(is, "UTF-8");
-        WebClient client = WebClient.create(baseUrl + RESOLVE_API_PATH)
+        WebClient client = WebClient.create(BASE_URL + RESOLVE_API_PATH)
                 .query("identifier", query).accept(MediaType.APPLICATION_JSON);
         LOG.info("Issuing stringdb query for " + query);
         Response r = client.get();
@@ -64,53 +65,58 @@ public class StringDBResource {
         // Example response is  [{"annotation":"apoptosis antagonizing transcription factor",
         //"preferredName":"AATF","taxonName":"Takifugu rubripes","ncbiTaxonId":31033,
         //"stringId":"31033.ENSTRUP00000000315","queryIndex":-1}
-
-        JSONArray resultList = (JSONArray) JSONValue.parse(responseJson);
-
         StringBuilder jsonStrBuf = new StringBuilder("[");
-        for (int i = 0; i < resultList.size(); i++) {
-            JSONObject result = (JSONObject) resultList.get(i);
+        try{
+            JSONArray resultList = (JSONArray) JSONValue.parse(responseJson);
 
-            String title = (String) result.get("preferredName");
-            String identifier = (String) result.get("stringId");
-            String link = baseUrl + DETAILS_PATH + identifier;
-            String description = (String) result.get("annotation");
-            String taxonName = (String) result.get("taxonName");
-            Long ncbiTaxonId = (Long) result.get("ncbiTaxonId");
+            
+            for (int i = 0; i < resultList.size(); i++) {
+                JSONObject result = (JSONObject) resultList.get(i);
 
-            jsonStrBuf.append("{");
-            jsonStrBuf.append("\"link\":\"");
-            jsonStrBuf.append(link);
-            jsonStrBuf.append("\"");
+                String title = (String) result.get("preferredName");
+                String identifier = (String) result.get("stringId");
+                String link = baseUrl + DETAILS_PATH + identifier;
+                String description = (String) result.get("annotation");
+                String taxonName = (String) result.get("taxonName");
+                Long ncbiTaxonId = (Long) result.get("ncbiTaxonId");
 
-            jsonStrBuf.append(",");
-            jsonStrBuf.append("\"title\":\"");
-            jsonStrBuf.append(title);
-            jsonStrBuf.append("\"");
+                jsonStrBuf.append("{");
+                jsonStrBuf.append("\"link\":\"");
+                jsonStrBuf.append(link);
+                jsonStrBuf.append("\"");
 
-            jsonStrBuf.append(",");
-            jsonStrBuf.append("\"description\":\"");
-            jsonStrBuf.append(description);
-            jsonStrBuf.append("\"");
-
-            jsonStrBuf.append(",");
-            jsonStrBuf.append("\"taxonName\":\"");
-            jsonStrBuf.append(taxonName);
-            jsonStrBuf.append("\"");
-
-            jsonStrBuf.append(",");
-            jsonStrBuf.append("\"ncbiTaxonId\":");
-            jsonStrBuf.append(ncbiTaxonId);
-            jsonStrBuf.append("");
-
-            jsonStrBuf.append("}");
-
-            if (i < (resultList.size() - 1)) {
                 jsonStrBuf.append(",");
+                jsonStrBuf.append("\"title\":\"");
+                jsonStrBuf.append(title);
+                jsonStrBuf.append("\"");
+
+                jsonStrBuf.append(",");
+                jsonStrBuf.append("\"description\":\"");
+                jsonStrBuf.append(description);
+                jsonStrBuf.append("\"");
+
+                jsonStrBuf.append(",");
+                jsonStrBuf.append("\"taxonName\":\"");
+                jsonStrBuf.append(taxonName);
+                jsonStrBuf.append("\"");
+
+                jsonStrBuf.append(",");
+                jsonStrBuf.append("\"ncbiTaxonId\":");
+                jsonStrBuf.append(ncbiTaxonId);
+                jsonStrBuf.append("");
+
+                jsonStrBuf.append("}");
+
+                if (i < (resultList.size() - 1)) {
+                    jsonStrBuf.append(",");
+                }
             }
+
+            jsonStrBuf.append("]");
+        }catch(ClassCastException ce){
+        	LOG.info("Error while parsing StringDB Response. Response recived for query: "+query+", resonse:: " + responseJson);
         }
 
-        jsonStrBuf.append("]");
 
         return Response.ok(jsonStrBuf.toString(), MediaType.APPLICATION_JSON).build();
     }

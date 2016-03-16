@@ -15,6 +15,10 @@
 	    "StringDB" : {
 		    "restURL" : "services/stringdb/query",
 		    "set" : true
+		},
+	    "GeneCard" : {
+		    "restURL" : "services/genecard/query",
+		    "set" : true
 		}
 	}
 }

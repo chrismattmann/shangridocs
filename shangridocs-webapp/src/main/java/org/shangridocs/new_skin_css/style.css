@@ -182,7 +182,9 @@ ul.nav .nav-tabs {
 div.navbar.navbar-default {
 	padding-top: 20px;
 }
-
+.leftpadding {
+	padding-left: 25px;	
+}
 /******************************************
 /* ADDITIONAL STYLES
 /*******************************************/
