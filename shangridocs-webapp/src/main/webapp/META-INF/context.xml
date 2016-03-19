@@ -37,7 +37,10 @@ the License.
         value="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"/>
 
     <Parameter name="org.shangridocs.wikipedia.baseUrl"
-        value="https://en.wikipedia.org/w/api.php"/>           
+        value="https://en.wikipedia.org/w/api.php"/>
+        
+    <Parameter name="org.shangridocs.stringdb.baseUrl"
+               value="http://string-db.org"/>           
         
     <Parameter name="org.shangridocs.solr.url"
         value="[SOLR_URL]"/>    
@@ -51,6 +54,8 @@ the License.
     <Parameter name="org.shangridocs.solr.resultURL"
         value="[SOLR_RESULT_URL]"/>  
         
+    <Parameter name="org.shangridocs.omim.apikey"
+               value="[OMIM_API_KEY]"/>
     <Parameter name="configuration"
         value="development"/> <!-- valid values {development,deployment} -->
                     

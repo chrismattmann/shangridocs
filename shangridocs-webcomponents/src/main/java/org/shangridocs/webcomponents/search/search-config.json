@@ -19,6 +19,14 @@
 	    "GeneCard" : {
 		    "restURL" : "services/genecard/query",
 		    "set" : true
+		},
+	    "Uniprot" : {
+		    "restURL" : "services/uniprot/search",
+		    "set" : true
+		},
+	    "Omim" : {
+		    "restURL" : "services/omim/search",
+		    "set" : true
 		}
 	}
 }
