@@ -50,6 +50,8 @@ the License.
         org.shangridocs.services.solr.SolrResource,
         org.shangridocs.services.genecard.GenecardResource,
         org.shangridocs.services.stringdb.StringDBResource,
+        org.shangridocs.services.omim.OmimResource,
+        org.shangridocs.services.uniprot.UniprotResource,
       </param-value>
      </init-param>
     <load-on-startup>1</load-on-startup>

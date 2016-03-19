@@ -41,7 +41,7 @@ public class StringDBResource {
     private static final String BASE_URL_KEY = "org.shangridocs.stringdb.baseUrl";
     private static final String RESOLVE_API_PATH = "/api/json/resolve";
     private static final String DETAILS_PATH = "/newstring_cgi/show_network_section.pl?identifier=";
-    private static final String BASE_URL = "http://string-db.org";
+    
     
     private String baseUrl;
 
@@ -55,7 +55,7 @@ public class StringDBResource {
     @Consumes("text/plain")
     public Response query(InputStream is) throws IOException {
         String query = IOUtils.toString(is, "UTF-8");
-        WebClient client = WebClient.create(BASE_URL + RESOLVE_API_PATH)
+        WebClient client = WebClient.create(baseUrl + RESOLVE_API_PATH)
                 .query("identifier", query).accept(MediaType.APPLICATION_JSON);
         LOG.info("Issuing stringdb query for " + query);
         Response r = client.get();

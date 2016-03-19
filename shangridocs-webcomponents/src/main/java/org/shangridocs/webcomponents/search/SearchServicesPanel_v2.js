@@ -283,6 +283,90 @@ function searchSelectedText(selectedText)
 						//Not adding a fail function here. If the search fails-> the search block will have blank title with 0 results.
 					});
 				}
+				else if( engine == "Uniprot")
+				{
+					var currentEngine3 = engine;
+					$.ajax({
+						headers : {
+							"Content-Type" : "text/plain"
+						},
+						url: searchPreferences[engine]["restURL"], 
+						method:"put",
+						data: selectedText,
+						success:function( responseObjects){
+							
+							var uniprotSearchLength = 0; searchResultuniprot = "";
+							
+							var searchResultuniprot = "<ul class='nav nav-list'><li style='list-style: none; display: inline'>";
+							jsonResponseObj = responseObjects["Response"];
+							for (var key in jsonResponseObj) {
+								uniprotSearchLength++;
+								searchResultuniprot += "<ul class='uniprot'><li><strong>Protein:</strong>"+jsonResponseObj[key]["Title"] +"</li><li><strong>Organism:</strong>" + 
+								jsonResponseObj[key]["Properties"]["Organism"] + "</li><li><a class='results' href='"+jsonResponseObj[key]["Detail_link"]+"'>View Details...</a></li></ul> <br />";
+							}
+							$("#uniprot .badge").html("<span class='badge'>"+ uniprotSearchLength +"</span>");
+							if($.isEmptyObject(responseObjects))
+								searchResultuniprot+= "No results";
+							else{
+								searchResultuniprot+= "</li><li><a class='results' href='#'>View All Results...</a></li></ul>"
+							}
+							$("#toggleDemo8").html("");
+							$("#toggleDemo8").append( searchResultuniprot);
+						},
+						error: function( e){
+							//sometimes even correct results error out because response is a string instead of an object.
+							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3  + openFileIndex + "' data-toggle='tab'>" + currentEngine3 + "(Error)</a></li>");
+							var searchResultuniprot = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3  + openFileIndex + "'><ul class='searchList'>";
+							searchResultuniprot += "<label> Wikipedia results couldn't be fetched correctly. We are working on this issue.</label>";
+							$(".searchContent" + openFileIndex).append( searchResultuniprot);
+
+						}
+					}).fail( function(){
+						
+					});
+				}
+				else if( engine == "Omim")
+				{
+					var currentEngine3 = engine;
+					$.ajax({
+						headers : {
+							"Content-Type" : "text/plain"
+						},
+						url: searchPreferences[engine]["restURL"], 
+						method:"put",
+						data: selectedText,
+						success:function( responseObjects){
+							
+							var omimSearchLength = 0; omimSearchLength = "";
+							
+							var searchResultOmim = "<ul class='nav nav-list'><li style='list-style: none; display: inline'>";
+							jsonResponseObj = responseObjects["Response"];
+							for (var key in jsonResponseObj) {
+								omimSearchLength++;
+								searchResultOmim += "<ul class='omim'><li><strong>Title:</strong>"+jsonResponseObj[key]["Title"] +"</li><li><strong>Description:</strong>" + 
+								jsonResponseObj[key]["Description"] + "</li><li><a class='results' href='"+jsonResponseObj[key]["Detail_link"]+"'>View Details...</a></li></ul> <br />";
+							}
+							$("#Omim .badge").html("<span class='badge'>"+ omimSearchLength +"</span>");
+							if($.isEmptyObject(responseObjects))
+								searchResultOmim+= "No results";
+							else{
+								searchResultOmim+= "</li><li><a class='results' href='#'>View All Results...</a></li></ul>"
+							}
+							$("#toggleDemo7").html("");
+							$("#toggleDemo7").append( searchResultOmim);
+						},
+						error: function( e){
+							//sometimes even correct results error out because response is a string instead of an object.
+							$(".searchTab" + openFileIndex).append("<li role='presentation'><a href='#" + currentEngine3  + openFileIndex + "' data-toggle='tab'>" + currentEngine3 + "(Error)</a></li>");
+							var searchResultuniprot = "<div role='tabpanel' class='tab-pane ' id='" + currentEngine3  + openFileIndex + "'><ul class='searchList'>";
+							searchResultuniprot += "<label> Wikipedia results couldn't be fetched correctly. We are working on this issue.</label>";
+							$(".searchContent" + openFileIndex).append( searchResultuniprot);
+
+						}
+					}).fail( function(){
+						
+					});
+				}
 
 			}
 		}
