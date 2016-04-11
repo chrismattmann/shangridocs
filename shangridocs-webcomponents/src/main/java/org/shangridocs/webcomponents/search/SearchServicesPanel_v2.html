@@ -17,16 +17,17 @@
 
 <wicket:panel>
 
-<wicket:link>
-  <!-- <link rel="stylesheet" type="text/css" href="SearchServicesPanel.css"/> -->
-  <!-- <link rel="stylesheet" type="text/css" href="font-awesome.css"/> -->
-  <!-- <link rel="stylesheet" type="text/css" href="bootstrap.min.css" wicket:id="bootstrap_css"/> -->
-  <script src="jquery.min.js" type="text/javascript" wicket:id="jquery"></script>  
-  <script src="bootstrap.min.js" type="text/javascript" wicket:id="bootstrap_js"></script>
-  <script src="SearchServicesPanel_v2.js" type="text/javascript"></script>
-</wicket:link>
+	<wicket:link>
+		<!-- <link rel="stylesheet" type="text/css" href="SearchServicesPanel.css"/> -->
+		<!-- <link rel="stylesheet" type="text/css" href="font-awesome.css"/> -->
+		<!-- <link rel="stylesheet" type="text/css" href="bootstrap.min.css" wicket:id="bootstrap_css"/> -->
+		<script src="jquery.min.js" type="text/javascript" wicket:id="jquery"></script>
+		<script src="bootstrap.min.js" type="text/javascript"
+			wicket:id="bootstrap_js"></script>
+		<script src="SearchServicesPanel_v2.js" type="text/javascript"></script>
+	</wicket:link>
 
-<div class="col-sm-4 col-md-4" id="right">
+	<div class="col-sm-4 col-md-4" id="right">
 		<div class="sidebar-nav">
 			<div class="navbar navbar-default" role="navigation">
 				<div class="navbar-collapse collapse sidebar-navbar-collapse">
@@ -44,124 +45,29 @@
 					</ul>
 				</div>
 
-				<div id="custom-search-input">
-					<div class="input-group col-md-6">
-						<input type="text" class=" search-query form-control"
-							placeholder="Search" />
-					</div>
-				</div>
-
+				
+				<!-- This is the tab that gets active when Web Searches section is clicked on. -->
 				<div class="tab-content">
 					<!-- Here is where the External Searches go -->
 
+				
 					<div id="externalSearches" class="tab-pane fade in active">
 						<!-- Study Search -->
-
+						<div id="custom-search-input">
+							<div class="input-group col-md-6">
+								<input type="text" class=" search-query form-control"
+									placeholder="Search" />
+							</div>
+						</div>
+						<br><br>
 						<ul>
 							<li><a href="#" data-toggle="collapse"
-								data-target="#toggleDemo" data-parent="#sidenav01"
-								class="collapsed"><span class="badge">42</span> &nbsp; Study
+								data-target="#toggleDemo9" data-parent="#sidenav01"
+								class="collapsed" id="studySearch"><span class="badge">0</span> &nbsp; Study
 									Search</a>
 
-								<div class="collapse" id="toggleDemo" style="height: 0px;">
-									<ul class="nav nav-list">
-										<li>
-											<ul class="studySearch">
-												<li><a class="resultsTitle" href="#">1. Zebrafish
-														IMiDs RNA</a></li>
-
-												<li>Affymetrix Zebrafish expression arrays were used to
-													profile expression during early development. Lenalidomide,
-													pomalidomide and thalidomide combinations were tracked over
-													3 timepoints(0hr, 6hr, and 12hr) 2 hours post-fertilization
-													with 3 repicates.</li>
-
-												<li><strong>Study Factors:</strong> Compound, Dose,
-													Dose Time, Development Time</li>
-
-												<li><strong>Assay:</strong> DNA microarray</li>
-
-												<li><strong>Measurement Type:</strong> transcription
-													profiling</li>
-
-												<li><strong>Data Asset Number:</strong> DA0000079</li>
-
-												<li><a class="results" href="#">View details...</a></li>
-											</ul> <br />
-
-											<ul class="studySearch">
-												<li><a class="resultsTitle" href="#">2. Zebrafish
-														IMiDs RNA</a></li>
-
-												<li>Affymetrix Zebrafish expression arrays were used to
-													profile expression during early development. Lenalidomide,
-													pomalidomide and thalidomide combinations were tracked over
-													3 timepoints(0hr, 6hr, and 12hr) 2 hours post-fertilization
-													with 3 repicates.</li>
-
-												<li><strong>Study Factors:</strong> Compound, Dose,
-													Dose Time, Development Time</li>
-
-												<li><strong>Assay:</strong> DNA microarray</li>
-
-												<li><strong>Measurement Type:</strong> transcription
-													profiling</li>
-
-												<li><strong>Data Asset Number:</strong> DA0000079</li>
-
-												<li><a class="results" href="#">View details...</a></li>
-											</ul> <br />
-
-											<ul class="studySearch">
-												<li><a class="resultsTitle" href="#">3. Zebrafish
-														IMiDs RNA</a></li>
-
-												<li>Affymetrix Zebrafish expression arrays were used to
-													profile expression during early development. Lenalidomide,
-													pomalidomide and thalidomide combinations were tracked over
-													3 timepoints(0hr, 6hr, and 12hr) 2 hours post-fertilization
-													with 3 repicates.</li>
-
-												<li><strong>Study Factors:</strong> Compound, Dose,
-													Dose Time, Development Time</li>
-
-												<li><strong>Assay:</strong> DNA microarray</li>
-
-												<li><strong>Measurement Type:</strong> transcription
-													profiling</li>
-
-												<li><strong>Data Asset Number:</strong> DA0000079</li>
-
-												<li><a class="results" href="#">View details...</a></li>
-											</ul> <br />
-
-											<ul class="studySearch">
-												<li><a class="resultsTitle" href="#">4. Zebrafish
-														IMiDs RNA</a></li>
-
-												<li>Affymetrix Zebrafish expression arrays were used to
-													profile expression during early development. Lenalidomide,
-													pomalidomide and thalidomide combinations were tracked over
-													3 timepoints(0hr, 6hr, and 12hr) 2 hours post-fertilization
-													with 3 repicates.</li>
-
-												<li><strong>Study Factors:</strong> Compound, Dose,
-													Dose Time, Development Time</li>
-
-												<li><strong>Assay:</strong> DNA microarray</li>
-
-												<li><strong>Measurement Type:</strong> transcription
-													profiling</li>
-
-												<li><strong>Data Asset Number:</strong> DA0000079</li>
-
-												<li><a class="results" href="#">View details...</a></li>
-											</ul>
-										</li>
-
-										<li><a class="results" href="#">Study Search Results
-												Page...</a></li>
-									</ul>
+								<div class="collapse" id="toggleDemo9" style="height: 0px;">
+									
 								</div></li>
 
 							<li style="list-style: none; display: inline">
@@ -170,86 +76,122 @@
 
 							<li><a href="#" data-toggle="collapse"
 								data-target="#toggleDemo3" data-parent="#sidenav01"
-								class="collapsed" id="pubmedTitle"><span class="badge">0</span>&nbsp; PubMed</a>
+								class="collapsed" id="pubmedTitle"><span class="badge">0</span>&nbsp;
+									PubMed</a>
 
 								<div class="collapse" id="toggleDemo3" style="height: 0px;">
-									
+
 								</div></li>
+							<li style="list-style: none; display: inline">
+								<hr /> <!-- Wikipedia -->
+							</li>
+							<li><a href="#" data-toggle="collapse"
+								data-target="#toggleDemo4" data-parent="#sidenav01"
+								class="collapsed" id="wikiTitle"><span class="badge">0</span>&nbsp;
+									Wikipedia</a><br />
+
+								<div class="collapse" id="toggleDemo4" style="height: 0px;">
+
+								</div></li>
+
+							<li style="list-style: none; display: inline">
+								<hr /> <!-- GeneCard -->
+							</li>
+
+							<li><a href="#" data-toggle="collapse"
+								data-target="#toggleDemo5" data-parent="#sidenav01"
+								class="collapsed" id="geneCard"><span class="badge">0</span>&nbsp;
+									GeneCard</a>
+
+								<div class="leftpadding collapse" id="toggleDemo5"
+									style="height: 0px;"></div></li>
+
+							<li style="list-style: none; display: inline">
+								<hr /> <!-- String DB -->
+							</li>
+
+							<li><a href="#" data-toggle="collapse"
+								data-target="#toggleDemo6" data-parent="#sidenav01"
+								class="collapsed" id="stringDB"><span class="badge">0</span>&nbsp;
+									StringDB</a>
+
+								<div class="collapse" id="toggleDemo6" style="height: 0px;">
+
+								</div></li>
+
+							<li style="list-style: none; display: inline">
+								<hr /> <!-- OMIM -->
+							</li>
+
+							<li><a href="#" data-toggle="collapse"
+								data-target="#toggleDemo7" data-parent="#sidenav01"
+								class="collapsed" id="Omim"><span class="badge">0</span>&nbsp;
+									OMIM</a>
+
+								<div class="collapse" id="toggleDemo7" style="height: 0px;">
+
+								</div></li>
+
+							<li style="list-style: none; display: inline">
+								<hr /> <!-- UniProt -->
+							</li>
+
+							<li><a href="#" data-toggle="collapse"
+								data-target="#toggleDemo8" data-parent="#sidenav01"
+								class="collapsed" id="uniprot"><span class="badge">0</span>&nbsp;
+									UniProt</a>
+
+								<div class="collapse" id="toggleDemo8" style="height: 0px;">
+
+								</div></li>
+
+							<li style="list-style: none; display: inline">
+								<hr />
+							</li>
 						</ul>
 					</div>
-					<hr />
-					<!-- Wikipedia -->
 
-					<ul>
-						<li><a href="#" data-toggle="collapse"
-							data-target="#toggleDemo4" data-parent="#sidenav01"
-							class="collapsed" id="wikiTitle"><span class="badge">0</span>&nbsp;
-								Wikipedia</a><br />
+					<div id="extractedData" class="extractedSearchPanel tab-pane fade">
 
-							<div class="collapse" id="toggleDemo4" style="height: 0px;">
-							
-							</div></li>
+							<wicket:link>
+								<link rel="stylesheet" type="text/css" href="bootstrap.min.css"
+									wicket:id="bootstrap_css" />
+								<link rel="stylesheet" type="text/css" href="../ctakes/CTakesPanel.css" />
 
-						<li style="list-style: none; display: inline">
-							<hr /> <!-- GeneCard -->
-						</li>
+								<script src="jquery.min.js" type="text/javascript"
+									wicket:id="jquery"></script>
+								<script src="bootstrap.min.js" type="text/javascript"
+									wicket:id="bootstrap_js"></script>
+								<script src="../ctakes/CTakesPanel_v2.js" type="text/javascript"></script>
+							</wicket:link>
 
-						<li><a href="#" data-toggle="collapse"
-							data-target="#toggleDemo5" data-parent="#sidenav01"
-							class="collapsed" id="geneCard"><span class="badge">0</span>&nbsp;
-								GeneCard</a>
+							<div class="hide loading-animation-code">
+								<div class='loading-img'>
+									<div class='loading-gif text-center'>
+										<div class='bubblingG'>
+											<span id='bubblingG_1'></span> <span id='bubblingG_2'></span>
+											<span id='bubblingG_3'></span>
+										</div>
+									</div>
+								</div>
+							</div>
 
-							<div class="leftpadding collapse" id="toggleDemo5" style="height: 0px;">
-								
-							</div></li>
+							<h6 class="all-selection-option">
+								<input type="checkbox" checked class="deselect-all-ctakes">
+								Select/Deselect All
+							</h6>
+							<div class="extractedData">
+								<div class="panel-group extractedDataPanel" id="accordion"
+									role="tablist" aria-multiselectable="true"></div>
+							</div>
+					</div>
 
-						<li style="list-style: none; display: inline">
-							<hr /> <!-- String DB -->
-						</li>
-
-						<li><a href="#" data-toggle="collapse"
-							data-target="#toggleDemo6" data-parent="#sidenav01"
-							class="collapsed" id="stringDB"><span class="badge">0</span>&nbsp;
-								StringDB</a>
-
-							<div class="collapse" id="toggleDemo6" style="height: 0px;">
-								
-							</div></li>
-
-						<li style="list-style: none; display: inline">
-							<hr /> <!-- OMIM -->
-						</li>
-
-						<li><a href="#" data-toggle="collapse"
-							data-target="#toggleDemo7" data-parent="#sidenav01"
-							class="collapsed" id="Omim"><span class="badge">0</span>&nbsp; OMIM</a>
-
-							<div class="collapse" id="toggleDemo7" style="height: 0px;">
-
-							</div></li>
-
-						<li style="list-style: none; display: inline">
-							<hr /> <!-- UniProt -->
-						</li>
-
-						<li><a href="#" data-toggle="collapse"
-							data-target="#toggleDemo8" data-parent="#sidenav01"
-							class="collapsed" id="uniprot"><span class="badge">0</span>&nbsp; UniProt</a>
-
-							<div class="collapse" id="toggleDemo8" style="height: 0px;">
-
-							</div></li>
-
-						<li style="list-style: none; display: inline">
-							<hr />
-						</li>
-					</ul>
 				</div>
 			</div>
 			<!-- Here is where the Extracted Data goes -->
+			<!-- This is the tab that gets active when Extracted Data for ctakes section is clicked on. -->
 
-			<div id="extractedData" class="tab-pane fade"></div>
 		</div>
 	</div>
-	
+
 </wicket:panel>
