@@ -325,3 +325,7 @@ td.facettable {
 .page-bottom>div>ul>h5{
   color: #E6E6E6;	
 }
+
+.navbar-brand{
+	overflow: hidden;
+}
