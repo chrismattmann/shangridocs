@@ -134,19 +134,27 @@ function searchSelectedText(selectedText)
 						method:"get",
 						data: {},
 						success:function( responseObjects){
-							responseObjects = responseObjects["response"]["docs"];
-							$(".searchTab" + openFileIndex).append("<li role='presentation' class='active'><a href='#" + currentEngine2  + openFileIndex + "' data-toggle='tab'>" + currentEngine2 + " (" + responseObjects.length + ")</a></li>");
-							var searchResultStudy = "<div role='tabpanel' class='tab-pane active' id='" + currentEngine2  + openFileIndex + "'><ul class='searchList'>";
-							for (var i=0; i< responseObjects.length; i++) {
 							
-								searchResultStudy +="<li><a href=\"" + urlPrefix + "?id=" + responseObjects[i]["id"] + "\" target='_blank'>" + responseObjects[i]["Combined_Study_Title"] + "</a></li><hr/>";
+							/// NEW VERSION
+							
+							responseObjects = responseObjects["response"]["docs"];
+							$("#studySearch .badge").html("<span class='badge'>"+ responseObjects.length +"</span>");
+							
+							var searchResultPub = "<ul class='nav nav-list'><li style='list-style: none; display: inline'>";
+							
+							for (var i=0; i< responseObjects.length; i++) 
+							{
+								searchResultPub += "<ul class='studySearch'>";
+								searchResultPub += "<li><a class='resultsTitle' href='#'>" +(i+1) +". "+ responseObjects[i]["citation_title"] + "</a></li><li>" + responseObjects[i]["og_description"]+".</li></ul> <br />"; 
+								//searchResultPub += 	responseObjects[i]["journalName"] + "</li>" +"<li><a class='results' href='#'>" + responseObjects[i]["pubtype"] + "</a></li></ul> <br />";
+								
 							}
-							if( responseObjects.length == 0)
-								searchResultStudy += "No results";
-							searchResultStudy += "</ul></div>";
-
-							$(".searchContent" + openFileIndex).append( searchResultStudy);
-						}
+								searchResultPub += "</li></ul></div>";
+							$("#toggleDemo9").html("");
+							$("#toggleDemo9").append( searchResultPub);
+						
+							
+							}
 					}).fail( function(){
 						//Not adding a fail function here. If the search fails-> the search block will have blank title with 0 results.
 					});
@@ -213,7 +221,7 @@ function searchSelectedText(selectedText)
 							
 							var geneCardSearchLength = 0; geneCardResult = "";
 							
-							var searchResultGeneCard = "<ul class='nav nav-list'><li style='list-style: none; display: inline'>";
+							var searchResultGeneCard = "<br/><ul class='nav nav-list'><li style='list-style: none; display: inline'>";
 							
 							for (var key in responseObjects) {
 								geneCardSearchLength++;

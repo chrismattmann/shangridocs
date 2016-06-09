@@ -74,9 +74,15 @@ if (typeof Dropzone.options.dropFileArea != "undefined"){
 	initFunc = Dropzone.options.dropFileArea["init"];	
 }
 
+var onSuccessFunc = function(file, responseText){
+	//wait for 1 second before checking if extracted data for previously uplodaded file has come or not.
+	var checkAjax = setInterval(cTAKESPanel(responseText, checkAjax), 1000);
+}
+
 Dropzone.options.dropFileArea = {
 		init: initFunc,
-		method: "put"
+		method: "put",
+		success: onSuccessFunc
 };
 
 
