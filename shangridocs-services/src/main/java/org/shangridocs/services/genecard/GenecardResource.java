@@ -21,10 +21,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
+
+import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.commons.io.IOUtils;
@@ -41,20 +44,37 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.cookie.BrowserCompatSpec;
 import org.apache.http.protocol.HttpContext;
+import org.apache.oodt.cas.metadata.util.PathUtils;
+import org.w3c.dom.Node;
+
 import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.HttpWebConnection;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebRequest;
+import com.gargoylesoftware.htmlunit.html.DomNodeList;
+import com.gargoylesoftware.htmlunit.html.HtmlElement;
+import com.gargoylesoftware.htmlunit.html.HtmlForm;
+import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTable;
 import com.gargoylesoftware.htmlunit.html.HtmlTableBody;
 import com.gargoylesoftware.htmlunit.html.HtmlTableCell;
 import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
 
+
 @Path("/genecard")
 public class GenecardResource {
 
-  private final static String BASE_URL = "http://www.genecards.org/Search/Keyword";
+  private final static String BASE_URL = "http://www.genecards.org/";
+  
+  private final static String SEARCH_BASE_URL = BASE_URL + "Search/Keyword";
+  
+  private final static String LOGIN_LINK = "/Account/LogOn?moduleName=GC";
+  
+  private String email;
+  
+  private String password;
 
   private enum GenecardData {
     Index(0), Symbol(2), Description(3), Category(4), GIFtS(5), GC_ID(6), Score(
@@ -75,9 +95,20 @@ public class GenecardResource {
     }
   };
 
-  public GenecardResource() {
+  public GenecardResource(@Context ServletContext sc) {
     java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(
         java.util.logging.Level.OFF);
+    email = sc.getInitParameter("org.shangridocs.genecard.login.email");
+    password = sc.getInitParameter("org.shangridocs.genecard.login.pass");
+    
+    if (email != null){
+      email = PathUtils.replaceEnvVariables(email);
+    }
+    
+    if (password != null){
+      password = PathUtils.replaceEnvVariables(password);
+    }
+    
   }
 
   @PUT
@@ -89,12 +120,19 @@ public class GenecardResource {
       webClient.setWebConnection(new MyWebConnection(webClient));
       webClient.getOptions().setThrowExceptionOnScriptError(false);
       webClient.getOptions().setRedirectEnabled(true);
+      
+      // log in first if creds provided
+      if (validateCreds()){
+        HtmlPage loginResultPage = login(webClient);
+        System.out.println("login result: "+loginResultPage.asXml());        
+      }
 
       String searchText = IOUtils.toString(is, "UTF-8");
-      WebRequest request = new WebRequest(new URL(BASE_URL + "?queryString="
+      WebRequest request = new WebRequest(new URL(SEARCH_BASE_URL + "?queryString="
           + searchText));
       System.out.println(request.toString());
       final HtmlPage page = webClient.getPage(request);
+      System.out.println("Result: "+page.asXml());
       StringBuilder response = new StringBuilder();
       HtmlTable searchResultsTable = page.getHtmlElementById("searchResults");
       if (searchResultsTable != null) {
@@ -141,6 +179,30 @@ public class GenecardResource {
       return Response.ok(response.toString(), MediaType.APPLICATION_JSON).build();
     }
 
+  }
+  
+  private boolean validateCreds(){
+    return email != null && 
+        !email.equals("null") && 
+        !email.equals("") && 
+        password != null && 
+        !password.equals("") && 
+        !password.equals("null");
+  }
+  
+  private HtmlPage login(WebClient webClient) throws FailingHttpStatusCodeException, IOException{
+    WebRequest req = new WebRequest(new URL(BASE_URL));
+    System.out.println(req);
+    final HtmlPage page = webClient.getPage(req);
+    HtmlPage loginPage = page.getAnchorByHref(LOGIN_LINK).click();
+    HtmlForm form = loginPage.getForms().get(0);
+    DomNodeList<HtmlElement> inputs = form.getElementsByTagName("input");
+    HtmlInput emailInput = (HtmlInput)inputs.get(0);
+    HtmlInput pass = (HtmlInput)inputs.get(1);
+    emailInput.setTextContent(email);
+    pass.setTextContent(password);
+    inputs = form.getElementsByTagName("button");
+    return (HtmlPage)inputs.get(0).click();
   }
 
   class MyWebConnection extends HttpWebConnection {
