@@ -54,7 +54,7 @@ public class OmimResource {
   public OmimResource(@Context ServletContext sc) {
     omimkey = sc.getInitParameter("org.shangridocs.omim.apikey");
     if (omimkey != null){
-	omimkey = PathUtils.replaceEnvVariables(omimkey);
+	     omimkey = PathUtils.replaceEnvVariables(omimkey);
     }
   }
 
