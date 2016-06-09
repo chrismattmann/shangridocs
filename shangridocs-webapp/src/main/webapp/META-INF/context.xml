@@ -56,6 +56,13 @@ the License.
         
     <Parameter name="org.shangridocs.omim.apikey"
                value="[OMIM_API_KEY]"/>
+               
+    <Parameter name="org.shangridocs.genecard.login.email"
+               value="[GENECARD_EMAIL]"/>
+               
+    <Parameter name="org.shangridocs.genecard.login.pass"
+               value="[GENECARD_PASS]"/>
+                              
     <Parameter name="configuration"
         value="development"/> <!-- valid values {development,deployment} -->
                     
