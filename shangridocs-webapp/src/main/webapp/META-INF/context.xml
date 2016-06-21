@@ -25,10 +25,10 @@ the License.
 
     <!-- shangridocs-services overlay params -->
     <Parameter name="org.shangridocs.tika.url"
-        value="http://localhost:9998/rmeta/text"/>
+        value="${tika.url}"/>
         
     <Parameter name="org.shangridocs.tika.ctakes.url"
-        value="http://localhost:9999/rmeta/text"/>
+        value="${ctakes.url}"/>
         
     <Parameter name="org.shangridocs.pubmed.baseUrl"
         value="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"/>

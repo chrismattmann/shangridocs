@@ -17,10 +17,13 @@ the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.shangridocs</groupId>
+    <parent>
+        <groupId>org.shangridocs</groupId>
+        <artifactId>shangridocs</artifactId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
   <artifactId>shangridocs-services</artifactId>
   <packaging>war</packaging>
-  <version>0.1-SNAPSHOT</version>  
   <name>Shangridocs Web Services</name>
   <description>Services for connecting to PubMed, Wikipedia, and Tika cTAKES for Shangridocs.</description>
   <build>
@@ -54,6 +57,24 @@ the License.
         </testResources>  
     <plugins>
         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>2.6</version>
+            <configuration>
+                <webResources>
+                    <resource>
+                        <filtering>true</filtering>
+                        <directory>src/main/webapp</directory>
+                        <includes>
+                            <include>**/context.xml</include>
+                        </includes>
+                    </resource>
+                </webResources>
+                <warSourceDirectory>src/main/webapp</warSourceDirectory>
+                <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
+            </configuration>
+        </plugin>
+        <plugin>
             <groupId>org.apache.tomcat.maven</groupId>
             <artifactId>tomcat7-maven-plugin</artifactId>
             <version>2.2</version>
@@ -74,7 +95,7 @@ the License.
                 <contextFile>${basedir}/src/main/webapp/META-INF/context.xml</contextFile>
                 <path>/${project.build.finalName}</path>  
             </configuration>        
-        </plugin>   
+        </plugin>
        <plugin>
 	        <groupId>org.apache.maven.plugins</groupId>
 	        <artifactId>maven-compiler-plugin</artifactId>

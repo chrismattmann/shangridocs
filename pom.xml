@@ -29,7 +29,11 @@ the License.
         document PDF, Word, Text, etc, to extract its information and to search for biomedically
         relevant entities.
     </description>
-
+    <properties>
+        <wicket.version>1.4.17</wicket.version>
+        <ctakes.url>http://localhost:9999/rmeta/text</ctakes.url>
+        <tika.url>http://localhost:9998/rmeta/text</tika.url>
+    </properties>
     <modules>
         <module>shangridocs-services</module>
         <module>shangridocs-webcomponents</module>
@@ -48,6 +52,10 @@ the License.
                <module>shangridocs-webapp</module>
                <module>deployment/docker</module>
            </modules>
+           <properties>
+               <ctakes.url>http://shangridocs-utils:9999/rmeta/text</ctakes.url>
+               <tika.url>http://shangridocs-utils:9998/rmeta/text</tika.url>
+           </properties>
        </profile>
    </profiles>
 </project>
