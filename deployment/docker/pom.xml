@@ -7,9 +7,8 @@
         <relativePath>../../pom.xml</relativePath>
         <version>0.1-SNAPSHOT</version>
     </parent>
-    <groupId>com.celgene</groupId>
-    <artifactId>solr-docker</artifactId>
-    <name>Solr Docker Image</name>
+    <artifactId>shangridocs-docker</artifactId>
+    <name>Shangridocs Docker Image</name>
 
     <packaging>pom</packaging>
 
@@ -32,7 +31,7 @@
                 <configuration>
                     <maintainer>Tom Barber "tom@analytical-labs.com"</maintainer>
                     <baseImage>tomcat:8.5.3</baseImage>
-                    <imageName>celgene-shangridocs</imageName>
+                    <imageName>shangridocs</imageName>
                     <runs>
                         <run>mv /usr/local/tomcat/webapps/shangridocs-webapp-0.1-SNAPSHOT.war /usr/local/tomcat/webapps/shangridocs.war</run>
                     </runs>
