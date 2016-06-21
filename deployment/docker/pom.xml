@@ -1,0 +1,52 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.shangridocs</groupId>
+        <artifactId>shangridocs</artifactId>
+        <relativePath>../../pom.xml</relativePath>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+    <groupId>com.celgene</groupId>
+    <artifactId>solr-docker</artifactId>
+    <name>Solr Docker Image</name>
+
+    <packaging>pom</packaging>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.10</version>
+                <executions>
+                    <execution>
+                        <id>build-image</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <maintainer>Tom Barber "tom@analytical-labs.com"</maintainer>
+                    <baseImage>tomcat:8.5.3</baseImage>
+                    <imageName>celgene-shangridocs</imageName>
+                    <runs>
+                        <run>mv /usr/local/tomcat/webapps/shangridocs-webapp-0.1-SNAPSHOT.war /usr/local/tomcat/webapps/shangridocs.war</run>
+                    </runs>
+                    <!-- copy the service's jar file from target into the root directory of the image -->
+                    <resources>
+                        <resource>
+                            <targetPath>/usr/local/tomcat/webapps</targetPath>
+                            <directory>${project.parent.basedir}/shangridocs-webapp/target/</directory>
+                            <include>*.war</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
