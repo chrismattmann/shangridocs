@@ -38,7 +38,6 @@ the License.
         <module>shangridocs-services</module>
         <module>shangridocs-webcomponents</module>
         <module>shangridocs-webapp</module>
-        <module>deployment/docker</module>
     </modules>
 
    <profiles>
