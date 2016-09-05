@@ -6,6 +6,13 @@ $(".content").on("keyup", ".search-query", function(e){
     }
 });
 
+$(".search-query").keyup(function(e){
+	var code = e.keyCode || e.which;
+	if(code == 13) { //Enter keycode
+		searchSelectedText($(this).val() );
+	}
+
+});
 
 
 
