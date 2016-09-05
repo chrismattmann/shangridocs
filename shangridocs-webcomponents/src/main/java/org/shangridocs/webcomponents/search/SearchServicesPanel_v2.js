@@ -1,5 +1,5 @@
 
-$(".content").on("keyup", ".search", function(e){
+$(".content").on("keyup", ".search-query", function(e){
     if(e.keyCode == 13)
     {
         searchSelectedText($(this).val() );
