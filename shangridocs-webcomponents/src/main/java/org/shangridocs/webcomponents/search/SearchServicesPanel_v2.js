@@ -1,52 +1,50 @@
+$(document).ready(function() {
 
-$(".content").on("keyup", ".search-query", function(e){
-    if(e.keyCode == 13)
-    {
-        searchSelectedText($(this).val() );
-    }
-});
+	$(".content").on("keyup", ".search-query", function (e) {
+		if (e.keyCode == 13) {
+			searchSelectedText($(this).val());
+		}
+	});
 
-$(".search-query").keyup(function(e){
-	var code = e.keyCode || e.which;
-	if(code == 13) { //Enter keycode
-		searchSelectedText($(this).val() );
-	}
+	$(".search-query").keyup(function (e) {
+		var code = e.keyCode || e.which;
+		if (code == 13) { //Enter keycode
+			searchSelectedText($(this).val());
+		}
 
-});
-
+	});
 
 
 //Showing popover for search when text is selected
-$(".filesContent").on( "mouseup", ".extracted-text", function( e){
+	$(".filesContent").on("mouseup", ".extracted-text", function (e) {
 
-	var selectedText = window.getSelection();
-	if( selectedText.toString() != "")
-	{
-		var elem = $(this);
-		elem.popover("show");
-		$(".popover").offset({ top: e.pageY + 20, left: e.pageX-90});
-		$(".popover-content").html( "<div class='btn-group'>" +
-										"<input type='button' value='Search' class='searchSelected btn btn-primary'>" +
-									"</div>"
-								  );
-		//sending Selected text to search component on the right.
-		$(".searchSelected").click( function()
-		{
-			//alert('it works form func inside!');
-			elem.popover("hide");
-			$(".extractedPane" + openFileIndex + " .search").val(selectedText);
-			
-			searchSelectedText(selectedText.toString() ); 
-		});
-	}
-	else{
-		$(".extracted-text").popover("hide");
-		$(".popover").hide();
-		$(".filesContent").click();
-	}
+		var selectedText = window.getSelection();
+		if (selectedText.toString() != "") {
+			var elem = $(this);
+			elem.popover("show");
+			$(".popover").offset({top: e.pageY + 20, left: e.pageX - 90});
+			$(".popover-content").html("<div class='btn-group'>" +
+				"<input type='button' value='Search' class='searchSelected btn btn-primary'>" +
+				"</div>"
+			);
+			//sending Selected text to search component on the right.
+			$(".searchSelected").click(function () {
+				//alert('it works form func inside!');
+				elem.popover("hide");
+				$(".extractedPane" + openFileIndex + " .search").val(selectedText);
+
+				searchSelectedText(selectedText.toString());
+			});
+		}
+		else {
+			$(".extracted-text").popover("hide");
+			$(".popover").hide();
+			$(".filesContent").click();
+		}
+
+	});
 
 });
-
 //Getting search preferences from the config	
 $.ajax({
 	url:"./config/search-config.json", 
