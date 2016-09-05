@@ -50,7 +50,6 @@ the License.
                <module>shangridocs-services</module>
                <module>shangridocs-webcomponents</module>
                <module>shangridocs-webapp</module>
-               <module>deployment/docker</module>
            </modules>
            <properties>
                <ctakes.url>http://shangridocs-utils:9999/rmeta/text</ctakes.url>
